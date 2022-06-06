@@ -1,41 +1,79 @@
 {
   "project_info": {
-    "project_number": "671027089957",
-    "project_id": "data-logistics-ae8ff",
-    "storage_bucket": "data-logistics-ae8ff.appspot.com"
+    "project_number": "198645654717",
+    "firebase_url": "https://fbilogisticggm-default-rtdb.firebaseio.com",
+    "project_id": "fbilogisticggm",
+    "storage_bucket": "fbilogisticggm.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:671027089957:android:8c7dd6d8606a344cf7a5cc",
+        "mobilesdk_app_id": "1:198645654717:android:f89958a10ff237260683d4",
         "android_client_info": {
           "package_name": "com.example.demoapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "671027089957-tqpde6ku9j294ijago3ebhp04t5euido.apps.googleusercontent.com",
+          "client_id": "198645654717-lf98sh3s8v5gsgnrubc6utachq8chjm4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.demoapp",
-            "certificate_hash": "04340c1348335ba43397dae2db57a9c6d6e79fc1"
+            "certificate_hash": "6ed9b6d9e66e8c4bc915dc437fc26c2cc1e2d6d6"
           }
         },
         {
-          "client_id": "671027089957-127a4c3m0j0cbu5ssrt9pm4f37v5h1sl.apps.googleusercontent.com",
+          "client_id": "198645654717-durkv3hfdh12eo9inm5oqjrlma578173.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCtMFFhPKcCLtKndvWB7c6ga8whDoNL530"
+          "current_key": "AIzaSyBIHzy-RWr_JOtlPlKF4zS0yhJB4PrTCk8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "671027089957-127a4c3m0j0cbu5ssrt9pm4f37v5h1sl.apps.googleusercontent.com",
+              "client_id": "198645654717-durkv3hfdh12eo9inm5oqjrlma578173.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198645654717:android:a5f29e20bdebbfba0683d4",
+        "android_client_info": {
+          "package_name": "com.family.life24h"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198645654717-3p17l8tufush8v0h8gutjauju4brdimo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.family.life24h",
+            "certificate_hash": "6ed9b6d9e66e8c4bc915dc437fc26c2cc1e2d6d6"
+          }
+        },
+        {
+          "client_id": "198645654717-durkv3hfdh12eo9inm5oqjrlma578173.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIHzy-RWr_JOtlPlKF4zS0yhJB4PrTCk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198645654717-durkv3hfdh12eo9inm5oqjrlma578173.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

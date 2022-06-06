@@ -25,6 +25,7 @@ import com.example.demoapp.view.activity.imp.ProImportActivity;
 import com.example.demoapp.view.activity.log.LogProActivity;
 import com.example.demoapp.view.activity.loginAndRegister.RegisterActivity;
 import com.example.demoapp.view.activity.sale.SaleActivity;
+import com.example.demoapp.view.driver.UISplashScreen;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -247,11 +248,14 @@ public class LoginActivity extends AppCompatActivity  {
                                             case "IMPORT":
                                                 startActivity(new Intent(LoginActivity.this, ProImportActivity.class));
                                                 break;
-                                            case "SALE":
+                                            case "Sale":
                                                 startActivity(new Intent(LoginActivity.this, SaleActivity.class));
                                                 break;
                                             case "FCL":
                                                 startActivity(new Intent(LoginActivity.this, FclActivity.class));
+                                                break;
+                                            case "DRIVER":
+                                                startActivity(new Intent(LoginActivity.this, UISplashScreen.class));
                                                 break;
                                             default:
                                                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));

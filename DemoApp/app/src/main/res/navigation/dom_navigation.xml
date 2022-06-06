@@ -46,10 +46,22 @@
         android:id="@+id/nav_dom_cy_sea"
         android:name="com.example.demoapp.view.fragment.dom.DomCySeaFragment"
         android:label="@string/nav_dom_cy_sea" />
-    <fragment
-        android:id="@+id/nav_dom_door_sea"
-        android:name="com.example.demoapp.view.fragment.dom.DomDoorSeaFragment"
-        android:label="@string/nav_dom_door_sea" />
+    <activity
+        android:id="@+id/nav_chat"
+        android:name="com.example.demoapp.view.activity.chat.DashboardActivity"
+        android:label="Chat Phòng"
+        tools:layout="@layout/activity_dashboard"/>
+
+    <activity
+        android:id="@+id/nav_Trucktracking"
+        android:name="com.example.demoapp.view.driver.UISplashScreen"
+        android:label="Theo dõi xe hàng"
+       />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_logout"-->
+<!--        android:label="Đăng xuất"-->
+<!--        tools:layout="@layout/layout_header_nav"/>-->
+
 
 
 </navigation>

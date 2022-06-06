@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_homee"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/nav_home" />
         <item
@@ -43,6 +43,18 @@
             android:id="@+id/nav_dom_door_sea"
             android:icon="@drawable/ic_baseline_baohiem_24"
             android:title="@string/nav_dom_door_sea" />
+        <item
+            android:id="@+id/nav_message"
+            android:icon="@drawable/ic_message"
+            android:title="Tin nhắn"/>
+        <item
+            android:id="@+id/nav_Trucktracking"
+            android:icon="@drawable/ic_baseline_emoji_transportation_24"
+            android:title="GPS tracking"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Đăng xuất"/>
 
     </group>
 </menu>

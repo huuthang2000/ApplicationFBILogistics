@@ -10,18 +10,31 @@
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_height="220dp">
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager_2"
-                android:layout_width="match_parent"
-                android:layout_height="220dp" />
-            <me.relex.circleindicator.CircleIndicator3
-                android:id="@+id/circle_indicator_3"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                app:ci_drawable="@drawable/bg_indicator"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"/>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    app:cardCornerRadius="15dp"
+    android:elevation="5dp"
+    >
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_2"
+        android:layout_width="match_parent"
+        android:layout_height="220dp" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/circle_indicator_3"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:ci_drawable="@drawable/bg_indicator" />
+</androidx.cardview.widget.CardView>
         </RelativeLayout>
 
         <LinearLayout
@@ -29,16 +42,23 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_gravity="center"
+            android:layout_margin="10dp">
+
             <TextView
-                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tru_so_chinh"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:drawablePadding="20dp"
+                android:gravity="center"
+                android:text="@string/tru_so_chinh"
                 android:textColor="@color/lienHe"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+               />
+
             <TextView
+                android:gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -48,6 +68,7 @@
                 android:textColor="@color/lienHe"
                 android:textSize="20dp" />
             <TextView
+                android:gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
@@ -57,7 +78,7 @@
                 android:textColor="@color/lienHe"
                 android:textSize="20dp" />
             <TextView
-                android:layout_marginLeft="10dp"
+                android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +87,9 @@
                 android:textColor="@color/lienHe"
                 android:textSize="20dp" />
             <TextView
-                android:layout_marginLeft="10dp"
+
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,80 +109,98 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                app:cardBackgroundColor="@color/cardView_infor">
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/botron_button"
+                android:backgroundTint="#eceefa"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PHÒNG KINH DOANH"
-                    android:textColor="#ffffff"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="24dp" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="PHÒNG KINH DOANH"
+                    android:textColor="@color/colorBackgroundSplashScreen"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="110dp"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
                     android:text="Name: Ms. Julia"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="90dp"
+                    android:layout_marginTop="80dp"
                     android:text="Điện thoại: 0773 40 10 20"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="110dp"
                     android:text="Email: Julia@fbilogistics.vn"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                app:cardBackgroundColor="@color/cardView_infor">
+                android:layout_gravity="center"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                android:backgroundTint="#eceefa"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/botron_button">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OVERSEA DEPARTMENT"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="#ffffff"
-                    android:textSize="24dp" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="OVERSEA DEPARTMENT"
+                    android:textColor="@color/colorBackgroundSplashScreen"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name: Ms. Chloe"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginLeft="110dp"
+                    android:gravity="center"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tel: +84 28 3535 7878 EXT: 170"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="110dp"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email: chloe@fbilogistics.vn"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:layout_marginLeft="90dp"
+                    android:layout_marginTop="80dp"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -167,40 +208,48 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                app:cardBackgroundColor="@color/cardView_infor">
+                android:layout_gravity="center"
+                android:elevation="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                android:backgroundTint="#eceefa"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/botron_button">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CHĂM SÓC KHÁCH HÀNG"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textColor="@color/colorBackgroundSplashScreen"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="#ffffff"
                     android:textSize="24dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Điện thoại: +84 28 3535 7878 EXT: 100"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:text="Điện thoại:+84 28 3535 7878 EXT: 100"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center"
+                    android:textColor="@color/lienHe"
                     android:textSize="18dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hotline: 0772 50 10 20"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
-                    android:textSize="18dp" />
+                    android:layout_marginTop="50dp"
+                    android:layout_marginLeft="80dp"
+                    android:gravity="center"
+                    android:textColor="@color/lienHe"
+                    android:textSize="18dp"></TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email: chamsockhachhang@fbilogistics.vn"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="110dp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/lienHe"
+
                     android:textSize="18dp" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
