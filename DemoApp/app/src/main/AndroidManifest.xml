@@ -121,7 +121,11 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".view.driver.UIWellcome.UIRegister"
@@ -205,11 +209,7 @@
             android:name=".view.driver.UIMain"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
 
