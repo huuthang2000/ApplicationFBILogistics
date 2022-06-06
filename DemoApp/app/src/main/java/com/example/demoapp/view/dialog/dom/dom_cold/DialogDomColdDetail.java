@@ -63,7 +63,7 @@ public class DialogDomColdDetail extends DialogFragment {
             bundle.putSerializable(Constants.DOM_COLD_UPDATE, domCold);
             bundle.putString(Constants.DOM_COLD_ADD_NEW, "YES");
 //            binding.tvDomColdStt.setText(domCold.getStt());
-            binding.tvDomColdProductName.setText(domCold.getName());
+            binding.tvDomColdProductName.setText(domCold.getProductName());
             binding.tvDomColdWeight.setText(domCold.getWeight());
             binding.tvDomColdQuantityPallet.setText(domCold.getQuantityPallet());
             binding.tvDomColdQuantityCarton.setText(domCold.getQuantityCarton());

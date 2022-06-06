@@ -160,7 +160,9 @@ public class AddPostActivity extends AppCompatActivity {
                     beginUpdate(title, description, editPostId);
                 } else {
                     uploadData(title, description);
+
                 }
+                
 
             }
         });

@@ -86,7 +86,7 @@ public class ImportDomAdapter extends RecyclerView.Adapter<ImportDomAdapter.Impo
 
         public void bind(DomImport domImport) {
             binding.tvDomImportStt.setText(domImport.getStt());
-            binding.tvDomImportProductName.setText(domImport.getName());
+            binding.tvDomImportProductName.setText(domImport.getProductName());
             binding.tvDomImportWeight.setText(domImport.getWeight());
             binding.tvDomImportQuantity.setText(domImport.getQuantity());
             binding.tvDomImportTemp.setText(domImport.getTemp());

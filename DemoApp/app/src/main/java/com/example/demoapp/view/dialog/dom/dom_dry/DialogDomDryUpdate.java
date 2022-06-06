@@ -1,5 +1,7 @@
 package com.example.demoapp.view.dialog.dom.dom_dry;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,34 +11,38 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomDryUpdateBinding;
 import com.example.demoapp.model.DomDry;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomDryViewModel;
+import com.example.demoapp.view.activity.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DialogDomDryUpdate extends DialogFragment {
 
     private DialogDomDryUpdateBinding binding;
 
-    private CommunicateViewModel communicateViewModel;
-    private DomDryViewModel mDomDryViewModel;
+    private FirebaseAuth mAuth;
+
+    private ProgressDialog progressDialog;
+    // user info
+    String name, email, uid, dp;
 
     private final String[] listStr = new String[3];
     private DomDry mDomDry;
 
-    private String name, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length, height, width;
+    private String productName, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length, height, width;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,14 +56,27 @@ public class DialogDomDryUpdate extends DialogFragment {
         binding = DialogDomDryUpdateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-        mDomDryViewModel = new ViewModelProvider(this).get(DomDryViewModel.class);
+        mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
+
+        progressDialog = new ProgressDialog(getContext());
 
         setData();
         setUpViews();
         setListenerForButtons();
 
         return root;
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            email = user.getEmail();
+            uid = user.getUid();
+        } else {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 
     public static DialogDomDryUpdate getInstance() {
@@ -74,7 +93,7 @@ public class DialogDomDryUpdate extends DialogFragment {
             binding.domDryUpdateAutoMonth.setText(mDomDry.getMonth());
             binding.domDryUpdateAutoContinent.setText(mDomDry.getContinent());
 
-            Objects.requireNonNull(binding.updateDomDryName.getEditText()).setText(mDomDry.getName());
+            Objects.requireNonNull(binding.updateDomDryName.getEditText()).setText(mDomDry.getProductName());
             Objects.requireNonNull(binding.updateDomDryWeight.getEditText()).setText(mDomDry.getWeight());
             Objects.requireNonNull(binding.updateDomDryQuantityPallet.getEditText()).setText(mDomDry.getQuantityPallet());
             Objects.requireNonNull(binding.updateDomDryQuantityCarton.getEditText()).setText(mDomDry.getQuantityCarton());
@@ -122,7 +141,7 @@ public class DialogDomDryUpdate extends DialogFragment {
 
 
     public void getDataFromForm() {
-        name = Objects.requireNonNull(binding.updateDomDryName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.updateDomDryName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.updateDomDryWeight.getEditText()).getText().toString();
         quantityPallet = Objects.requireNonNull(binding.updateDomDryQuantityPallet.getEditText()).getText().toString();
         quantityCarton = Objects.requireNonNull(binding.updateDomDryQuantityCarton.getEditText()).getText().toString();
@@ -136,22 +155,38 @@ public class DialogDomDryUpdate extends DialogFragment {
     public void updateData() {
         getDataFromForm();
 
-        communicateViewModel.makeChanges();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("productName", productName);
+        hashMap.put("weight", weight);
+        hashMap.put("quantityPallet", quantityPallet);
+        hashMap.put("quantityCarton", quantityCarton);
+        hashMap.put("addressReceive", addressReceive);
+        hashMap.put("addressDelivery", addressDelivery);
+        hashMap.put("length", length);
+        hashMap.put("height", height);
+        hashMap.put("width", width);
+        hashMap.put("type", listStr[0]);
+        hashMap.put("month", listStr[1]);
+        hashMap.put("continent", listStr[2]);
 
-        mDomDryViewModel.updateData(mDomDry.getStt(), name, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length,
-                height, width, listStr[0], listStr[1], listStr[2]).enqueue(new Callback<DomDry>() {
-            @Override
-            public void onResponse(@NonNull Call<DomDry> call, @NonNull Response<DomDry> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Update Successful!!", Toast.LENGTH_LONG).show();
-                }
-            }
+        String timeStamp = mDomDry.getpTime();
 
-            @Override
-            public void onFailure(@NonNull Call<DomDry> call, @NonNull Throwable t) {
-
-            }
-        });
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Dry");
+        ref.child(timeStamp)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

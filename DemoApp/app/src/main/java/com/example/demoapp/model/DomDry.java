@@ -12,7 +12,7 @@ public class DomDry implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String name;
+    private String productName;
 
     @SerializedName("weight")
     @Expose
@@ -62,25 +62,16 @@ public class DomDry implements Serializable {
     @Expose
     private String createdDate;
 
-    public DomDry(String stt, String name, String weight, String quantityPallet, String quantityCarton, String addressReceive, String addressDelivery, String length, String height, String width, String type, String month, String continent, String createdDate) {
-        this.stt = stt;
-        this.name = name;
-        this.weight = weight;
-        this.quantityPallet = quantityPallet;
-        this.quantityCarton = quantityCarton;
-        this.addressReceive = addressReceive;
-        this.addressDelivery = addressDelivery;
-        this.length = length;
-        this.height = height;
-        this.width = width;
-        this.type = type;
-        this.month = month;
-        this.continent = continent;
-        this.createdDate = createdDate;
-    }
+    private String pTime;
 
-    public DomDry(String name, String weight, String quantityPallet, String quantityCarton, String addressReceive, String addressDelivery, String length, String height, String width, String type, String month, String continent, String createdDate) {
-        this.name = name;
+    public DomDry(){}
+
+    public DomDry(String stt, String productName, String weight, String quantityPallet,
+                  String quantityCarton, String addressReceive, String addressDelivery, String length,
+                  String height, String width, String type, String month, String continent,
+                  String createdDate, String pTime) {
+        this.stt = stt;
+        this.productName = productName;
         this.weight = weight;
         this.quantityPallet = quantityPallet;
         this.quantityCarton = quantityCarton;
@@ -93,6 +84,7 @@ public class DomDry implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
+        this.pTime = pTime;
     }
 
     public String getStt() {
@@ -103,12 +95,20 @@ public class DomDry implements Serializable {
         this.stt = stt;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getpTime() {
+        return pTime;
+    }
+
+    public void setpTime(String pTime) {
+        this.pTime = pTime;
     }
 
     public String getWeight() {

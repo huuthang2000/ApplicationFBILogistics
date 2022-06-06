@@ -1,6 +1,8 @@
 package com.example.demoapp.view.dialog.dom.dom_door_sea;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,22 +16,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomDoorSeaInsertBinding;
 import com.example.demoapp.model.DomDoorSea;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomDoorSeaViewModel;
+import com.example.demoapp.view.activity.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnClickListener {
 
@@ -37,10 +46,18 @@ public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnCli
 
     private final String[] listStr = new String[3];
 
-    private String portGo, portCome, addressReceive, addressDelivery, name, weight, quantity, etd;
+    private String portGo, portCome, addressReceive, addressDelivery, productName, weight, quantity, etd;
 
-    private DomDoorSeaViewModel mDomDoorSeaViewModel;
-    private CommunicateViewModel communicateViewModel;
+    private List<DomDoorSea> domDoorSeaList;
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference userDBRef;
+
+    private ProgressDialog progressDialog;
+    // user info
+    String name, email, uid, dp;
+
+
 
     @Nullable
     @Override
@@ -50,14 +67,46 @@ public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnCli
 
         View view = binding.getRoot();
 
-        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-        mDomDoorSeaViewModel = new ViewModelProvider(this).get(DomDoorSeaViewModel.class);
+        mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
 
+        domDoorSeaList = new ArrayList<>();
+        progressDialog = new ProgressDialog(getContext());
+
+        // get some info of current user to include in post
+        userDBRef = FirebaseDatabase.getInstance().getReference("Users");
+        Query query = userDBRef.orderByChild("email").equalTo(email);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    name = "" + ds.child("name").getValue();
+                    email = "" + ds.child("email").getValue();
+                    dp = "" + ds.child("image").getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         setUpViews();
         textWatcher();
         setData();
 
         return view;
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            email = user.getEmail();
+            uid = user.getUid();
+        } else {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 
     public void setData() {
@@ -77,7 +126,7 @@ public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnCli
                 Objects.requireNonNull(binding.insertDomDoorSeaPortCome.getEditText()).setText(mDomDoorSea.getPortCome());
                 Objects.requireNonNull(binding.insertDomDoorSeaAddressReceive.getEditText()).setText(mDomDoorSea.getAddressReceive());
                 Objects.requireNonNull(binding.insertDomDoorSeaAddressDelivery.getEditText()).setText(mDomDoorSea.getAddressDelivery());
-                Objects.requireNonNull(binding.insertDomDoorSeaName.getEditText()).setText(mDomDoorSea.getName());
+                Objects.requireNonNull(binding.insertDomDoorSeaName.getEditText()).setText(mDomDoorSea.getProductName());
                 Objects.requireNonNull(binding.insertDomDoorSeaWeight.getEditText()).setText(mDomDoorSea.getWeight());
                 Objects.requireNonNull(binding.insertDomDoorSeaQuantity.getEditText()).setText(mDomDoorSea.getQuantity());
                 Objects.requireNonNull(binding.insertDomDoorSeaEtd.getEditText()).setText(mDomDoorSea.getEtd());
@@ -158,22 +207,38 @@ public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnCli
     public void insertData() {
         getDataFromForm();
 
-        communicateViewModel.makeChanges();
 
-        mDomDoorSeaViewModel.insertData(portGo, portCome, addressReceive, addressDelivery, name, weight, quantity, etd,
-                listStr[0], listStr[1], listStr[2], getCreatedDate()).enqueue(new Callback<DomDoorSea>() {
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("portGo", portGo);
+        hashMap.put("portCome", portCome);
+        hashMap.put("addressReceive", addressReceive);
+        hashMap.put("addressDelivery", addressDelivery);
+        hashMap.put("productName", productName);
+        hashMap.put("weight", weight);
+        hashMap.put("quantity", quantity);
+        hashMap.put("etd", etd);
+        hashMap.put("type", listStr[0]);
+        hashMap.put("month", listStr[1]);
+        hashMap.put("continent", listStr[2]);
+        hashMap.put("createdDate", getCreatedDate());
+        hashMap.put("pTime", timeStamp);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Door_Sea");
+        // put data in this ref
+        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onResponse(@NonNull Call<DomDoorSea> call, @NonNull Response<DomDoorSea> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Insert Successful!!", Toast.LENGTH_LONG).show();
-                }
+            public void onSuccess(Void unused) {
+                progressDialog.dismiss();
+
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Call<DomDoorSea> call, @NonNull Throwable t) {
-
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        
     }
 
     public boolean isFilled() {

@@ -39,7 +39,7 @@ public class DialogDomCySaleDetail extends DialogFragment {
 
             binding.tvDomCyStationGo.setText(domCy.getStationGo());
             binding.tvDomCyStationCome.setText(domCy.getStationCome());
-            binding.tvDomCyName.setText(domCy.getName());
+            binding.tvDomCyName.setText(domCy.getProductName());
             binding.tvDomCyWeight.setText(domCy.getWeight());
             binding.tvDomCyQuantity.setText(domCy.getQuantity());
             binding.tvDomCyEtd.setText(domCy.getEtd());

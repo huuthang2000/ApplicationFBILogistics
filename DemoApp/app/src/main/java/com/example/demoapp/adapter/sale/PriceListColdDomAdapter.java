@@ -85,7 +85,7 @@ public class PriceListColdDomAdapter extends RecyclerView.Adapter<PriceListColdD
 
         public void bind(DomCold domCold) {
             binding.tvDomColdProductStt.setText(domCold.getStt());
-            binding.tvDomColdProductName.setText(domCold.getName());
+            binding.tvDomColdProductName.setText(domCold.getProductName());
             binding.tvDomColdWeight.setText(domCold.getWeight());
             binding.tvDomColdQuantityPallet.setText(domCold.getQuantityPallet());
             binding.tvDomColdQuantityCarton.setText(domCold.getQuantityCarton());

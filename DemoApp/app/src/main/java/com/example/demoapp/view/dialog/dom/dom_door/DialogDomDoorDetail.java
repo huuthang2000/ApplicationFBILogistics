@@ -68,7 +68,7 @@ public class DialogDomDoorDetail extends DialogFragment {
             binding.tvDomDoorStationCome.setText(mDomDoor.getStationCome());
             binding.tvDomDoorAddressReceive.setText(mDomDoor.getAddressReceive());
             binding.tvDomDoorAddressDelivery.setText(mDomDoor.getAddressDelivery());
-            binding.tvDomDoorName.setText(mDomDoor.getName());
+            binding.tvDomDoorName.setText(mDomDoor.getProductName());
             binding.tvDomDoorWeight.setText(mDomDoor.getWeight());
             binding.tvDomDoorQuantity.setText(mDomDoor.getQuantity());
             binding.tvDomDoorEtd.setText(mDomDoor.getEtd());
