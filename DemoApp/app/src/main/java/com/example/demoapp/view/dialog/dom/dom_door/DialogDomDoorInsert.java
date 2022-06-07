@@ -198,7 +198,7 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
         stationCome = Objects.requireNonNull(binding.insertDomDoorStationCome.getEditText()).getText().toString();
         addressReceive = Objects.requireNonNull(binding.insertDomDoorAddressReceive.getEditText()).getText().toString();
         addressDelivery = Objects.requireNonNull(binding.insertDomDoorAddressDelivery.getEditText()).getText().toString();
-        name = Objects.requireNonNull(binding.insertDomDoorName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.insertDomDoorName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomDoorWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.insertDomDoorQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.insertDomDoorEtd.getEditText()).getText().toString();
@@ -209,11 +209,11 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
 
         String timeStamp = String.valueOf(System.currentTimeMillis());
         HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("productName", productName);
         hashMap.put("stationGo", stationGo);
         hashMap.put("stationCome", stationCome);
         hashMap.put("addressReceive", addressReceive);
         hashMap.put("addressDelivery", addressDelivery);
-        hashMap.put("productName", productName);
         hashMap.put("weight", weight);
         hashMap.put("quantity", quantity);
         hashMap.put("etd", etd);

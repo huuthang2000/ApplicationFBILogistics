@@ -52,6 +52,7 @@ public class DetailProfileActivity extends AppCompatActivity {
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
 
         // get uid of clicked user to retrieve his posts
         Intent intent = getIntent();
@@ -63,13 +64,7 @@ public class DetailProfileActivity extends AppCompatActivity {
         postList = new ArrayList<>();
         postsAdapter = new PostsAdapter(this, postList);
 
-        checkUserStatus();
 
-
-
-
-
-        checkUserStatus();
     }
 
     @Override

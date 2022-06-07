@@ -52,7 +52,6 @@ PriceListAirImportAdapter extends RecyclerView.Adapter<PriceListAirImportAdapter
         AirImport priceAir = listAIRS.get(position);
         if ( listAIRS.size() > 0) {
 
-            holder.tvStt.setText(priceAir.getStt());
             holder.tvPol.setText(priceAir.getAol());
             holder.tvPod.setText(priceAir.getAod());
             holder.tvDim.setText(priceAir.getDim());

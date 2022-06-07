@@ -198,7 +198,7 @@ public class DialogDomDoorSeaInsert extends DialogFragment implements View.OnCli
         portCome = Objects.requireNonNull(binding.insertDomDoorSeaPortCome.getEditText()).getText().toString();
         addressReceive = Objects.requireNonNull(binding.insertDomDoorSeaAddressReceive.getEditText()).getText().toString();
         addressDelivery = Objects.requireNonNull(binding.insertDomDoorSeaAddressDelivery.getEditText()).getText().toString();
-        name = Objects.requireNonNull(binding.insertDomDoorSeaName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.insertDomDoorSeaName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomDoorSeaWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.insertDomDoorSeaQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.insertDomDoorSeaEtd.getEditText()).getText().toString();

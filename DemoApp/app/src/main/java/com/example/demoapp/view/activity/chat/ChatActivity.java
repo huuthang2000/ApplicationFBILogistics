@@ -81,6 +81,7 @@ public class ChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         usersDBRef = firebaseDatabase.getReference("Users");
+        checkUserStatus();
 
         // layout for RecyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

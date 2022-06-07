@@ -195,7 +195,7 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
     }
 
     public void getDataFromForm() {
-        name = Objects.requireNonNull(binding.insertDomColdName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.insertDomColdName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomColdWeight.getEditText()).getText().toString();
         quantityPallet = Objects.requireNonNull(binding.insertDomColdQuantityPallet.getEditText()).getText().toString();
         quantityCarton = Objects.requireNonNull(binding.insertDomColdQuantityCarton.getEditText()).getText().toString();
@@ -208,11 +208,6 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
 
     public void insertData() {
         getDataFromForm();
-
-        //String stt, String productName, String weight, String quantityPallet,
-        //                   String quantityCarton, String addressReceive, String addressDelivery,
-        //                   String length, String height, String width, String type, String month,
-        //                   String continent, String createdDate, String pTime
 
         String timeStamp = String.valueOf(System.currentTimeMillis());
         HashMap<String, Object> hashMap = new HashMap<>();

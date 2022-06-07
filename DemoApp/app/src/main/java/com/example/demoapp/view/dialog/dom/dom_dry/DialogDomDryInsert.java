@@ -196,7 +196,7 @@ public class DialogDomDryInsert extends DialogFragment implements View.OnClickLi
     }
 
     public void getDataFromForm() {
-        name = Objects.requireNonNull(binding.insertDomDryName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.insertDomDryName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomDryWeight.getEditText()).getText().toString();
         quantityPallet = Objects.requireNonNull(binding.insertDomDryQuantityPallet.getEditText()).getText().toString();
         quantityCarton = Objects.requireNonNull(binding.insertDomDryQuantityCarton.getEditText()).getText().toString();

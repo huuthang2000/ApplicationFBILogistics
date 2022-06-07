@@ -33,6 +33,7 @@ public class DashboardActivity extends AppCompatActivity {
         actionBar.setTitle("Home");
 
         mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
 
 
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(this);
@@ -85,7 +86,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        checkUserStatus();
 
     }
 

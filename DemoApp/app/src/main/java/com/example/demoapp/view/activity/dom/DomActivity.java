@@ -137,13 +137,13 @@ public class DomActivity extends AppCompatActivity implements NavigationView.OnN
                     binding.toolbar.setTitle("DOM DOOR SEA");
                 }
                 break;
-            case R.id.tab_chat_fcl:
+            case R.id.nav_dom_message:
                 if (mCurrentFragment != ACTIVITY_MESSAGE) {
                     Intent intent = new Intent(this, DashboardActivity.class);
                     startActivity(intent);
                 }
                 break;
-            case R.id.tab_logout_fcl:
+            case R.id.nav_dom_logout:
                 if (mCurrentFragment != LOG_OUT) {
                     mAuth.signOut();
                     checkUserStatus();
