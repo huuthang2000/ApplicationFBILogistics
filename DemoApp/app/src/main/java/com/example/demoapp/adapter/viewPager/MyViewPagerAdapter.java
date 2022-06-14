@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.demoapp.view.fragment.chat.ChatListFragment;
+import com.example.demoapp.view.fragment.chat.GroupChatsFragment;
 import com.example.demoapp.view.fragment.chat.HomeChatFragment;
 import com.example.demoapp.view.fragment.chat.ProfileChatFragment;
 import com.example.demoapp.view.fragment.chat.UsersChatFragment;
@@ -28,6 +29,8 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
                 return new UsersChatFragment();
             case 3:
                 return new ChatListFragment();
+            case 4:
+                return new GroupChatsFragment();
             default:
                 return new HomeChatFragment();
         }
@@ -36,6 +39,6 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 }

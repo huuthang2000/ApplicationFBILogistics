@@ -3,6 +3,9 @@
     package="com.example.demoapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +16,39 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.chat.GroupEditActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal"/>
+        <activity
+            android:name=".view.activity.chat.GroupInfoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.GroupParticipantAddActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.GroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.chat.GroupCreateActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.chat.PostLikedByActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
             android:name=".view.activity.chat.PostDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DetailProfileActivity"
             android:exported="true"
-            android:theme="@style/Theme.GroupChatFinal"></activity>
+            android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.ChatActivity"
             android:exported="false" />
@@ -30,16 +59,14 @@
         <activity
             android:name=".view.activity.chat.DashboardActivity"
             android:exported="true"
-            android:theme="@style/Theme.GroupChatFinal">
-
-        </activity>
+            android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.loginAndRegister.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.air.AirPageActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.waterway.WaterWayActivity"
             android:exported="true" />
@@ -60,9 +87,7 @@
         <activity
             android:name=".view.activity.dom.DomActivity"
             android:exported="true"
-            android:label="@string/title_activity_dom">
-
-        </activity>
+            android:label="@string/title_activity_dom" />
         <activity
             android:name=".view.activity.pro.ProActivity"
             android:exported="true"
@@ -97,9 +122,7 @@
             android:theme="@style/Theme.DemoApp.NoActionBar" />
         <activity
             android:name=".view.activity.sale.SaleActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true">
@@ -108,7 +131,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".view.activity.sale.TablePriceAirActivity"
@@ -116,23 +138,11 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.GroupChatFinal">
-        </activity>
+            android:theme="@style/Theme.GroupChatFinal" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-<!--        <provider-->
-<!--            android:authorities="com.example.demoapp.fileprovider"-->
-<!--            android:name="androidx.core.content.FileProvider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/paths"-->
-<!--                />-->
-<!--        </provider>-->
     </application>
 
 </manifest>

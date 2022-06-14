@@ -41,9 +41,27 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/layout/style_circle.xml" value="0.1" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/menu/menu_pro.xml" value="0.1" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.10277777777777777" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_chat.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_dashboard.xml" value="0.2462962962962963" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_create.xml" value="0.2" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_edit.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_info.xml" value="0.2" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_participant_add.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_detail.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_liked_by.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/fragment_group_chats.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_left.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_right.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchat_left.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchat_right.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchats_list.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_item_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_participant_add.xml" value="0.1" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_posts.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/activity_dom_drawer.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/menu_nav.xml" value="0.2296875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/drawable-v24/circle_offline.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/drawable/circle_online.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_add_post.xml" value="0.25052083333333336" />

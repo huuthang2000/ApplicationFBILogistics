@@ -64,10 +64,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder,  int position) {
         // get data
         String message = chatsList.get(position).getMessage();
+        String type = chatsList.get(position).getType();
 
         // convert time stamp to dd//mm/YYYY hh:mm am/pm
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
         String date = df.format(Calendar.getInstance().getTime());
+
+        if(type.equals("text")){
+            // text message
+            holder.tvMessage.setVisibility(View.VISIBLE);
+            holder.ivMessage.setVisibility(View.GONE);
+
+            holder.tvMessage.setText(message);
+        }else{
+            //image message
+            holder.tvMessage.setVisibility(View.GONE);
+            holder.ivMessage.setVisibility(View.VISIBLE);
+
+            Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(holder.ivMessage);
+        }
 
         // set data
         holder.tvMessage.setText(message);
@@ -106,9 +121,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
         // set seen/delivered status of message
         if (position == chatsList.size() - 1) {
-            if (chatsList.get(position).getIsSeen().equals("1")) {
+            if (chatsList.get(position).isSeen()) {
                 holder.tvIsSeen.setText("Seen");
-            } else if (chatsList.get(position).getIsSeen().equals("2")) {
+            } else {
                 holder.tvIsSeen.setText("Delivere");
             }
         } else {
@@ -185,7 +200,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // chat view holder class
     class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivProfile;
+        ImageView ivProfile, ivMessage;
         TextView tvMessage, tvTime, tvIsSeen;
         LinearLayout messageLayout;
 
@@ -193,6 +208,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             super(itemView);
 
             ivProfile = itemView.findViewById(R.id.profile_image);
+            ivMessage = itemView.findViewById(R.id.messageIv);
             tvMessage = itemView.findViewById(R.id.tv_message);
             tvTime = itemView.findViewById(R.id.tv_time);
             tvIsSeen = itemView.findViewById(R.id.tv_isSeen);

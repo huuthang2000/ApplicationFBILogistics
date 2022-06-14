@@ -3,18 +3,24 @@ package com.example.demoapp.view.fragment.chat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.ChatListAdapter;
 import com.example.demoapp.databinding.FragmentChatListBinding;
 import com.example.demoapp.model.ChatList;
 import com.example.demoapp.model.Chats;
 import com.example.demoapp.model.Users;
 import com.example.demoapp.view.activity.MainActivity;
+import com.example.demoapp.view.activity.chat.GroupCreateActivity;
+import com.example.demoapp.view.activity.chat.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +45,6 @@ public class ChatListFragment extends Fragment {
     ChatListAdapter chatListAdapter;
 
     public ChatListFragment(){}
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,7 +132,13 @@ public class ChatListFragment extends Fragment {
                             chats.getSender().equals(userId) ||
                     chats.getReceiver().equals(userId) &&
                     chats.getSender().equals(currentUser.getUid())){
-                        theLastMesage = chats.getMessage();
+                        //instead of displaying url in message show "sent photo"
+                        if(chats.getType().equals("image")){
+                            theLastMesage = "Sent a photo";
+                        }else{
+                            theLastMesage = chats.getMessage();
+                        }
+
                     }
                 }
                 chatListAdapter.setLastMessageMap(userId, theLastMesage);
@@ -153,4 +163,33 @@ public class ChatListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        // inflating menu
+        inflater.inflate(R.menu.menu_main, menu);
+
+        //hide addpost icon from this fragment
+        menu.findItem(R.id.action_add_post).setVisible(false);
+        menu.findItem(R.id.action_add_participant).setVisible(false);
+        menu.findItem(R.id.action_groupinfo).setVisible(false);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //get item id
+        int id = item.getItemId();
+        if(id == R.id.action_logout){
+            mAuth.signOut();
+            checkUserStatus();
+        }else if(id == R.id.action_settings){
+            // go to settings activity
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+        }else if(id==R.id.action_create_group){
+            // go to group chat
+            startActivity(new Intent(getActivity(), GroupCreateActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

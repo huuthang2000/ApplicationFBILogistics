@@ -2,6 +2,9 @@ package com.example.demoapp.view.activity.chat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +46,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -128,6 +136,89 @@ public class PostDetailActivity extends AppCompatActivity {
                 showMoreOptions();
             }
         });
+
+        //share button click handle
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pTitle = pTitleTv.getText().toString().trim();
+                String pDescription = pDescriptionTv.getText().toString().trim();
+
+                // get image from imageview
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) pImageIv.getDrawable();
+                if(bitmapDrawable == null){
+                    // post without image
+                    shareTextOnly(pTitle, pDescription);
+                }
+                else {
+                    //post with image
+
+
+                    //convert image to bimap
+                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                    shareImageAndText(pTitle, pDescription, bitmap);
+                }
+            }
+        });
+
+        //click like count to start PostLikeByActivity, and pass the post id
+        pLikesTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostDetailActivity.this, PostLikedByActivity.class);
+                intent.putExtra("postId",postId);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void shareImageAndText(String pTitle, String pDescription, Bitmap bitmap) {
+        // concatenate title and description to share
+        String shareBody = pTitle +"\n"+ pDescription;
+
+        //first we will save this image in cache, get the saved image uri
+        Uri uri = saveImageToShare(bitmap);
+
+        // share intent
+        Intent sIntent = new Intent(Intent.ACTION_SEND);
+        sIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        sIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        sIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+        sIntent.setType("image/png");
+        startActivity(Intent.createChooser(sIntent, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imageFolder = new File(getCacheDir(),"images");
+        Uri uri = null;
+        try{
+            imageFolder.mkdir();
+            File file = new File(imageFolder, "share_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(this,"com.example.demoapp.fileprovider", file);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
+    private void shareTextOnly(String title, String description) {
+        // concatenate title and description to share
+        String shareBody = title + "\n" + description;
+
+        //share intent
+        Intent sIntent = new Intent(Intent.ACTION_SEND);
+        sIntent.setType("text/plain");
+        sIntent.putExtra(Intent.EXTRA_SUBJECT,"Subject Here");
+        sIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sIntent,"Share Via"));
     }
 
     private void loadComments() {
@@ -525,6 +616,7 @@ public class PostDetailActivity extends AppCompatActivity {
         // hide some menu items
         menu.findItem(R.id.action_add_post).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_groupinfo).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
