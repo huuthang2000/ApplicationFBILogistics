@@ -258,7 +258,7 @@ public class ChatActivity extends AppCompatActivity {
                     Chats chats = ds.getValue(Chats.class);
                     if (chats.getReceiver().equals(myUid) && chats.getSender().equals(hisUid)) {
                         HashMap<String, Object> hasSeenHashMap = new HashMap<>();
-                        hasSeenHashMap.put("isSeen", false);
+                        hasSeenHashMap.put("isSeen", "1");
                         ds.getRef().updateChildren(hasSeenHashMap);
                     }
                 }
@@ -449,13 +449,17 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
+        // convert time stamp to dd//mm/YYYY hh:mm am/pm
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", myUid);
         hashMap.put("receiver", hisUid);
         hashMap.put("message", message);
         hashMap.put("timestamp", timestamp);
-        hashMap.put("isSeen", false);
+        hashMap.put("isSeen", "0");
         hashMap.put("type", "text");
+        hashMap.put("timemessage",date);
         databaseReference.child("Chats").push().setValue(hashMap);
 
 
@@ -523,6 +527,9 @@ public class ChatActivity extends AppCompatActivity {
         progressDialog.show();
 
         String timeStamp = ""+ System.currentTimeMillis();
+        // convert time stamp to dd//mm/YYYY hh:mm am/pm
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
 
         String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
 
@@ -556,7 +563,8 @@ public class ChatActivity extends AppCompatActivity {
                             hashMap.put("message", downloadUri);
                             hashMap.put("timestamp", timeStamp);
                             hashMap.put("type", "image");
-                            hashMap.put("isSeen", false);
+                            hashMap.put("isSeen", "1");
+                            hashMap.put("timemessage",date);
 
                             //put this data to firebase
                             databaseReference.child("Chats").push().setValue(hashMap);

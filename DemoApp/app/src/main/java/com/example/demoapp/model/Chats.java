@@ -1,21 +1,21 @@
 package com.example.demoapp.model;
 
 public class Chats {
-    private String message, receiver, sender, timestamp,  type;
-    private boolean isSeen;
+    private String message, receiver, sender, timestamp,  type, isSeen, timemessage;
 
 
 
     public Chats() {
     }
 
-    public Chats(String message, String receiver, String sender, String timestamp, String type, boolean isSeen) {
+    public Chats(String message, String receiver, String sender, String timestamp, String type, String isSeen, String timemessage) {
         this.message = message;
         this.receiver = receiver;
         this.sender = sender;
         this.timestamp = timestamp;
         this.type = type;
         this.isSeen = isSeen;
+        this.timemessage = timemessage;
     }
 
     public String getMessage() {
@@ -58,11 +58,19 @@ public class Chats {
         this.type = type;
     }
 
-    public boolean isSeen() {
+    public String getIsSeen() {
         return isSeen;
     }
 
-    public void setSeen(boolean seen) {
-        isSeen = seen;
+    public void setIsSeen(String isSeen) {
+        this.isSeen = isSeen;
+    }
+
+    public String getTimemessage() {
+        return timemessage;
+    }
+
+    public void setTimemessage(String timemessage) {
+        this.timemessage = timemessage;
     }
 }

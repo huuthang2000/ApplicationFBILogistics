@@ -24,7 +24,6 @@ import com.example.demoapp.model.Import;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.imp.InsertImportDialog;
 import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.ImportViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +43,6 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
 
     List<Import> listPriceList = new ArrayList<>();
     private PriceListImportSaleAdapter priceListAdapter;
-    private ImportViewModel mImportViewModel;
     private ActivityImportBinding mImportBinding;
     private SearchView searchView;
 
@@ -56,7 +54,6 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
 
         setSupportActionBar(mImportBinding.toolbar);
         priceListAdapter = new PriceListImportSaleAdapter(this);
-        mImportViewModel = new ViewModelProvider(this).get(ImportViewModel.class);
 
         CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
 
@@ -196,10 +193,6 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
     public void onResume() {
         super.onResume();
         priceListAdapter = new PriceListImportSaleAdapter(this);
-        mImportViewModel.getImportList().observe(this, imp -> {
-            priceListAdapter.setImports( prepareDataForResume(month, continent, radioItem, imp));
-        });
-
         mImportBinding.priceListRcv.setAdapter(priceListAdapter);
     }
 
