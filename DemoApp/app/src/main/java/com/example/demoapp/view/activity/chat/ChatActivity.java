@@ -99,12 +99,12 @@ public class ChatActivity extends AppCompatActivity {
     private Uri image_uri = null;
 
     // permission array
-    String[] cameraPermissions;
-    String[] storagePermissions;
+    private String[] cameraPermissions;
+    private String[] storagePermissions;
 
 
-    List<Chats> chatsList;
-    ChatAdapter chatAdapter;
+    private List<Chats> chatsList;
+    private ChatAdapter chatAdapter;
 
 
     @Override
@@ -454,7 +454,7 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("receiver", hisUid);
         hashMap.put("message", message);
         hashMap.put("timestamp", timestamp);
-        hashMap.put("isSeen", false);
+        hashMap.put("isSeen", "0");
         hashMap.put("type", "text");
         databaseReference.child("Chats").push().setValue(hashMap);
 
@@ -556,7 +556,7 @@ public class ChatActivity extends AppCompatActivity {
                             hashMap.put("message", downloadUri);
                             hashMap.put("timestamp", timeStamp);
                             hashMap.put("type", "image");
-                            hashMap.put("isSeen", false);
+                            hashMap.put("isSeen", "0");
 
                             //put this data to firebase
                             databaseReference.child("Chats").push().setValue(hashMap);
