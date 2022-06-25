@@ -89,7 +89,7 @@ public class PriceListDoorDomAdapter extends RecyclerView.Adapter<PriceListDoorD
             binding.tvDomDoorStationCome.setText(domDoor.getStationCome());
             binding.tvDomDoorAddressReceive.setText(domDoor.getAddressReceive());
             binding.tvDomDoorAddressDelivery.setText(domDoor.getAddressDelivery());
-            binding.tvDomDoorName.setText(domDoor.getName());
+            binding.tvDomDoorName.setText(domDoor.getProductName());
             binding.tvDomDoorWeight.setText(domDoor.getWeight());
             binding.tvDomDoorQuantity.setText(domDoor.getQuantity());
             binding.tvDomDoorEtd.setText(domDoor.getEtd());

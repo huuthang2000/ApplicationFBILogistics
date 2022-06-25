@@ -3,6 +3,7 @@
     package="com.example.demoapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,6 +23,12 @@
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+=======
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+>>>>>>> fix_message
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,13 +38,43 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.chat.GroupEditActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal"/>
+        <activity
+            android:name=".view.activity.chat.GroupInfoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.GroupParticipantAddActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.GroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.chat.GroupCreateActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
+            android:name=".view.activity.chat.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.chat.PostLikedByActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal" />
+        <activity
             android:name=".view.activity.chat.PostDetailActivity"
             android:exported="false"
             android:theme="@style/GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DetailProfileActivity"
             android:exported="true"
+<<<<<<< HEAD
             android:theme="@style/GroupChatFinal"></activity>
+=======
+            android:theme="@style/Theme.GroupChatFinal" />
+>>>>>>> fix_message
         <activity
             android:name=".view.activity.chat.ChatActivity"
             android:exported="false" />
@@ -48,9 +85,13 @@
         <activity
             android:name=".view.activity.chat.DashboardActivity"
             android:exported="true"
+<<<<<<< HEAD
             android:theme="@style/GroupChatFinal">
 
         </activity>
+=======
+            android:theme="@style/Theme.GroupChatFinal" />
+>>>>>>> fix_message
         <activity
             android:name=".view.activity.loginAndRegister.RegisterActivity"
             android:exported="true"
@@ -59,7 +100,7 @@
         </activity>
         <activity
             android:name=".view.activity.air.AirPageActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".view.activity.sale.waterway.WaterWayActivity"
             android:exported="true" />
@@ -80,9 +121,13 @@
         <activity
             android:name=".view.activity.dom.DomActivity"
             android:exported="true"
+<<<<<<< HEAD
             android:label="@string/title_activity_dom" >
 
         </activity>
+=======
+            android:label="@string/title_activity_dom" />
+>>>>>>> fix_message
         <activity
             android:name=".view.activity.pro.ProActivity"
             android:exported="true"
@@ -126,11 +171,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+<<<<<<< HEAD
         </activity>
         <activity
             android:name=".view.driver.UIWellcome.UIRegister"
             android:exported="true" >
 
+=======
+>>>>>>> fix_message
         </activity>
 
         <activity
@@ -139,13 +187,18 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:exported="true"
+<<<<<<< HEAD
             android:theme="@style/GroupChatFinal">
 
         </activity>
+=======
+            android:theme="@style/Theme.GroupChatFinal" />
+>>>>>>> fix_message
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+<<<<<<< HEAD
 
         <activity
             android:name=".view.driver.UIWellcome.UITutorial"
@@ -311,6 +364,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+=======
+>>>>>>> fix_message
     </application>
 
 </manifest>

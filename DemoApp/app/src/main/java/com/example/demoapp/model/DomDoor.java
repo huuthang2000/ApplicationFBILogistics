@@ -28,7 +28,7 @@ public class DomDoor implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String name;
+    private String productName;
 
     @SerializedName("weight")
     @Expose
@@ -58,13 +58,20 @@ public class DomDoor implements Serializable {
     @Expose
     private String createdDate;
 
-    public DomDoor(String stt, String stationGo, String stationCome, String addressReceive, String addressDelivery, String name, String weight, String quantity, String etd, String type, String month, String continent, String createdDate) {
+    private String pTime;
+
+    public DomDoor(){}
+
+    public DomDoor(String stt, String stationGo, String stationCome, String addressReceive,
+                   String addressDelivery, String productName, String weight, String quantity,
+                   String etd, String type, String month, String continent, String createdDate,
+                   String pTime) {
         this.stt = stt;
         this.stationGo = stationGo;
         this.stationCome = stationCome;
         this.addressReceive = addressReceive;
         this.addressDelivery = addressDelivery;
-        this.name = name;
+        this.productName = productName;
         this.weight = weight;
         this.quantity = quantity;
         this.etd = etd;
@@ -72,21 +79,7 @@ public class DomDoor implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
-    }
-
-    public DomDoor(String stationGo, String stationCome, String addressReceive, String addressDelivery, String name, String weight, String quantity, String etd, String type, String month, String continent, String createdDate) {
-        this.stationGo = stationGo;
-        this.stationCome = stationCome;
-        this.addressReceive = addressReceive;
-        this.addressDelivery = addressDelivery;
-        this.name = name;
-        this.weight = weight;
-        this.quantity = quantity;
-        this.etd = etd;
-        this.type = type;
-        this.month = month;
-        this.continent = continent;
-        this.createdDate = createdDate;
+        this.pTime = pTime;
     }
 
     public String getStt() {
@@ -129,12 +122,20 @@ public class DomDoor implements Serializable {
         this.addressDelivery = addressDelivery;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getpTime() {
+        return pTime;
+    }
+
+    public void setpTime(String pTime) {
+        this.pTime = pTime;
     }
 
     public String getWeight() {

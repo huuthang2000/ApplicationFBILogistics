@@ -1,5 +1,7 @@
 package com.example.demoapp.view.dialog.dom.dom_cy;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,23 +11,23 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
-
 import com.example.demoapp.databinding.DialogDomCyUpdateBinding;
 import com.example.demoapp.model.DomCy;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomCyViewModel;
+import com.example.demoapp.view.activity.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DialogDomCyUpdate extends DialogFragment {
 
@@ -34,10 +36,13 @@ public class DialogDomCyUpdate extends DialogFragment {
 
     private final String[] listStr = new String[3];
 
-    private String stationGo, stationCome, name, weight, quantity, etd;
+    private String stationGo, stationCome, productName, weight, quantity, etd;
 
-    private DomCyViewModel mDomCyViewModel;
-    private CommunicateViewModel communicateViewModel;
+    private FirebaseAuth mAuth;
+
+    private ProgressDialog progressDialog;
+    // user info
+    String name, email, uid, dp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +56,27 @@ public class DialogDomCyUpdate extends DialogFragment {
         binding = DialogDomCyUpdateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-        mDomCyViewModel = new ViewModelProvider(this).get(DomCyViewModel.class);
+        mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
+
+        progressDialog = new ProgressDialog(getContext());
 
         setData();
         setUpViews();
         setListenerForButtons();
 
         return root;
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            email = user.getEmail();
+            uid = user.getUid();
+        } else {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 
     public static DialogDomCyUpdate getInstance() {
@@ -77,7 +95,7 @@ public class DialogDomCyUpdate extends DialogFragment {
 
             Objects.requireNonNull(binding.updateDomCyStationGo.getEditText()).setText(domCy.getStationGo());
             Objects.requireNonNull(binding.updateDomCyStationCome.getEditText()).setText(domCy.getStationCome());
-            Objects.requireNonNull(binding.updateDomCyName.getEditText()).setText(domCy.getName());
+            Objects.requireNonNull(binding.updateDomCyName.getEditText()).setText(domCy.getProductName());
             Objects.requireNonNull(binding.updateDomCyWeight.getEditText()).setText(domCy.getWeight());
             Objects.requireNonNull(binding.updateDomCyQuantity.getEditText()).setText(domCy.getQuantity());
             Objects.requireNonNull(binding.updateDomCyEtd.getEditText()).setText(domCy.getEtd());
@@ -86,9 +104,6 @@ public class DialogDomCyUpdate extends DialogFragment {
     }
 
     private void setUpViews() {
-
-
-        mDomCyViewModel = new ViewModelProvider(this).get(DomCyViewModel.class);
 
         ArrayAdapter<String> adapterItemsType = new ArrayAdapter<>(getContext(), R.layout.dropdown_item, Constants.ITEMS_DOM_CY);
         ArrayAdapter<String> adapterItemsMonth = new ArrayAdapter<>(getContext(), R.layout.dropdown_item, Constants.ITEMS_MONTH);
@@ -126,7 +141,7 @@ public class DialogDomCyUpdate extends DialogFragment {
     public void getDataFromForm() {
         stationGo = Objects.requireNonNull(binding.updateDomCyStationGo.getEditText()).getText().toString();
         stationCome = Objects.requireNonNull(binding.updateDomCyStationCome.getEditText()).getText().toString();
-        name = Objects.requireNonNull(binding.updateDomCyName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.updateDomCyName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.updateDomCyWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.updateDomCyQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.updateDomCyEtd.getEditText()).getText().toString();
@@ -135,23 +150,34 @@ public class DialogDomCyUpdate extends DialogFragment {
 
     public void updateData() {
         getDataFromForm();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("stationGo", stationGo);
+        hashMap.put("stationCome", stationCome);
+        hashMap.put("productName", productName);
+        hashMap.put("weight", weight);
+        hashMap.put("quantity", quantity);
+        hashMap.put("etd", etd);
+        hashMap.put("type", listStr[0]);
+        hashMap.put("month", listStr[1]);
+        hashMap.put("continent", listStr[2]);
 
-        communicateViewModel.makeChanges();
-
-        mDomCyViewModel.updateData(domCy.getStt(), stationGo, stationCome, name, weight, quantity, etd
-                , listStr[0], listStr[1], listStr[2]).enqueue(new Callback<DomCy>() {
-            @Override
-            public void onResponse(@NonNull Call<DomCy> call, @NonNull Response<DomCy> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Update Successful!!", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<DomCy> call, @NonNull Throwable t) {
-
-            }
-        });
+        String timeStamp = domCy.getpTime();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cy");
+        ref.child(timeStamp)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

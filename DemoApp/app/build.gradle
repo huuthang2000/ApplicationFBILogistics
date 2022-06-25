@@ -59,6 +59,8 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
@@ -138,5 +140,10 @@ dependencies {
     implementation 'com.maksim88:PasswordEditText:v0.9'
 
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
+
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+
 
 }

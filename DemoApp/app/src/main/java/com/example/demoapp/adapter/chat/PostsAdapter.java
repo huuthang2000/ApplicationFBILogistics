@@ -4,6 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+>>>>>>> fix_message
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.demoapp.R;
@@ -27,6 +34,7 @@ import com.example.demoapp.model.Post;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
 import com.example.demoapp.view.activity.chat.DetailProfileActivity;
 import com.example.demoapp.view.activity.chat.PostDetailActivity;
+import com.example.demoapp.view.activity.chat.PostLikedByActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +48,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -198,8 +210,70 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             }
         });
 
+        //click like count to start PostLikeByActivity, and pass the post id
+        holder.tvPLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PostLikedByActivity.class);
+                intent.putExtra("postId",pId);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
+<<<<<<< HEAD
+=======
+    private void shareImageAndText(String pTitle, String pDescription, Bitmap bitmap) {
+        // concatenate title and description to share
+        String shareBody = pTitle +"\n"+ pDescription;
+
+        //first we will save this image in cache, get the saved image uri
+        Uri uri = saveImageToShare(bitmap);
+
+        // share intent
+        Intent sIntent = new Intent(Intent.ACTION_SEND);
+        sIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        sIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        sIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+        sIntent.setType("image/png");
+        context.startActivity(Intent.createChooser(sIntent, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imageFolder = new File(context.getCacheDir(),"images");
+        Uri uri = null;
+        try{
+            imageFolder.mkdir();
+            File file = new File(imageFolder, "share_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(context,"com.example.demoapp.fileprovider", file);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
+    private void shareTextOnly(String title, String description) {
+        // concatenate title and description to share
+        String shareBody = title + "\n" + description;
+
+        //share intent
+        Intent sIntent = new Intent(Intent.ACTION_SEND);
+        sIntent.setType("text/plain");
+        sIntent.putExtra(Intent.EXTRA_SUBJECT,"Subject Here");
+        sIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        context.startActivity(Intent.createChooser(sIntent,"Share Via"));
+    }
+
+>>>>>>> fix_message
     private void setLikes(MyHolder holder, String postKey) {
         likesRef.addValueEventListener(new ValueEventListener() {
             @Override

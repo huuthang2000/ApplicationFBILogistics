@@ -23,6 +23,13 @@ import com.example.demoapp.model.DomCySea;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.example.demoapp.viewmodel.DomCySeaViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,8 +129,29 @@ public class CyWaterWayFragment extends Fragment {
         try {
             this.mDomCySeaList = new ArrayList<>();
 
-            mDomCySeaViewModel.getAllData().observe(getViewLifecycleOwner(), domCy ->
-                    this.mDomCySeaList = sortDomCySea(domCy));
+            // get current user
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            // get path of database name "Users" cotaining users info
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cy_Sea");
+            // get all data from path
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    mDomCySeaList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        DomCySea domCySea = ds.getValue(DomCySea.class);
+                        // get all users except currently signed is user
+                        mDomCySeaList.add(domCySea);
+                    }
+                    sortDomCySea(mDomCySeaList);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }catch (NullPointerException nullPointerException){
             Toast.makeText(getContext(), nullPointerException.toString(),Toast.LENGTH_LONG).show();
         }

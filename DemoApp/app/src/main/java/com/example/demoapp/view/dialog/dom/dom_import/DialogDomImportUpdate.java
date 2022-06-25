@@ -1,7 +1,8 @@
 package com.example.demoapp.view.dialog.dom.dom_import;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,34 +11,38 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomImportUpdateBinding;
 import com.example.demoapp.model.DomImport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomImportViewModel;
+import com.example.demoapp.view.activity.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DialogDomImportUpdate extends DialogFragment {
 
     private DialogDomImportUpdateBinding binding;
 
-    private CommunicateViewModel communicateViewModel;
-    private DomImportViewModel mDomImportViewModel;
 
     private final String[] listStr = new String[3];
     private DomImport mDomImport;
+    private FirebaseAuth mAuth;
 
-    private String name, weight, quantity, temp, address, portReceive, length, height, width;
+    private ProgressDialog progressDialog;
+    // user info
+    String name, email, uid, dp;
+
+    private String productName, weight, quantity, temp, address, portReceive, length, height, width;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +56,27 @@ public class DialogDomImportUpdate extends DialogFragment {
         binding = DialogDomImportUpdateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-        mDomImportViewModel = new ViewModelProvider(this).get(DomImportViewModel.class);
+        mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
+
+        progressDialog = new ProgressDialog(getContext());
 
         setData();
         setUpViews();
         setListenerForButtons();
 
         return root;
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            email = user.getEmail();
+            uid = user.getUid();
+        } else {
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 
     public static DialogDomImportUpdate getInstance() {
@@ -75,7 +93,7 @@ public class DialogDomImportUpdate extends DialogFragment {
             binding.domImportUpdateAutoMonth.setText(mDomImport.getMonth());
             binding.domImportUpdateAutoContinent.setText(mDomImport.getContinent());
 
-            Objects.requireNonNull(binding.updateDomImportName.getEditText()).setText(mDomImport.getName());
+            Objects.requireNonNull(binding.updateDomImportName.getEditText()).setText(mDomImport.getProductName());
             Objects.requireNonNull(binding.updateDomImportWeight.getEditText()).setText(mDomImport.getWeight());
             Objects.requireNonNull(binding.updateDomImportQuantity.getEditText()).setText(mDomImport.getQuantity());
             Objects.requireNonNull(binding.updateDomImportTemp.getEditText()).setText(mDomImport.getTemp());
@@ -123,7 +141,7 @@ public class DialogDomImportUpdate extends DialogFragment {
 
 
     public void getDataFromForm() {
-        name = Objects.requireNonNull(binding.updateDomImportName.getEditText()).getText().toString();
+        productName = Objects.requireNonNull(binding.updateDomImportName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.updateDomImportWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.updateDomImportQuantity.getEditText()).getText().toString();
         temp = Objects.requireNonNull(binding.updateDomImportTemp.getEditText()).getText().toString();
@@ -137,22 +155,38 @@ public class DialogDomImportUpdate extends DialogFragment {
     public void updateData() {
         getDataFromForm();
 
-        communicateViewModel.makeChanges();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("productName", productName);
+        hashMap.put("weight", weight);
+        hashMap.put("quantity", quantity);
+        hashMap.put("temp", temp);
+        hashMap.put("address", address);
+        hashMap.put("portReceive", portReceive);
+        hashMap.put("length", length);
+        hashMap.put("height", height);
+        hashMap.put("width", width);
+        hashMap.put("type", listStr[0]);
+        hashMap.put("month", listStr[1]);
+        hashMap.put("continent", listStr[2]);
 
-        mDomImportViewModel.updateData(mDomImport.getStt(), name, weight, quantity, temp, address, portReceive, length,
-                height, width, listStr[0], listStr[1], listStr[2]).enqueue(new Callback<DomImport>() {
-            @Override
-            public void onResponse(@NonNull Call<DomImport> call, @NonNull Response<DomImport> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Update Successful!!", Toast.LENGTH_LONG).show();
-                }
-            }
+        String timeStamp = mDomImport.getpTime();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Import");
+        ref.child(timeStamp)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            @Override
-            public void onFailure(@NonNull Call<DomImport> call, @NonNull Throwable t) {
-
-            }
-        });
     }
 
 }

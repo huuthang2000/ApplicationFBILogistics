@@ -20,7 +20,7 @@ public class DomCySea implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String name;
+    private String productName;
 
     @SerializedName("weight")
     @Expose
@@ -50,11 +50,17 @@ public class DomCySea implements Serializable {
     @Expose
     private String createdDate;
 
-    public DomCySea(String stt, String portGo, String portCome, String name, String weight, String quantity, String etd, String type, String month, String continent, String createdDate) {
+    private String pTime;
+
+    public DomCySea(){}
+
+    public DomCySea(String stt, String portGo, String portCome, String productName, String weight,
+                    String quantity, String etd, String type, String month, String continent,
+                    String createdDate, String pTime) {
         this.stt = stt;
         this.portGo = portGo;
         this.portCome = portCome;
-        this.name = name;
+        this.productName = productName;
         this.weight = weight;
         this.quantity = quantity;
         this.etd = etd;
@@ -62,19 +68,23 @@ public class DomCySea implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
+        this.pTime = pTime;
     }
 
-    public DomCySea(String portGo, String portCome, String name, String weight, String quantity, String etd, String type, String month, String continent, String createdDate) {
-        this.portGo = portGo;
-        this.portCome = portCome;
-        this.name = name;
-        this.weight = weight;
-        this.quantity = quantity;
-        this.etd = etd;
-        this.type = type;
-        this.month = month;
-        this.continent = continent;
-        this.createdDate = createdDate;
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getpTime() {
+        return pTime;
+    }
+
+    public void setpTime(String pTime) {
+        this.pTime = pTime;
     }
 
     public String getStt() {
@@ -101,13 +111,6 @@ public class DomCySea implements Serializable {
         this.portCome = portCome;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getWeight() {
         return weight;

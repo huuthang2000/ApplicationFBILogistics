@@ -6,7 +6,7 @@
     android:id="@+id/layoutMessage"
     android:padding="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -32,15 +32,28 @@
             android:id="@+id/tv_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/bg_sender"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/tv_time"
             android:padding="15dp"
             android:text="His message"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/messageIv"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_sender"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_image_black" />
+
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_isSeen"

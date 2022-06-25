@@ -40,7 +40,6 @@ public class PriceListRetailGoddsAdapter extends  RecyclerView.Adapter<PriceList
     public void onBindViewHolder(@NonNull PriceRetialGoodsViewHolder holder, int position) {
         RetailGoods priceRetailGoods = listRetailGoods.get(position);
         if(listRetailGoods.size() > 0){
-            holder.tvStt.setText(priceRetailGoods.getStt());
             holder.tvPol.setText(priceRetailGoods.getPol());
             holder.tvPod.setText(priceRetailGoods.getPod());
             holder.tvDim.setText(priceRetailGoods.getDim());

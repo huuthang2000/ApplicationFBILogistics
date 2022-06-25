@@ -39,7 +39,7 @@ public class DialogDomImportSaleDetail extends DialogFragment {
             bundle.putSerializable(Constants.DOM_IMPORT_UPDATE, domImport);
             bundle.putString(Constants.DOM_IMPORT_ADD_NEW, "YES");
 
-            binding.tvDomImportProductName.setText(domImport.getName());
+            binding.tvDomImportProductName.setText(domImport.getProductName());
             binding.tvDomImportWeight.setText(domImport.getWeight());
             binding.tvDomImportQuantity.setText(domImport.getQuantity());
             binding.tvDomImportTemp.setText(domImport.getTemp());

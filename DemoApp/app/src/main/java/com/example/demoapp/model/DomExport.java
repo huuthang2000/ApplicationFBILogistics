@@ -1,70 +1,31 @@
 package com.example.demoapp.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class DomExport implements Serializable {
-    @SerializedName("stt")
-    @Expose
     private String stt;
-
-    @SerializedName("name")
-    @Expose
-    private String name;
-
-    @SerializedName("weight")
-    @Expose
+    private String productName;
     private String weight;
-
-    @SerializedName("quantity")
-    @Expose
     private String quantity;
-
-    @SerializedName("temp")
-    @Expose
     private String temp;
-
-    @SerializedName("address")
-    @Expose
     private String address;
-
-    @SerializedName("port_export")
-    @Expose
     private String portExport;
-
-    @SerializedName("length")
-    @Expose
     private String length;
-
-    @SerializedName("height")
-    @Expose
     private String height;
-
-    @SerializedName("width")
-    @Expose
     private String width;
-
-    @SerializedName("type")
-    @Expose
     private String type;
-
-    @SerializedName("month")
-    @Expose
     private String month;
-
-    @SerializedName("continent")
-    @Expose
     private String continent;
-
-    @SerializedName("created_date")
-    @Expose
     private String createdDate;
+    private String pTime;
 
-    public DomExport(String stt, String name, String weight, String quantity, String temp, String address, String portExport, String length, String height, String width, String type, String month, String continent, String createdDate) {
+   public DomExport(){}
+
+    public DomExport(String stt, String productName, String weight, String quantity, String temp,
+                     String address, String portExport, String length, String height, String width,
+                     String type, String month, String continent, String createdDate, String pTime) {
         this.stt = stt;
-        this.name = name;
+        this.productName = productName;
         this.weight = weight;
         this.quantity = quantity;
         this.temp = temp;
@@ -77,22 +38,23 @@ public class DomExport implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
+        this.pTime = pTime;
     }
 
-    public DomExport(String name, String weight, String quantity, String temp, String address, String portExport, String length, String height, String width, String type, String month, String continent, String createdDate) {
-        this.name = name;
-        this.weight = weight;
-        this.quantity = quantity;
-        this.temp = temp;
-        this.address = address;
-        this.portExport = portExport;
-        this.length = length;
-        this.height = height;
-        this.width = width;
-        this.type = type;
-        this.month = month;
-        this.continent = continent;
-        this.createdDate = createdDate;
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getpTime() {
+        return pTime;
+    }
+
+    public void setpTime(String pTime) {
+        this.pTime = pTime;
     }
 
     public String getStt() {
@@ -101,14 +63,6 @@ public class DomExport implements Serializable {
 
     public void setStt(String stt) {
         this.stt = stt;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getWeight() {

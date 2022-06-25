@@ -86,7 +86,7 @@ public class CySeaDomAdapter extends RecyclerView.Adapter<CySeaDomAdapter.CySeaV
             binding.tvDomCySeaPortStt.setText(domCySea.getStt());
             binding.tvDomCySeaPortGo.setText(domCySea.getPortGo());
             binding.tvDomCySeaPortCome.setText(domCySea.getPortCome());
-            binding.tvDomCySeaName.setText(domCySea.getName());
+            binding.tvDomCySeaName.setText(domCySea.getProductName());
             binding.tvDomCySeaWeight.setText(domCySea.getWeight());
             binding.tvDomCySeaQuantity.setText(domCySea.getQuantity());
             binding.tvDomCySeaEtd.setText(domCySea.getEtd());

@@ -49,7 +49,6 @@ public class PriceListImportLclAdapter extends RecyclerView.Adapter<PriceListImp
         ImportLcl imp = listPriceList.get(position);
         if (listPriceList.size() > 0) {
 
-            holder.stt.setText(imp.getStt());
             holder.term.setText(imp.getTerm());
             holder.pol.setText(imp.getPol());
             holder.pod.setText(imp.getPod());

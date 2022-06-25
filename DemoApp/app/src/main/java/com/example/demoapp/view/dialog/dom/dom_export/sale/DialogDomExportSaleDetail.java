@@ -38,7 +38,7 @@ public class DialogDomExportSaleDetail extends DialogFragment {
             bundle.putString(Constants.DOM_EXPORT_ADD_NEW, "YES");
 
 
-            binding.tvDomExportProductName.setText(domExport.getName());
+            binding.tvDomExportProductName.setText(domExport.getProductName());
             binding.tvDomExportWeight.setText(domExport.getWeight());
             binding.tvDomExportQuantity.setText(domExport.getQuantity());
             binding.tvDomExportTemp.setText(domExport.getTemp());

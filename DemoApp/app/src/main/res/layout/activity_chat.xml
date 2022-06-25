@@ -22,7 +22,8 @@
             android:background="@color/teal_700"
             android:src="@drawable/ic_back" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image_chat"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -63,7 +64,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@id/chat_layout"/>
+        android:layout_above="@id/chat_layout"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:stackFromEnd="true"
+        tools:listitem="@layout/row_groupchat_left"/>
 
     <LinearLayout
         android:id="@+id/chat_layout"
@@ -73,6 +77,13 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btn_attach"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_attach_black"
+            android:background="@null"/>
 
         <EditText
             android:layout_width="0dp"

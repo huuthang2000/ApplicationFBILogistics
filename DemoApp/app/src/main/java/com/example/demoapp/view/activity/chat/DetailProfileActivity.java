@@ -52,6 +52,7 @@ public class DetailProfileActivity extends AppCompatActivity {
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
 
         // get uid of clicked user to retrieve his posts
         Intent intent = getIntent();
@@ -63,13 +64,7 @@ public class DetailProfileActivity extends AppCompatActivity {
         postList = new ArrayList<>();
         postsAdapter = new PostsAdapter(this, postList);
 
-        checkUserStatus();
 
-
-
-
-
-        checkUserStatus();
     }
 
     @Override
@@ -190,6 +185,8 @@ public class DetailProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_add_post).setVisible(false);
+        menu.findItem(R.id.action_create_group).setVisible(false);
         MenuItem item = menu.findItem(R.id.action_search);
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);

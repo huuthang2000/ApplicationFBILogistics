@@ -65,7 +65,7 @@ public class DialogDomCySeaDetail extends DialogFragment {
             binding.tvDomCySeaStationStt.setText(domCySea.getStt());
             binding.tvDomCySeaStationGo.setText(domCySea.getPortGo());
             binding.tvDomCySeaStationCome.setText(domCySea.getPortCome());
-            binding.tvDomCySeaName.setText(domCySea.getName());
+            binding.tvDomCySeaName.setText(domCySea.getProductName());
             binding.tvDomCySeaWeight.setText(domCySea.getWeight());
             binding.tvDomCySeaQuantity.setText(domCySea.getQuantity());
             binding.tvDomCySeaEtd.setText(domCySea.getEtd());
