@@ -1,12 +1,11 @@
 package com.example.demoapp.view.dialog.dom.dom_cy;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +15,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomCyInsertBinding;
 import com.example.demoapp.model.DomCy;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomCyViewModel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomCyInsert extends DialogFragment implements View.OnClickListener {
 
@@ -47,17 +39,10 @@ public class DialogDomCyInsert extends DialogFragment implements View.OnClickLis
 
     private final String[] listStr = new String[3];
 
-    private String stationGo, stationCome, productName, weight, quantity, etd;
+    private String stationGo, stationCome, name, weight, quantity, etd;
 
-    private List<DomCy> domDoorSeaList;
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference userDBRef;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
-
+    private DomCyViewModel mDomCyViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Nullable
     @Override
@@ -67,48 +52,14 @@ public class DialogDomCyInsert extends DialogFragment implements View.OnClickLis
 
         View view = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        domDoorSeaList = new ArrayList<>();
-        progressDialog = new ProgressDialog(getContext());
-
-        // get some info of current user to include in post
-        userDBRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDBRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    name = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+        mDomCyViewModel = new ViewModelProvider(this).get(DomCyViewModel.class);
 
         setUpViews();
         textWatcher();
         setData();
 
         return view;
-    }
-
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public void setData() {
@@ -126,7 +77,7 @@ public class DialogDomCyInsert extends DialogFragment implements View.OnClickLis
 
                 Objects.requireNonNull(binding.insertDomCyStationGo.getEditText()).setText(mDomCy.getStationGo());
                 Objects.requireNonNull(binding.insertDomCyStationCome.getEditText()).setText(mDomCy.getStationCome());
-                Objects.requireNonNull(binding.insertDomCyName.getEditText()).setText(mDomCy.getProductName());
+                Objects.requireNonNull(binding.insertDomCyName.getEditText()).setText(mDomCy.getName());
                 Objects.requireNonNull(binding.insertDomCyWeight.getEditText()).setText(mDomCy.getWeight());
                 Objects.requireNonNull(binding.insertDomCyQuantity.getEditText()).setText(mDomCy.getQuantity());
                 Objects.requireNonNull(binding.insertDomCyEtd.getEditText()).setText(mDomCy.getEtd());
@@ -196,7 +147,7 @@ public class DialogDomCyInsert extends DialogFragment implements View.OnClickLis
     public void getDataFromForm() {
         stationGo = Objects.requireNonNull(binding.insertDomCyStationGo.getEditText()).getText().toString();
         stationCome = Objects.requireNonNull(binding.insertDomCyStationCome.getEditText()).getText().toString();
-        productName = Objects.requireNonNull(binding.insertDomCyName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.insertDomCyName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomCyWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.insertDomCyQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.insertDomCyEtd.getEditText()).getText().toString();
@@ -205,36 +156,22 @@ public class DialogDomCyInsert extends DialogFragment implements View.OnClickLis
     public void insertData() {
         getDataFromForm();
 
+        communicateViewModel.makeChanges();
 
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("stationGo", stationGo);
-        hashMap.put("stationCome", stationCome);
-        hashMap.put("productName", productName);
-        hashMap.put("weight", weight);
-        hashMap.put("quantity", quantity);
-        hashMap.put("etd", etd);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
-        hashMap.put("createdDate", getCreatedDate());
-        hashMap.put("pTime", timeStamp);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cy");
-        // put data in this ref
-        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDomCyViewModel.insertData(stationGo, stationCome, name, weight, quantity, etd,
+              listStr[0], listStr[1], listStr[2], getCreatedDate()).enqueue(new Callback<DomCy>() {
             @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-
+            public void onResponse(@NonNull Call<DomCy> call, @NonNull Response<DomCy> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Insert Successful!!", Toast.LENGTH_LONG).show();
+                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<DomCy> call, @NonNull Throwable t) {
+
             }
         });
-
     }
 
     public boolean isFilled() {

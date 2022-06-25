@@ -86,7 +86,7 @@ public class DryDomAdapter extends RecyclerView.Adapter<DryDomAdapter.DryViewHol
 
         public void bind(DomDry domDry) {
             binding.tvDomDryProductStt.setText(domDry.getStt());
-            binding.tvDomDryProductName.setText(domDry.getProductName());
+            binding.tvDomDryProductName.setText(domDry.getName());
             binding.tvDomDryWeight.setText(domDry.getWeight());
             binding.tvDomDryQuantityPallet.setText(domDry.getQuantityPallet());
             binding.tvDomDryQuantityCarton.setText(domDry.getQuantityCarton());

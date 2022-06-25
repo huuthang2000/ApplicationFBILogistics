@@ -17,6 +17,175 @@
         <entry key="..\:/.FBILogistics/Github/FBILogistics/DemoApp/app/src/main/res/layout/fragment_pricelist_europe.xml" value="0.1" />
         <entry key="..\:/.FBILogistics/Github/FBILogistics/DemoApp/app/src/main/res/layout/fragment_pricelist_table.xml" value="0.1597222222222222" />
         <entry key="..\:/.FBILogistics/Github/FBILogistics/DemoApp/app/src/main/res/layout/row_pricelist_asia.xml" value="0.22" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/background_accept_invitation.xml" value="0.1715" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/background_meeting_invitation.xml" value="0.172" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/background_meeting_invitation_user_icon.xml" value="0.1715" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/ic_back.xml" value="0.1715" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/ic_face.xml" value="0.166" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable-v24/ic_video.xml" value="0.166" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/bg_button_white.xml" value="0.104" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/circle_white.xml" value="0.104" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/custom_background_select_map.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_add_circle_green_24dp.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_add_circle_outline_black_24dp.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_add_circle_outline_white_24dp.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_add_location_white_24dp.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_baseline_emoji_transportation_24.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_baseline_mic_24.xml" value="0.124" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_battery_30_black_20dp.xml" value="0.104" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_control_point_white_32dp.xml" value="0.104" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.104" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_add_post.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_air.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_air_import_sale.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_air_page.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_all_driving_insights.xml" value="0.20462962962962963" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_camera.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_chat.xml" value="0.264" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_chat2.xml" value="0.1" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_choose_image_from_gallery.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_create_safe_area.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_dashboard.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_detail_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_dom.xml" value="0.22807017543859648" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_dom_import_sale.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_driver.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_driving_detail_of_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_edit_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_fcl.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_history_locations.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_import.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_import_lcl_sale.xml" value="0.15328467153284672" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_incoming_invitation.xml" value="0.264" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_invitation_incoming.xml" value="0.25" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_invitation_outgoing.xml" value="0.25" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_invite_friends.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_join_other_families.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_list_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_loading_data.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_log.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_log_pro.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_login.xml" value="0.22627737226277372" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_logindriver.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_main.xml" value="0.20462962962962963" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_main_driver.xml" value="0.2" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_main_message.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_maincallvideo.xml" value="0.25" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_message_group_detail.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_new_message.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_outgoing_invitation.xml" value="0.25" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_place_alerts.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_post_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_pro_import.xml" value="0.15328467153284672" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_professional_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_rail_sale.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_register_driver.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_registerdriver.xml" value="0.19010416666666666" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_retail_goods_export.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_road_sale.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_sale.xml" value="0.23722627737226276" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_select_countries.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_setup_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_sign_in.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_table_price_air.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_tutorial.xml" value="0.1" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_uidirect.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_uiwelcome_first.xml" value="0.1" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_uiwelcome_second.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_uiwelcome_third.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/activity_water_way.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/app_bar_dom.xml" value="0.17518248175182483" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/content_dom.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/custom_dialog_allow_all_location.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/custom_dialog_list_member.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/custom_notification_turn_on_gps.xml" value="0.20462962962962963" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/custom_notification_turn_on_internet.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_another_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_choose_member_add.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_choose_send_image.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dangerous_driving.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cold_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cold_insert.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cy_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cy_insert.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cy_sea_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cy_sea_update.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_cy_update.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_door_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_door_sea_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_door_sea_insert.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_import_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_import_insert.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_dom_import_update.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_image_viewer.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_import_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_import_lcl_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_insert_dom_export.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_select_family.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_suggestion.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dialog_update_password.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/dropdown_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_air_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_chat_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dialog_dom_dry_sale_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dom_cold.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dom_cy.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dom_cy_sea.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dom_door.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_dom_dry.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_door_to_door.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_door_water_way.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_driver_task.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_fcl.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_home_pro.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_homesale.xml" value="0.18981481481481483" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_import.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_insert_retail_goods_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_log.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_people.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_places.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_pricelist_asia.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_profile_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_retail_goods_export.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_safety.xml" value="0.20462962962962963" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_seaway.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_settings.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/fragment_truck_cold.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_chat_message_left.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_chat_message_right.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_contact.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_container_received_message.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_countries.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_list_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_list_member.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_loading.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/item_user_list_call.xml" value="0.13385416666666666" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/layout_header_nav.xml" value="0.2" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/nav_header_dom.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_chat_right.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_comments.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_cold.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_cy.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_cy_sea.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_door.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_door_sea.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_dry.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_export.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_dom_import.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_posts.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_price_log.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_pricelist_air.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_pricelist_air_import.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_pricelist_fcl.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/layout/row_pricelist_import.xml" value="0.25416666666666665" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/menu/activity_dom_drawer.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/menu/dom.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/menu/menu_chat.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/menu/menu_driver_page.xml" value="0.11302083333333333" />
+        <entry key="..\:/Dowloads/nghiencuusinhGoongAPI/DemoApp/app/src/main/res/menu/menu_nav.xml" value="0.18981481481481483" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/drawable-v24/background_login_btn.xml" value="0.146875" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/drawable-v24/ic_baseline_menu_home_24.xml" value="0.10277777777777777" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/drawable/background.xml" value="0.146875" />
@@ -41,75 +210,26 @@
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/layout/style_circle.xml" value="0.1" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/menu/menu_pro.xml" value="0.1" />
         <entry key="..\:/Users/Dell/AndroidStudioProjects/DemoApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.10277777777777777" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_chat.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_dashboard.xml" value="0.2462962962962963" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_chat.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_create.xml" value="0.2" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_edit.xml" value="0.23489583333333333" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_info.xml" value="0.2" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_participant_add.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_detail.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_liked_by.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/fragment_group_chats.xml" value="0.15833333333333333" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_left.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_right.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchat_left.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchat_right.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchats_list.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_item_user.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_participant_add.xml" value="0.1" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_posts.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/activity_dom_drawer.xml" value="0.25025641025641027" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/menu_nav.xml" value="0.2296875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/drawable-v24/circle_offline.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/drawable/circle_online.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_add_post.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_air_import_sale.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_air_page.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_dashboard.xml" value="0.24722222222222223" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_detail_profile.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_fcl.xml" value="0.1921875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_import.xml" value="0.1921875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_log.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_log_pro.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_login.xml" value="0.1546875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_post_detail.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_pro_import.xml" value="0.1921875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/activity_register.xml" value="0.1546875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_cold_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_cy_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_cy_sea_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_door_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_dry_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_dom_import_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_fcl_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_import_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/dialog_import_lcl_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_air_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_air_dialog.xml" value="0.1921875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_air_export.xml" value="0.1921875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_air_import_detail.xml" value="0.1546875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_air_sale_detail.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_chat_list.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_fcl.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_home_pro.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_insert_log.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/fragment_log_detail.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/item_price_list_air.xml" value="0.1546875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/item_price_list_log.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_chatlist.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_comments.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_price_log.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_price_retail_goods.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_air.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_air_import.xml" value="0.264" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_fcl.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_import.xml" value="0.2046875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_import_lcl.xml" value="0.2046875" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/layout/row_pricelist_air_import.xml" value="0.1546875" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/menu/menu_air_page.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/menu/menu_import.xml" value="0.1921875" />
-        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBI-Logistics/DemoApp/app/src/main/res/xml/paths.xml" value="0.2125" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBILogistics/DemoApp/app/src/main/res/drawable-v24/ic_back.xml" value="0.2703125" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBILogistics/DemoApp/app/src/main/res/drawable-v24/ic_like.xml" value="0.2703125" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/FBILogistics/DemoApp/app/src/main/res/drawable-v24/ic_more.xml" value="0.2125" />
@@ -320,7 +440,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,7 +1,5 @@
 package com.example.demoapp.view.dialog.dom.dom_cy_sea;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,23 +9,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomCySeaUpdateBinding;
 import com.example.demoapp.model.DomCySea;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomCySeaViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomCySeaUpdate extends DialogFragment {
 
@@ -36,14 +33,10 @@ public class DialogDomCySeaUpdate extends DialogFragment {
 
     private final String[] listStr = new String[3];
 
-    private String portGo, portCome, productName, weight, quantity, etd;
+    private String portGo, portCome, name, weight, quantity, etd;
 
-    private FirebaseAuth mAuth;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
-
+    private DomCySeaViewModel mDomCySeaViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,27 +50,14 @@ public class DialogDomCySeaUpdate extends DialogFragment {
         binding = DialogDomCySeaUpdateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        progressDialog = new ProgressDialog(getContext());
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+        mDomCySeaViewModel = new ViewModelProvider(this).get(DomCySeaViewModel.class);
 
         setData();
         setUpViews();
         setListenerForButtons();
 
         return root;
-    }
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public static DialogDomCySeaUpdate getInstance() {
@@ -96,7 +76,7 @@ public class DialogDomCySeaUpdate extends DialogFragment {
 
             Objects.requireNonNull(binding.updateDomCySeaStationGo.getEditText()).setText(domCySea.getPortGo());
             Objects.requireNonNull(binding.updateDomCySeaStationCome.getEditText()).setText(domCySea.getPortCome());
-            Objects.requireNonNull(binding.updateDomCySeaName.getEditText()).setText(domCySea.getProductName());
+            Objects.requireNonNull(binding.updateDomCySeaName.getEditText()).setText(domCySea.getName());
             Objects.requireNonNull(binding.updateDomCySeaWeight.getEditText()).setText(domCySea.getWeight());
             Objects.requireNonNull(binding.updateDomCySeaQuantity.getEditText()).setText(domCySea.getQuantity());
             Objects.requireNonNull(binding.updateDomCySeaEtd.getEditText()).setText(domCySea.getEtd());
@@ -142,7 +122,7 @@ public class DialogDomCySeaUpdate extends DialogFragment {
     public void getDataFromForm() {
         portGo = Objects.requireNonNull(binding.updateDomCySeaStationGo.getEditText()).getText().toString();
         portCome = Objects.requireNonNull(binding.updateDomCySeaStationCome.getEditText()).getText().toString();
-        productName = Objects.requireNonNull(binding.updateDomCySeaName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.updateDomCySeaName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.updateDomCySeaWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.updateDomCySeaQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.updateDomCySeaEtd.getEditText()).getText().toString();
@@ -152,34 +132,22 @@ public class DialogDomCySeaUpdate extends DialogFragment {
     public void updateData() {
         getDataFromForm();
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("portGo", portGo);
-        hashMap.put("portCome", portCome);
-        hashMap.put("productName", productName);
-        hashMap.put("weight", weight);
-        hashMap.put("quantity", quantity);
-        hashMap.put("etd", etd);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
+        communicateViewModel.makeChanges();
 
-        String timeStamp = domCySea.getpTime();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cy_Sea");
-        ref.child(timeStamp)
-                .updateChildren(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        mDomCySeaViewModel.updateData(domCySea.getStt(), portGo, portCome, name, weight, quantity, etd
+                , listStr[0], listStr[1], listStr[2]).enqueue(new Callback<DomCySea>() {
+            @Override
+            public void onResponse(@NonNull Call<DomCySea> call, @NonNull Response<DomCySea> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Update Successful!!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DomCySea> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
 }

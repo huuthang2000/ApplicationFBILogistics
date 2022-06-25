@@ -1,8 +1,6 @@
 package com.example.demoapp.view.dialog.dom.dom_door;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,29 +14,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomDoorInsertBinding;
 import com.example.demoapp.model.DomDoor;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomDoorViewModel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomDoorInsert extends DialogFragment implements View.OnClickListener {
 
@@ -47,16 +38,10 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
 
     private final String[] listStr = new String[3];
 
-    private String stationGo, stationCome, addressReceive, addressDelivery, productName, weight, quantity, etd;
+    private String stationGo, stationCome, addressReceive, addressDelivery, name, weight, quantity, etd;
 
-    private List<DomDoor> domDoorSeaList;
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference userDBRef;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
+    private DomDoorViewModel mDomDoorViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Nullable
     @Override
@@ -66,47 +51,14 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
 
         View view = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        domDoorSeaList = new ArrayList<>();
-        progressDialog = new ProgressDialog(getContext());
-
-        // get some info of current user to include in post
-        userDBRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDBRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    name = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+        mDomDoorViewModel = new ViewModelProvider(this).get(DomDoorViewModel.class);
 
         setUpViews();
         textWatcher();
         setData();
 
         return view;
-    }
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public void setData() {
@@ -126,7 +78,7 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
                 Objects.requireNonNull(binding.insertDomDoorStationCome.getEditText()).setText(mDomDoor.getStationCome());
                 Objects.requireNonNull(binding.insertDomDoorAddressReceive.getEditText()).setText(mDomDoor.getAddressReceive());
                 Objects.requireNonNull(binding.insertDomDoorAddressDelivery.getEditText()).setText(mDomDoor.getAddressDelivery());
-                Objects.requireNonNull(binding.insertDomDoorName.getEditText()).setText(mDomDoor.getProductName());
+                Objects.requireNonNull(binding.insertDomDoorName.getEditText()).setText(mDomDoor.getName());
                 Objects.requireNonNull(binding.insertDomDoorWeight.getEditText()).setText(mDomDoor.getWeight());
                 Objects.requireNonNull(binding.insertDomDoorQuantity.getEditText()).setText(mDomDoor.getQuantity());
                 Objects.requireNonNull(binding.insertDomDoorEtd.getEditText()).setText(mDomDoor.getEtd());
@@ -198,7 +150,7 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
         stationCome = Objects.requireNonNull(binding.insertDomDoorStationCome.getEditText()).getText().toString();
         addressReceive = Objects.requireNonNull(binding.insertDomDoorAddressReceive.getEditText()).getText().toString();
         addressDelivery = Objects.requireNonNull(binding.insertDomDoorAddressDelivery.getEditText()).getText().toString();
-        productName = Objects.requireNonNull(binding.insertDomDoorName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.insertDomDoorName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomDoorWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.insertDomDoorQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.insertDomDoorEtd.getEditText()).getText().toString();
@@ -207,37 +159,22 @@ public class DialogDomDoorInsert extends DialogFragment implements View.OnClickL
     public void insertData() {
         getDataFromForm();
 
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("productName", productName);
-        hashMap.put("stationGo", stationGo);
-        hashMap.put("stationCome", stationCome);
-        hashMap.put("addressReceive", addressReceive);
-        hashMap.put("addressDelivery", addressDelivery);
-        hashMap.put("weight", weight);
-        hashMap.put("quantity", quantity);
-        hashMap.put("etd", etd);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
-        hashMap.put("createdDate", getCreatedDate());
-        hashMap.put("pTime", timeStamp);
+        communicateViewModel.makeChanges();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Door");
-        // put data in this ref
-        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDomDoorViewModel.insertData(stationGo, stationCome, addressReceive, addressDelivery, name, weight, quantity, etd,
+                listStr[0], listStr[1], listStr[2], getCreatedDate()).enqueue(new Callback<DomDoor>() {
             @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-
+            public void onResponse(@NonNull Call<DomDoor> call, @NonNull Response<DomDoor> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Insert Successful!!", Toast.LENGTH_LONG).show();
+                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<DomDoor> call, @NonNull Throwable t) {
+
             }
         });
-
     }
 
     public boolean isFilled() {

@@ -15,6 +15,7 @@ import com.example.demoapp.view.activity.imp.ProImportActivity;
 import com.example.demoapp.view.activity.log.LogProActivity;
 import com.example.demoapp.view.activity.loginAndRegister.RegisterActivity;
 import com.example.demoapp.view.activity.sale.SaleActivity;
+import com.example.demoapp.view.driver.UISplashScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 nextActivity();
             }
-        }, 2000);
+        }, 100);
     }
 
     private void nextActivity() {
@@ -69,11 +70,14 @@ public class MainActivity extends AppCompatActivity {
                             case "IMPORT":
                                 startActivity(new Intent(MainActivity.this, ProImportActivity.class));
                                 break;
-                            case "SALE":
+                            case "Sale":
                                 startActivity(new Intent(MainActivity.this, SaleActivity.class));
                                 break;
                             case "FCL":
                                 startActivity(new Intent(MainActivity.this, FclActivity.class));
+                                break;
+                            case "DRIVER":
+                                startActivity(new Intent(MainActivity.this, UISplashScreen.class));
                                 break;
                             default:
                                 startActivity(new Intent(MainActivity.this, RegisterActivity.class));

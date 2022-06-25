@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,11 +22,6 @@ import com.example.demoapp.model.RetailGoods;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.example.demoapp.viewmodel.RetailGoodsViewModel;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,33 +108,10 @@ public class RetailGoodsExportActivity extends AppCompatActivity {
 
 
     private void getDataRetailGoods() {
-        try {
-            retailGoodsList = new ArrayList<>();
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Retail_Goods_Air");
-            // get all data from path
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    retailGoodsList.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        RetailGoods retailGoods = ds.getValue(RetailGoods.class);
-                        // get all users except currently signed is user
-                        retailGoodsList.add(retailGoods);
-                        Toast.makeText(RetailGoodsExportActivity.this, retailGoods.getValid(), Toast.LENGTH_SHORT).show();
-                    }
-                    sortRetailGoods(retailGoodsList);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }catch (NullPointerException nullPointerException){
-            Toast.makeText(RetailGoodsExportActivity.this, nullPointerException.toString(), Toast.LENGTH_LONG).show();
-        }
-
+        retailGoodsList = new ArrayList<>();
+        mRetailGoodsViewModel.getRetailGoodsList().observe(this, detailsPojoRetailGoods ->{
+            this.retailGoodsList = sortRetailGoods(detailsPojoRetailGoods);
+        });
     }
 
     private List<RetailGoods> sortRetailGoods(List<RetailGoods> list) {

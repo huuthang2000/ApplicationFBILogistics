@@ -1,50 +1,54 @@
 package com.example.demoapp.view.activity.chat;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
+import static com.example.demoapp.Utils.Cons.CURRENT_USER;
+import static com.example.demoapp.Utils.Cons.FIREBASE_USER;
+import static com.example.demoapp.Utils.Cons.INTENT_CALL_TYPE;
+import static com.example.demoapp.Utils.Cons.INTENT_CALL_TYPE_AUDIO;
+import static com.example.demoapp.Utils.Cons.INTENT_CALL_TYPE_VIDEO;
+import static com.example.demoapp.Utils.Cons.INTENT_USER;
+import static com.example.demoapp.Utils.Cons.KEY_COLLECTION_USERS;
+import static com.example.demoapp.Utils.Cons.KEY_FCM_TOKEN;
+import static com.example.demoapp.Utils.Cons.KEY_IMAGE_URL;
+import static com.example.demoapp.Utils.Cons.KEY_USER_ID;
+import static com.example.demoapp.Utils.Cons.NOTIFICATION_BODY;
+import static com.example.demoapp.Utils.Cons.NOTIFICATION_TITLE;
+import static com.example.demoapp.Utils.Cons.NOTIFICATION_TO;
+import static com.example.demoapp.Utils.Cons.NOTIF_IS_GLOBAL;
+import static com.example.demoapp.Utils.Cons.PREF_IS_DARK_THEME_ON;
+import static com.example.demoapp.Utils.Cons.REMOTE_MSG_DATA;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.demoapp.R;
+import com.example.demoapp.Utils.PreferenceManager;
 import com.example.demoapp.adapter.chat.ChatAdapter;
 import com.example.demoapp.databinding.ActivityChatBinding;
+import com.example.demoapp.listeners.UsersListenercallvideo;
 import com.example.demoapp.model.Chats;
 import com.example.demoapp.model.Users;
+import com.example.demoapp.notifications.APIService;
+import com.example.demoapp.notifications.Client;
 import com.example.demoapp.notifications.Data;
+import com.example.demoapp.notifications.Response;
 import com.example.demoapp.notifications.Sender;
 import com.example.demoapp.notifications.Token;
-import com.example.demoapp.view.activity.MainActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.demoapp.services.ApiCallVideo.ApiClient;
+import com.example.demoapp.services.ApiCallVideo.ApiService;
+import com.example.demoapp.view.activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -53,88 +57,62 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ChatActivity extends AppCompatActivity {
-
+    private UsersListenercallvideo usersListener;
     private ActivityChatBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersDBRef;
     private String hisUid;
     private String myUid;
+    private Users   remoteUser;
+    private PreferenceManager preferenceManager;
     private String hisImage;
-
-    // volley request queue for notification
-    RequestQueue requestQueue;
+    String namecall = "Anh";
+    private APIService apiService;
     boolean notify = false;
 
     // for checking if use has seen message or not
     ValueEventListener seenEventListener;
     DatabaseReference useRefForSeen;
-
-    // permission constanst
-    public static final int CAMERA_REQUEST_CODE = 100;
-    public static final int STORAGE_REQUEST_CODE = 200;
-    public static final int IMAGE_PICK_GALLERY_CODE = 300;
-    public static final int IMAGE_PICK_CAMERA_CODE = 400;
-
-    private Uri image_uri = null;
-
-    // permission array
-    String[] cameraPermissions;
-    String[] storagePermissions;
-
-
+    Users users;
+    private List<Users> listusers;
     List<Chats> chatsList;
     ChatAdapter chatAdapter;
 
+   ImageView imageAudioMeeting, imageVideoMeeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // init toolbar
-        setSupportActionBar(binding.toolbar);
-        binding.toolbar.setTitle("");
-
-        /*
-        on clicking user from users list we have passed tha user's UID using intent
-        so get that uid here to get the profile  picture, name and start chat with that
-        users
-         */
+        checkPreferences();
+        setCurrentUserID();
         Intent intent = getIntent();
         hisUid = intent.getStringExtra("hisUid");
         // init firebase
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         usersDBRef = firebaseDatabase.getReference("Users");
-        checkUserStatus();
-
-        // init  permissions arrays
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         // layout for RecyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -142,6 +120,9 @@ public class ChatActivity extends AppCompatActivity {
         // recycleview properties
         binding.rcvChat.setHasFixedSize(true);
         binding.rcvChat.setLayoutManager(linearLayoutManager);
+
+        // create api service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
 
         // search user to get that user's info
@@ -154,6 +135,7 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     // get data
                     String name = "" + ds.child("name").getValue();
+                    namecall = name;
                     hisImage = "" + ds.child("image").getValue();
                     String typingStatus = "" + ds.child("typingTo").getValue();
 
@@ -190,6 +172,24 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+
+        // gọi audio
+        binding.imageAudioMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //sendMessage(getString(R.string.cuocgoithoai));
+                initiateCall(  remoteUser);
+            }
+        });
+
+        // gọi video call
+        binding.imageVideoMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // sendMessage("1 Cuộc gọi video đến");
+
+                initiateVideoCall(  remoteUser);}
+        });
         // click button to send message
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,18 +211,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         // click button back
-        binding.btnBack.setOnClickListener(v -> {
-            onBackPressed();
-        });
-
-        // click button to import image
-        binding.btnAttach.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // show image pick dialog
-                showImagePickDialog();
-            }
-        });
+        binding.btnBack.setOnClickListener(v ->{onBackPressed();});
 
         // check edit text change listener
         binding.etMessage.addTextChangedListener(new TextWatcher() {
@@ -247,6 +236,16 @@ public class ChatActivity extends AppCompatActivity {
         });
         readMessage();
         seenMessage();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+
+                String refreshToken = task.getResult().toString();
+//                HashMap<String, Object> token = new HashMap<>();
+//                token.put(Cons.KEY_FCM_TOKEN, refreshToken);
+                sendFCMTokenToDB(refreshToken);
+            }
+        });
+
     }
 
     private void seenMessage() {
@@ -271,153 +270,76 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    // xử lý ảnh
-    private void showImagePickDialog() {
-        // option (Camera, gallery) to show in dialog
-        String[] option = {"Camera", "Gallery"};
+    public void initiateVideoCall(Users user) {
 
-        // dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Image From");
-        // set option to dialog
-        builder.setItems(option, new DialogInterface.OnClickListener() {
+            Intent intent = new Intent(this, InvitationOutgoingActivity.class);
+            intent.putExtra(INTENT_USER, user);
+        intent.putExtra("namehis",user.getName());
+        intent.putExtra("uidhis",hisUid );
+
+           intent.putExtra(INTENT_CALL_TYPE, INTENT_CALL_TYPE_VIDEO);
+            startActivity(intent);
+
+    }
+//goi thoai
+public void initiateCall(Users user) {
+
+        Intent intent = new Intent(this, InvitationOutgoingActivity.class);
+        intent.putExtra(INTENT_USER, user);
+    intent.putExtra("uidhis",hisUid );
+    intent.putExtra("namehis", user.getName());
+    intent.putExtra("imagehis",  hisImage);
+        intent.putExtra(INTENT_CALL_TYPE, INTENT_CALL_TYPE_AUDIO);
+        startActivity(intent);
+
+}
+    private void setCurrentUserID() {
+        if (FIREBASE_USER == null || CURRENT_USER == null) {
+            FIREBASE_USER = FirebaseAuth.getInstance().getCurrentUser();
+            FirebaseDatabase.getInstance().getReference(KEY_COLLECTION_USERS)
+                    .child(FIREBASE_USER.getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            CURRENT_USER = snapshot.getValue(Users.class);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
+    }
+    private void setNotificationData(String messageText) {
+        JSONObject body = new JSONObject();
+        try {
+            JSONObject data = new JSONObject();
+            data.put(NOTIFICATION_TITLE, CURRENT_USER.getName());
+            data.put(NOTIFICATION_BODY, messageText);
+            data.put(KEY_IMAGE_URL, CURRENT_USER.getImage());
+            data.put(KEY_USER_ID, FIREBASE_USER.getUid());
+            data.put(KEY_FCM_TOKEN,CURRENT_USER.getFcmToken());
+            if (  remoteUser.getFcmToken() != null) {
+                body.put(NOTIFICATION_TO,   remoteUser.getFcmToken());
+            } else {
+                body.put(NOTIFICATION_TO, "");
+            }
+            body.put(REMOTE_MSG_DATA, data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sendNotification(body);
+    }
+    private void sendNotification(JSONObject body) {
+        ApiClient.getClient().create(ApiService.class).sendNotification(
+                body.toString()
+        ).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // item click handle
-                if (which == 0) {
-                    // camera clicked
-                    if (!checkCameraPermissions()) {
-                        requestCameraPermission();
-                    } else {
-                        pickFromCamera();
-                    }
-                }
-                if (which == 1) {
-                    // gallery clicked
-                    if (!checkStoragePermissions()) {
-                        requestStoragePermission();
-                    } else {
-                        pickFromGallery();
-                    }
-                }
-            }
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull retrofit2.Response<ResponseBody> response) { }
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {}
         });
-        // create and show dialog
-        builder.create().show();
     }
-
-    // xử lý ảnh
-    private void pickFromGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, IMAGE_PICK_GALLERY_CODE);
-    }
-
-    // xử lý ảnh
-    private void pickFromCamera() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Temp Pick");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
-
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
-    }
-
-    private boolean checkStoragePermissions() {
-        // check if storage permission is enabled or not
-        // return true if enabled
-        // return fales if not enabled
-        boolean result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-
-    private void requestStoragePermission() {
-        //request runtime storage permission
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermissions() {
-        // check if camera permission is enabled or not
-        // return true if enabled
-        // return fales if not enabled
-        boolean result = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result && result1;
-    }
-
-    private void requestCameraPermission() {
-        //request runtime camera permission
-        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case CAMERA_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    boolean isCameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean isWriteStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (isCameraAccepted && isWriteStorageAccepted) {
-                        pickFromCamera();
-                    } else {
-                        Toast.makeText(this, "Please enable camera & storage permisstion", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
-            case STORAGE_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    boolean isWriteStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (isWriteStorageAccepted) {
-                        pickFromGallery();
-                    } else {
-                        Toast.makeText(this, "Please enable storage permisstion", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
-
-        }
-
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
-                image_uri = data.getData();
-
-                //use this image uri to upload to firebase storage
-                try {
-                    sendImageMessage(image_uri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-                // image is picked from camera, get uri of image
-                try {
-                    sendImageMessage(image_uri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     private void readMessage() {
         chatsList = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Chats");
@@ -444,31 +366,52 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+    /**
+     * Checks the preferences of the app at the start
+     */
+    private void checkPreferences() {
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        if (preferenceManager.getBoolean(PREF_IS_DARK_THEME_ON)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
 
+        if (!preferenceManager.getSharedPreferences().contains(NOTIF_IS_GLOBAL)) {
+            preferenceManager.putBoolean(NOTIF_IS_GLOBAL, true);
+        }
+
+    }
+
+//sendFCM TOKEN
+
+    private void sendFCMTokenToDB(String token) {
+
+        FirebaseDatabase.getInstance().getReference(KEY_COLLECTION_USERS)
+                .child(CURRENT_USER.getUid())
+                .child(KEY_FCM_TOKEN)
+                .setValue(token)
+                .addOnFailureListener(e ->
+                        Toast.makeText(ChatActivity.this,"Thực hiện cuộc gọi!", Toast.LENGTH_LONG).show()
+                );
+    }
     private void sendMessage(String message) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
-        // convert time stamp to dd//mm/YYYY hh:mm am/pm
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
-        String date = df.format(Calendar.getInstance().getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", myUid);
         hashMap.put("receiver", hisUid);
         hashMap.put("message", message);
         hashMap.put("timestamp", timestamp);
-        hashMap.put("isSeen", "0");
-        hashMap.put("type", "text");
-        hashMap.put("timemessage",date);
+        hashMap.put("isSeen", "2");
         databaseReference.child("Chats").push().setValue(hashMap);
-
+        setNotificationData(message);
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users users = snapshot.getValue(Users.class);
-                if (notify) {
+                if(notify){
                     senNotification(hisUid, users.getName(), message);
                 }
                 notify = false;
@@ -479,159 +422,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-        // create chatlist node/child in firebase database
-        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("ChatList")
-                .child(myUid)
-                .child(hisUid);
-
-        chatRef1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    chatRef1.child("id").setValue(hisUid);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("ChatList")
-                .child(hisUid)
-                .child(myUid);
-
-        chatRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    chatRef2.child("id").setValue(myUid);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void sendImageMessage(Uri image_uri) throws IOException {
-        notify = true;
-
-        // progress dialog
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Sending image...");
-        progressDialog.show();
-
-        String timeStamp = ""+ System.currentTimeMillis();
-        // convert time stamp to dd//mm/YYYY hh:mm am/pm
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
-        String date = df.format(Calendar.getInstance().getTime());
-
-        String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
-
-        // Chat node will be created that will contain all images sent via chat
-
-        // get bitmap from image uri
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] data = baos.toByteArray();
-        StorageReference ref = FirebaseStorage.getInstance().getReference().child(fileNameAndPath);
-        ref.putBytes(data)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //image uploaded
-                        progressDialog.dismiss();
-                        //get url of uploaded image
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
-                        String downloadUri = uriTask.getResult().toString();
-
-                        if(uriTask.isSuccessful()){
-                            //add image uri and other info to database
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-                            //setup required data
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("sender", myUid);
-                            hashMap.put("receiver", hisUid);
-                            hashMap.put("message", downloadUri);
-                            hashMap.put("timestamp", timeStamp);
-                            hashMap.put("type", "image");
-                            hashMap.put("isSeen", "1");
-                            hashMap.put("timemessage",date);
-
-                            //put this data to firebase
-                            databaseReference.child("Chats").push().setValue(hashMap);
-
-                            //send notification
-                            DatabaseReference database = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
-                            database.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    Users users = snapshot.getValue(Users.class);
-                                    if(notify){
-                                        senNotification(hisUid, users.getName(),"Sent you a photo...");
-                                    }
-                                    notify = false;
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-                            // create chatlist node/child in firebase database
-                            DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("ChatList")
-                                    .child(myUid)
-                                    .child(hisUid);
-
-                            chatRef1.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (!snapshot.exists()) {
-                                        chatRef1.child("id").setValue(hisUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-                            DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("ChatList")
-                                    .child(hisUid)
-                                    .child(myUid);
-
-                            chatRef2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (!snapshot.exists()) {
-                                        chatRef2.child("id").setValue(myUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
     }
 
     private void senNotification(String hisUid, String name, String message) {
@@ -640,41 +430,23 @@ public class ChatActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
+                for(DataSnapshot ds: snapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + ": " + message, "New Message", hisUid, R.drawable.ic_face);
+                    Data data = new Data(myUid, name+":"+message, "New Message", hisUid, R.drawable.ic_face);
 
                     Sender sender = new Sender(data, token.getToken());
-                    //fcm json object request
-                    try {
-                        JSONObject senderJsonObj = new JSONObject(new Gson().toJson(sender));
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", senderJsonObj,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        //response of the request
-                                        Log.d("JSON_RESPONSE", "onResponse:" + response.toString());
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("JSON_RESPONSE", "onResponse:" + error.toString());
-                            }
-                        }) {
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                // put params
-                                Map<String, String> headers = new HashMap<>();
-                                headers.put("Content-Type", "application/json");
-                                headers.put("Authorization", "key=AAAAnDxU0iU:APA91bGl1M-g_K_E43PrHhOo7Am4lu6gvqNN_NcmiAbR55gryt67ABv2KwCzNK9oKOxkpsgSm-RCmiaDTrKDehmVwM576cL15pJ5pX0s5QWf-RlIP8HVdO01BkVMQw9oua2RDQ_Sxw8B");
-                                return headers;
-                            }
-                        };
-                        // add this request to queue
-                        requestQueue.add(jsonObjectRequest);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                    Toast.makeText(ChatActivity.this,""+response.message(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
                 }
             }
 
@@ -692,7 +464,7 @@ public class ChatActivity extends AppCompatActivity {
         if (user != null) {
             myUid = user.getUid(); // currently signed is users uid
         } else {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }
@@ -719,7 +491,6 @@ public class ChatActivity extends AppCompatActivity {
         // hide searchview, as don't need it here
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_create_group).setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -736,7 +507,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-//        checkUserStatus();
+        checkUserStatus();
         //set online
         checkOnlineStatus("online");
         super.onStart();
@@ -745,8 +516,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         //set online
-        checkOnlineStatus("online");
         super.onResume();
+        checkOnlineStatus("online");
+        processExtraData();
     }
 
     @Override
@@ -759,5 +531,8 @@ public class ChatActivity extends AppCompatActivity {
         checkOnlineStatus(timestamp);
         checkTypingStatus("noOne");
         useRefForSeen.removeEventListener(seenEventListener);
+    }
+    private void processExtraData(){
+        remoteUser = (Users) getIntent().getSerializableExtra(INTENT_USER);
     }
 }

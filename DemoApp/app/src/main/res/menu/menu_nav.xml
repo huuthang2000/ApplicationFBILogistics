@@ -16,8 +16,4 @@
         android:id="@+id/nav_chat"
         android:icon="@drawable/ic_chat"
         android:title="Chats" />
-    <item
-        android:id="@+id/nav_group_chat"
-        android:icon="@drawable/ic_group_white"
-        android:title="Group Chat" />
 </menu>

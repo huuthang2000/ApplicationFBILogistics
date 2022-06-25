@@ -19,13 +19,11 @@ public class ImportLcl implements Serializable {
     private String month;
     private String continent;
     private String createdDate;
-    private String pTime;
 
     public ImportLcl(){}
 
-    public ImportLcl(String stt, String term, String pol, String pod, String cargo, String of,
-                     String localPol, String localPod, String carrier, String schedule, String transitTime,
-                     String valid, String note, String month, String continent, String createdDate, String pTime) {
+    public ImportLcl(String stt, String term, String pol, String pod, String cargo, String of, String localPol,
+                     String localPod, String carrier, String schedule, String transitTime, String valid, String note, String month, String continent, String createdDate) {
         this.stt = stt;
         this.term = term;
         this.pol = pol;
@@ -42,7 +40,6 @@ public class ImportLcl implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
-        this.pTime = pTime;
     }
 
     public ImportLcl(String term, String pol, String pod, String cargo, String of, String localPol,
@@ -62,14 +59,6 @@ public class ImportLcl implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
-    }
-
-    public String getpTime() {
-        return pTime;
-    }
-
-    public void setpTime(String pTime) {
-        this.pTime = pTime;
     }
 
     public String getStt() {

@@ -21,18 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.demoapp.R;
 import com.example.demoapp.adapter.ImportDomAdapter;
 import com.example.demoapp.databinding.FragmentDomImportBinding;
+import com.example.demoapp.model.DomDry;
 import com.example.demoapp.model.DomImport;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.dom.dom_import.DialogDomImportInsert;
 import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.example.demoapp.viewmodel.DomImportViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,29 +143,8 @@ public class DomImportFragment extends Fragment implements View.OnClickListener 
         try {
             this.mDomImportList = new ArrayList<>();
 
-            // get current user
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            // get path of database name "Users" cotaining users info
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Import");
-            // get all data from path
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    mDomImportList.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        DomImport domImport = ds.getValue(DomImport.class);
-                        // get all users except currently signed is user
-                        mDomImportList.add(domImport);
-                    }
-                    sortDomImport(mDomImportList);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            mDomImportViewModel.getAllData().observe(getViewLifecycleOwner(), domImports ->
+                    this.mDomImportList = sortDomImport(domImports));
         }catch (NullPointerException nullPointerException){
             Toast.makeText(getContext(), nullPointerException.toString(),Toast.LENGTH_LONG).show();
         }

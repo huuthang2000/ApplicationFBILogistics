@@ -12,7 +12,7 @@ public class DomCold implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String productName;
+    private String name;
 
     @SerializedName("weight")
     @Expose
@@ -62,16 +62,9 @@ public class DomCold implements Serializable {
     @Expose
     private String createdDate;
 
-    private String pTime;
-
-    public DomCold(){}
-
-    public DomCold(String stt, String productName, String weight, String quantityPallet,
-                   String quantityCarton, String addressReceive, String addressDelivery,
-                   String length, String height, String width, String type, String month,
-                   String continent, String createdDate, String pTime) {
+    public DomCold(String stt, String name, String weight, String quantityPallet, String quantityCarton, String addressReceive, String addressDelivery, String length, String height, String width, String type, String month, String continent, String createdDate) {
         this.stt = stt;
-        this.productName = productName;
+        this.name = name;
         this.weight = weight;
         this.quantityPallet = quantityPallet;
         this.quantityCarton = quantityCarton;
@@ -84,7 +77,22 @@ public class DomCold implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
-        this.pTime = pTime;
+    }
+
+    public DomCold(String name, String weight, String quantityPallet, String quantityCarton, String addressReceive, String addressDelivery, String length, String height, String width, String type, String month, String continent, String createdDate) {
+        this.name = name;
+        this.weight = weight;
+        this.quantityPallet = quantityPallet;
+        this.quantityCarton = quantityCarton;
+        this.addressReceive = addressReceive;
+        this.addressDelivery = addressDelivery;
+        this.length = length;
+        this.height = height;
+        this.width = width;
+        this.type = type;
+        this.month = month;
+        this.continent = continent;
+        this.createdDate = createdDate;
     }
 
     public String getStt() {
@@ -95,20 +103,12 @@ public class DomCold implements Serializable {
         this.stt = stt;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getpTime() {
-        return pTime;
-    }
-
-    public void setpTime(String pTime) {
-        this.pTime = pTime;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getWeight() {

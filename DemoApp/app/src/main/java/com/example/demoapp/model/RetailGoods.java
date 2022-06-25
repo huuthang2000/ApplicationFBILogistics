@@ -4,14 +4,12 @@ import java.io.Serializable;
 
 public class RetailGoods implements Serializable {
     private String stt, pol, pod, dim, grossweight, typeofcargo, oceanfreight,
-            localcharge, carrier, schedule, transittime, valid, note, month, continent, date_created, pTime;
-
-    public  RetailGoods(){}
+            localcharge, carrier, schedule, transittime, valid, note, month, continent, date_created;
 
     public RetailGoods(String stt, String pol, String pod, String dim, String grossweight,
                        String typeofcargo, String oceanfreight, String localcharge, String carrier,
                        String schedule, String transittime, String valid, String note, String month,
-                       String continent, String date_created, String pTime) {
+                       String continent, String date_created) {
         this.stt = stt;
         this.pol = pol;
         this.pod = pod;
@@ -28,15 +26,6 @@ public class RetailGoods implements Serializable {
         this.month = month;
         this.continent = continent;
         this.date_created = date_created;
-        this.pTime = pTime;
-    }
-
-    public String getpTime() {
-        return pTime;
-    }
-
-    public void setpTime(String pTime) {
-        this.pTime = pTime;
     }
 
     public String getDate_created() {

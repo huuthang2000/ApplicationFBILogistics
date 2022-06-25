@@ -62,10 +62,10 @@ public class DialogDomCyDetail extends DialogFragment {
 
             bundle.putSerializable(Constants.DOM_CY_UPDATE, domCy);
             bundle.putString(Constants.DOM_CY_ADD_NEW, "YES");
-//            binding.tvDomCyStationStt.setText(domCy.getStt());
+            binding.tvDomCyStationStt.setText(domCy.getStt());
             binding.tvDomCyStationGo.setText(domCy.getStationGo());
             binding.tvDomCyStationCome.setText(domCy.getStationCome());
-            binding.tvDomCyName.setText(domCy.getProductName());
+            binding.tvDomCyName.setText(domCy.getName());
             binding.tvDomCyWeight.setText(domCy.getWeight());
             binding.tvDomCyQuantity.setText(domCy.getQuantity());
             binding.tvDomCyEtd.setText(domCy.getEtd());

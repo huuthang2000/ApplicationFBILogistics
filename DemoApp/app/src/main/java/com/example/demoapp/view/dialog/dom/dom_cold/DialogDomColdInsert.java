@@ -1,12 +1,11 @@
 package com.example.demoapp.view.dialog.dom.dom_cold;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +15,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomColdInsertBinding;
 import com.example.demoapp.model.DomCold;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomColdViewModel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomColdInsert extends DialogFragment implements View.OnClickListener {
 
@@ -47,17 +39,10 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
 
     private final String[] listStr = new String[3];
 
-    private String productName, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length, height, width;
+    private String name, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length, height, width;
 
-    private List<DomCold> domColds;
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference userDBRef;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
-
+    private DomColdViewModel mDomColdViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Nullable
     @Override
@@ -67,47 +52,13 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
 
         View view = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        domColds = new ArrayList<>();
-        progressDialog = new ProgressDialog(getContext());
-
-        // get some info of current user to include in post
-        userDBRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDBRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    name = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
 
         setUpViews();
         textWatcher();
         setData();
 
         return view;
-    }
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public void setData() {
@@ -123,7 +74,7 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
                 listStr[1] = binding.domColdInsertAutoMonth.getText().toString();
                 listStr[2] = binding.domColdInsertAutoContinent.getText().toString();
 
-                Objects.requireNonNull(binding.insertDomColdName.getEditText()).setText(mDomCold.getProductName());
+                Objects.requireNonNull(binding.insertDomColdName.getEditText()).setText(mDomCold.getName());
                 Objects.requireNonNull(binding.insertDomColdWeight.getEditText()).setText(mDomCold.getWeight());
                 Objects.requireNonNull(binding.insertDomColdQuantityPallet.getEditText()).setText(mDomCold.getQuantityPallet());
                 Objects.requireNonNull(binding.insertDomColdQuantityCarton.getEditText()).setText(mDomCold.getQuantityCarton());
@@ -145,6 +96,7 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
 
         binding.btnDomColdInsert.setOnClickListener(this);
         binding.btnDomColdCancel.setOnClickListener(this);
+        mDomColdViewModel = new ViewModelProvider(this).get(DomColdViewModel.class);
 
         ArrayAdapter<String> adapterItemsType = new ArrayAdapter<>(getContext(), R.layout.dropdown_item, Constants.ITEMS_TYPE_DOM_DRY);
         ArrayAdapter<String> adapterItemsMonth = new ArrayAdapter<>(getContext(), R.layout.dropdown_item, Constants.ITEMS_MONTH);
@@ -195,7 +147,7 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
     }
 
     public void getDataFromForm() {
-        productName = Objects.requireNonNull(binding.insertDomColdName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.insertDomColdName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomColdWeight.getEditText()).getText().toString();
         quantityPallet = Objects.requireNonNull(binding.insertDomColdQuantityPallet.getEditText()).getText().toString();
         quantityCarton = Objects.requireNonNull(binding.insertDomColdQuantityCarton.getEditText()).getText().toString();
@@ -209,35 +161,20 @@ public class DialogDomColdInsert extends DialogFragment implements View.OnClickL
     public void insertData() {
         getDataFromForm();
 
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("quantityPallet", quantityPallet);
-        hashMap.put("quantityCarton", quantityCarton);
-        hashMap.put("addressReceive", addressReceive);
-        hashMap.put("addressDelivery", addressDelivery);
-        hashMap.put("productName", productName);
-        hashMap.put("weight", weight);
-        hashMap.put("length", length);
-        hashMap.put("height", height);
-        hashMap.put("width", width);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
-        hashMap.put("createdDate", getCreatedDate());
-        hashMap.put("pTime", timeStamp);
+        communicateViewModel.makeChanges();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cold");
-        // put data in this ref
-        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDomColdViewModel.insertData(name, weight, quantityPallet, quantityCarton, addressReceive, addressDelivery, length,
+                height, width, listStr[0], listStr[1], listStr[2], getCreatedDate()).enqueue(new Callback<DomCold>() {
             @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-
+            public void onResponse(@NonNull Call<DomCold> call, @NonNull Response<DomCold> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Insert Successful!!", Toast.LENGTH_LONG).show();
+                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<DomCold> call, @NonNull Throwable t) {
+
             }
         });
     }

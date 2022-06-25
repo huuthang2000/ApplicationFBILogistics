@@ -1,7 +1,5 @@
 package com.example.demoapp.view.dialog.dom.dom_door_sea;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,23 +9,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomDoorSeaUpdateBinding;
 import com.example.demoapp.model.DomDoorSea;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomDoorSeaViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomDoorSeaUpdate extends DialogFragment {
 
@@ -36,13 +33,10 @@ public class DialogDomDoorSeaUpdate extends DialogFragment {
 
     private final String[] listStr = new String[3];
 
-    private String portGo, portCome, addressReceive, addressDelivery, productName, weight, quantity, etd;
+    private String portGo, portCome, addressReceive, addressDelivery, name, weight, quantity, etd;
 
-    private FirebaseAuth mAuth;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
+    private DomDoorSeaViewModel mDomDoorSeaViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,27 +50,14 @@ public class DialogDomDoorSeaUpdate extends DialogFragment {
         binding = DialogDomDoorSeaUpdateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        progressDialog = new ProgressDialog(getContext());
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+        mDomDoorSeaViewModel = new ViewModelProvider(this).get(DomDoorSeaViewModel.class);
 
         setData();
         setUpViews();
         setListenerForButtons();
 
         return root;
-    }
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public static DialogDomDoorSeaUpdate getInstance() {
@@ -97,7 +78,7 @@ public class DialogDomDoorSeaUpdate extends DialogFragment {
             Objects.requireNonNull(binding.updateDomDoorSeaPortCome.getEditText()).setText(mDomDoorSea.getPortCome());
             Objects.requireNonNull(binding.updateDomDoorSeaAddressReceive.getEditText()).setText(mDomDoorSea.getAddressReceive());
             Objects.requireNonNull(binding.updateDomDoorSeaAddressDelivery.getEditText()).setText(mDomDoorSea.getAddressDelivery());
-            Objects.requireNonNull(binding.updateDomDoorSeaName.getEditText()).setText(mDomDoorSea.getProductName());
+            Objects.requireNonNull(binding.updateDomDoorSeaName.getEditText()).setText(mDomDoorSea.getName());
             Objects.requireNonNull(binding.updateDomDoorSeaWeight.getEditText()).setText(mDomDoorSea.getWeight());
             Objects.requireNonNull(binding.updateDomDoorSeaQuantity.getEditText()).setText(mDomDoorSea.getQuantity());
             Objects.requireNonNull(binding.updateDomDoorSeaEtd.getEditText()).setText(mDomDoorSea.getEtd());
@@ -145,7 +126,7 @@ public class DialogDomDoorSeaUpdate extends DialogFragment {
         portCome = Objects.requireNonNull(binding.updateDomDoorSeaPortCome.getEditText()).getText().toString();
         addressReceive = Objects.requireNonNull(binding.updateDomDoorSeaAddressReceive.getEditText()).getText().toString();
         addressDelivery = Objects.requireNonNull(binding.updateDomDoorSeaAddressDelivery.getEditText()).getText().toString();
-        productName = Objects.requireNonNull(binding.updateDomDoorSeaName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.updateDomDoorSeaName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.updateDomDoorSeaWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.updateDomDoorSeaQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.updateDomDoorSeaEtd.getEditText()).getText().toString();
@@ -155,36 +136,22 @@ public class DialogDomDoorSeaUpdate extends DialogFragment {
     public void updateData() {
         getDataFromForm();
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("portGo", portGo);
-        hashMap.put("portCome", portCome);
-        hashMap.put("addressReceive", addressReceive);
-        hashMap.put("addressDelivery", addressDelivery);
-        hashMap.put("productName", productName);
-        hashMap.put("weight", weight);
-        hashMap.put("quantity", quantity);
-        hashMap.put("etd", etd);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
-        String timeStamp = mDomDoorSea.getpTime();
+        communicateViewModel.makeChanges();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Door_Sea");
-        ref.child(timeStamp)
-                .updateChildren(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        mDomDoorSeaViewModel.updateData(mDomDoorSea.getStt(), portGo, portCome, addressReceive, addressDelivery, name, weight, quantity, etd
+                , listStr[0], listStr[1], listStr[2]).enqueue(new Callback<DomDoorSea>() {
+            @Override
+            public void onResponse(@NonNull Call<DomDoorSea> call, @NonNull Response<DomDoorSea> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Update Successful!!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DomDoorSea> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
 }
