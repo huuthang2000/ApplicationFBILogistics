@@ -31,5 +31,11 @@
         android:title="Group Info"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_notifications_white"
+        android:title="Notifications"
+        app:showAsAction="always"/>
+
 
 </menu>

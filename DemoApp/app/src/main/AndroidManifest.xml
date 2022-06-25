@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".view.activity.chat.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,9 +17,12 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.chat.NotificationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.chat.GroupEditActivity"
             android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal"/>
+            android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.GroupInfoActivity"
             android:exported="false"
@@ -139,6 +143,14 @@
             android:name=".view.activity.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupChatFinal" />
+
+        <service
+            android:name=".notifications.FirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="preloaded_fonts"

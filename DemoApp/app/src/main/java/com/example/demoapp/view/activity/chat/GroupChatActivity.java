@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,35 +23,54 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.GroupChatAdapter;
 import com.example.demoapp.databinding.ActivityGroupChatBinding;
 import com.example.demoapp.model.GroupChat;
+import com.example.demoapp.model.Users;
+import com.example.demoapp.notifications.Data;
+import com.example.demoapp.notifications.Sender;
+import com.example.demoapp.notifications.Token;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroupChatActivity extends AppCompatActivity {
 
     private String groupId, myGroupRole = "";
     private ActivityGroupChatBinding binding;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     private ArrayList<GroupChat> groupChatList;
     private GroupChatAdapter groupChatAdapter;
 
@@ -66,6 +86,12 @@ public class GroupChatActivity extends AppCompatActivity {
     private String[] storagePermission;
     // uri of picked image
     private Uri image_uri = null;
+    private String myUid;
+
+    // volley request queue for notification
+    RequestQueue requestQueue;
+    boolean notify = false;
+    private List<Users> listUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +115,12 @@ public class GroupChatActivity extends AppCompatActivity {
         };
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        myUid = firebaseUser.getUid();
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        listUsers = new ArrayList<>();
+
         loadGroupInfo();
         loadGroupMessage();
         loadMyGroupRole();
@@ -162,7 +194,7 @@ public class GroupChatActivity extends AppCompatActivity {
         pd.show();
 
         //file name and path in firebase storage
-        String filenamepath = "ChatImages/" + ""+System.currentTimeMillis();
+        String filenamepath = "ChatImages/" + "" + System.currentTimeMillis();
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filenamepath);
         //upload image
@@ -172,54 +204,54 @@ public class GroupChatActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //image uploaded, get url
                         Task<Uri> p_uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!p_uriTask.isSuccessful());
-                            String p_downloadUri = p_uriTask.getResult().toString();
-                            if(p_uriTask.isSuccessful()){
-                                //image url received, save in database
-                                //timestamp
-                                String timestamp = "" + System.currentTimeMillis();
+                        while (!p_uriTask.isSuccessful()) ;
+                        String p_downloadUri = p_uriTask.getResult().toString();
+                        if (p_uriTask.isSuccessful()) {
+                            //image url received, save in database
+                            //timestamp
+                            String timestamp = "" + System.currentTimeMillis();
 
-                                // convert time stamp to dd//mm/YYYY hh:mm am/pm
-                                DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
-                                String date = df.format(Calendar.getInstance().getTime());
+                            // convert time stamp to dd//mm/YYYY hh:mm am/pm
+                            DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+                            String date = df.format(Calendar.getInstance().getTime());
 
-                                //setup message data
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("sender", "" + firebaseAuth.getUid());
-                                hashMap.put("message", "" + p_downloadUri);
-                                hashMap.put("timestamp", "" + timestamp);
-                                hashMap.put("timemessage", "" + date);
-                                hashMap.put("type", "" + "image"); //text/image/file
+                            //setup message data
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("sender", "" + firebaseAuth.getUid());
+                            hashMap.put("message", "" + p_downloadUri);
+                            hashMap.put("timestamp", "" + timestamp);
+                            hashMap.put("timemessage", "" + date);
+                            hashMap.put("type", "" + "image"); //text/image/file
 
-                                //add in database
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
-                                ref.child(groupId).child("Messages").child(timestamp).
-                                        setValue(hashMap)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                // message sent
-                                                // clear messageET
-                                                binding.etMessage.setText("");
-                                                pd.dismiss();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                pd.dismiss();
-                                                // message sending failed
-                                                Toast.makeText(GroupChatActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
+                            //add in database
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
+                            ref.child(groupId).child("Messages").child(timestamp).
+                                    setValue(hashMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            // message sent
+                                            // clear messageET
+                                            binding.etMessage.setText("");
+                                            pd.dismiss();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            pd.dismiss();
+                                            // message sending failed
+                                            Toast.makeText(GroupChatActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
+                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //failed uploading image
-                        Toast.makeText(GroupChatActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GroupChatActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     }
                 });
@@ -386,6 +418,7 @@ public class GroupChatActivity extends AppCompatActivity {
         hashMap.put("timemessage", "" + date);
         hashMap.put("type", "" + "text"); //text/image/file
 
+
         //add in database
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
         ref.child(groupId).child("Messages").child(timestamp).
@@ -396,6 +429,60 @@ public class GroupChatActivity extends AppCompatActivity {
                         // message sent
                         // clear messageET
                         binding.etMessage.setText("");
+                        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
+                        ref1.child(groupId).child("Participants")
+                                .orderByChild("uid").equalTo(firebaseAuth.getUid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            myGroupRole = "" + ds.child("role").getValue();
+                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
+                                            ref.child(groupId).child("Participants").addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    listUsers.clear();
+                                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                                        //get uid from Group > Participants
+                                                        String uid = "" + ds.child("uid").getValue();
+
+                                                        //get info of user using uid we got above
+                                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                                                        ref.orderByChild("uid").equalTo(uid).addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                                                    Users users = ds.getValue(Users.class);
+                                                                    if (!users.getUid().equals(firebaseAuth.getUid())) {
+                                                                        listUsers.add(users);
+                                                                    }
+                                                                }
+                                                                for(Users users: listUsers){
+                                                                    sendNotification(users.getUid(),users.getName(),""+message);
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -437,6 +524,63 @@ public class GroupChatActivity extends AppCompatActivity {
                 });
     }
 
+    private void sendNotification(String hisUid, String name, String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data("" + myUid,
+                            "" + name + ": " + message,
+                            "New Message",
+                            "" + hisUid,
+                            "ChatNotification",
+                            R.drawable.ic_notifications_black);
+
+                    Sender sender = new Sender(data, token.getToken());
+                    //fcm json object request
+                    try {
+                        JSONObject senderJsonObj = new JSONObject(new Gson().toJson(sender));
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", senderJsonObj,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        //response of the request
+                                        Log.d("JSON_RESPONSE", "onResponse:" + response.toString());
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("JSON_RESPONSE", "onResponse:" + error.toString());
+                            }
+                        }) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                // put params
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Content-Type", "application/json");
+                                headers.put("Authorization", "key=AAAAnDxU0iU:APA91bGl1M-g_K_E43PrHhOo7Am4lu6gvqNN_NcmiAbR55gryt67ABv2KwCzNK9oKOxkpsgSm-RCmiaDTrKDehmVwM576cL15pJ5pX0s5QWf-RlIP8HVdO01BkVMQw9oua2RDQ_Sxw8B");
+                                return headers;
+                            }
+                        };
+                        // add this request to queue
+                        requestQueue.add(jsonObjectRequest);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -461,8 +605,7 @@ public class GroupChatActivity extends AppCompatActivity {
             Intent intent = new Intent(this, GroupParticipantAddActivity.class);
             intent.putExtra("groupId", groupId);
             startActivity(intent);
-        }
-        else if (id == R.id.action_groupinfo) {
+        } else if (id == R.id.action_groupinfo) {
             Intent intent = new Intent(this, GroupInfoActivity.class);
             intent.putExtra("groupId", groupId);
             startActivity(intent);

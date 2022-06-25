@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,8 +24,6 @@ import com.example.demoapp.databinding.ActivityTablePriceAirBinding;
 import com.example.demoapp.model.AirExport;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.air.air_export.InsertAirExportDialog;
-import com.example.demoapp.viewmodel.AirExportViewModel;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +41,6 @@ public class TablePriceAirActivity extends AppCompatActivity implements View.OnC
     private  SearchView searchView;
     PriceListAIRSaleAdapter priceListAdapter;
 
-    private AirExportViewModel mAirViewModel;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -59,17 +54,8 @@ public class TablePriceAirActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(tablePriceAirBinding.toolbar);
 
         priceListAdapter = new PriceListAIRSaleAdapter(this);
-        mAirViewModel = new ViewModelProvider(this).get(AirExportViewModel.class);
 
         linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(this, needLoading -> {
-            if (needLoading) {
-                Log.d("onresume", String.valueOf(needLoading.toString()));
-                onResume();
-            }
-        });
 
         getDataAIR();
         setAdapterItems();
@@ -125,7 +111,6 @@ public class TablePriceAirActivity extends AppCompatActivity implements View.OnC
                     AirExport airExport = ds.getValue(AirExport.class);
                     // get all users except currently signed is user
                     airList.add(airExport);
-                    Toast.makeText(TablePriceAirActivity.this, airExport.getValid(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -181,10 +166,6 @@ public class TablePriceAirActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-
-        mAirViewModel.getLclList().observe(this, airs -> {
-            priceListAdapter.setDataAir(prepareDataForResume(month, continent, airs));
-        });
         tablePriceAirBinding.priceListRcvSaleAir.setAdapter(priceListAdapter);
     }
 

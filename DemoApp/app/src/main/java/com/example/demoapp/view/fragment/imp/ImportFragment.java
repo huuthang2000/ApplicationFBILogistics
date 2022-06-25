@@ -189,7 +189,6 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                         Import imports = ds.getValue(Import.class);
                         // get all users except currently signed is user
                         listPriceList.add(imports);
-                        Toast.makeText(getContext(), imports.getCarrier(),Toast.LENGTH_SHORT).show();
                     }
                     sortImport(listPriceList);
 

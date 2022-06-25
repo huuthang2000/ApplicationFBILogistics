@@ -165,7 +165,6 @@ public class AirImportFragment extends Fragment implements View.OnClickListener 
                     AirImport airImport = ds.getValue(AirImport.class);
                     // get all users except currently signed is user
                     airImportList.add(airImport);
-                    Toast.makeText(getContext(), airImport.getValid(), Toast.LENGTH_SHORT).show();
                 }
                 sortAirImport(airImportList);
 

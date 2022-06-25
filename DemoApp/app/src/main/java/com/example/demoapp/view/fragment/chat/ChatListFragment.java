@@ -44,7 +44,7 @@ public class ChatListFragment extends Fragment {
     FirebaseUser currentUser;
     ChatListAdapter chatListAdapter;
 
-    public ChatListFragment(){}
+    public  ChatListFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

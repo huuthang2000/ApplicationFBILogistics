@@ -136,7 +136,6 @@ public class RetailGoodsExportFragment extends Fragment implements View.OnClickL
                         RetailGoods retailGoods = ds.getValue(RetailGoods.class);
                         // get all users except currently signed is user
                         retailGoodsList.add(retailGoods);
-                        Toast.makeText(getContext(), retailGoods.getValid(), Toast.LENGTH_SHORT).show();
                     }
                     sortRetailGoods(retailGoodsList);
 

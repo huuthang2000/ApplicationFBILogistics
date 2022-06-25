@@ -99,12 +99,12 @@ public class ChatActivity extends AppCompatActivity {
     private Uri image_uri = null;
 
     // permission array
-    String[] cameraPermissions;
-    String[] storagePermissions;
+    private String[] cameraPermissions;
+    private String[] storagePermissions;
 
 
-    List<Chats> chatsList;
-    ChatAdapter chatAdapter;
+    private List<Chats> chatsList;
+    private ChatAdapter chatAdapter;
 
 
     @Override
@@ -449,7 +449,6 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
-        // convert time stamp to dd//mm/YYYY hh:mm am/pm
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
         String date = df.format(Calendar.getInstance().getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -459,7 +458,7 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("timestamp", timestamp);
         hashMap.put("isSeen", "0");
         hashMap.put("type", "text");
-        hashMap.put("timemessage",date);
+        hashMap.put("timemessage", date);
         databaseReference.child("Chats").push().setValue(hashMap);
 
 
@@ -469,7 +468,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users users = snapshot.getValue(Users.class);
                 if (notify) {
-                    senNotification(hisUid, users.getName(), message);
+                    sendNotification(hisUid, users.getName(), message);
                 }
                 notify = false;
             }
@@ -527,11 +526,11 @@ public class ChatActivity extends AppCompatActivity {
         progressDialog.show();
 
         String timeStamp = ""+ System.currentTimeMillis();
-        // convert time stamp to dd//mm/YYYY hh:mm am/pm
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
-        String date = df.format(Calendar.getInstance().getTime());
 
         String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
 
         // Chat node will be created that will contain all images sent via chat
 
@@ -563,8 +562,8 @@ public class ChatActivity extends AppCompatActivity {
                             hashMap.put("message", downloadUri);
                             hashMap.put("timestamp", timeStamp);
                             hashMap.put("type", "image");
-                            hashMap.put("isSeen", "1");
-                            hashMap.put("timemessage",date);
+                            hashMap.put("isSeen", "0");
+                            hashMap.put("timemessage", date);
 
                             //put this data to firebase
                             databaseReference.child("Chats").push().setValue(hashMap);
@@ -576,7 +575,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Users users = snapshot.getValue(Users.class);
                                     if(notify){
-                                        senNotification(hisUid, users.getName(),"Sent you a photo...");
+                                        sendNotification(hisUid, users.getName(),"Sent you a photo...");
                                     }
                                     notify = false;
                                 }
@@ -634,15 +633,20 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
-    private void senNotification(String hisUid, String name, String message) {
-        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("tokensNotification");
+    private void sendNotification(String hisUid, String name, String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = allTokens.orderByKey().equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + ": " + message, "New Message", hisUid, R.drawable.ic_face);
+                    Data data = new Data(""+myUid,
+                            ""+ name + ": " + message,
+                            "New Message",
+                            ""+hisUid,
+                            "ChatNotification",
+                            R.drawable.ic_notifications_black);
 
                     Sender sender = new Sender(data, token.getToken());
                     //fcm json object request

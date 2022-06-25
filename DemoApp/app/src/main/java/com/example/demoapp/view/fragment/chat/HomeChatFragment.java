@@ -24,6 +24,7 @@ import com.example.demoapp.databinding.FragmentHomeChatBinding;
 import com.example.demoapp.model.Post;
 import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
+import com.example.demoapp.view.activity.chat.NotificationsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -192,6 +193,9 @@ public class HomeChatFragment extends Fragment {
         }
         if (id == R.id.action_add_post) {
             startActivity(new Intent(getActivity(), AddPostActivity.class));
+        }else if(id==R.id.nav_notification){
+            // go to notificationActivity
+            startActivity(new Intent(getActivity(), NotificationsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

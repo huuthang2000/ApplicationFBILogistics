@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityAddPostBinding;
 import com.example.demoapp.view.activity.LoginActivity;
@@ -44,8 +51,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
 
@@ -72,6 +83,9 @@ public class AddPostActivity extends AppCompatActivity {
     private Uri image_uri = null;
     private ProgressDialog progressDialog;
 
+    // volley request queue for notification
+    RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +107,8 @@ public class AddPostActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         checkUserStatus();
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         // get data through intent form previous activities adapter
         Intent intent = getIntent();
@@ -450,6 +466,13 @@ public class AddPostActivity extends AppCompatActivity {
                                                 binding.imgIv.setImageURI(null);
                                                 image_uri = null;
 
+                                                //send notification
+                                                prepareNotification(
+                                                        ""+timeStamp,
+                                                        ""+name+" added new post",
+                                                        ""+title+"\n"+description,
+                                                        "PostNotification",
+                                                        "POST");
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -502,6 +525,14 @@ public class AddPostActivity extends AppCompatActivity {
                             binding.imgIv.setImageURI(null);
                             image_uri = null;
 
+                            //send notification
+                            prepareNotification(
+                                    ""+timeStamp,
+                                    ""+name+" added new post",
+                                    ""+title+"\n"+description,
+                                    "PostNotification",
+                                    "POST");
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -513,6 +544,65 @@ public class AddPostActivity extends AppCompatActivity {
                     });
 
         }
+    }
+
+
+    private void prepareNotification(String pId, String title, String description, String notificationType, String notificationTopic){
+        //prepare data for notification
+
+        String NOTIFICATION_TOPIC = "topics" + notificationTopic;
+        String NOTIFICATION_TITLE = title;
+        String NOTIFICATION_MESSAGE= description;
+        String NOTIFICATION_TYPE = notificationType;
+
+        //prepare json what to send, and where to send
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try{
+            //what to send
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("sender", uid);
+            notificationBodyJo.put("pId", pId);
+            notificationBodyJo.put("pTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("pDescription", NOTIFICATION_MESSAGE);
+
+            //where to send
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data", notificationBodyJo);
+        }catch (JSONException e){
+           Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        sendPostNotification(notificationJo);
+
+    }
+
+    private void sendPostNotification(JSONObject notificationJo) {
+        //send volley object request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("FCM_RESPONSE", "onResponese: "+response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //error occured
+                Toast.makeText(AddPostActivity.this, ""+error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key=AAAAnDxU0iU:APA91bGl1M-g_K_E43PrHhOo7Am4lu6gvqNN_NcmiAbR55gryt67ABv2KwCzNK9oKOxkpsgSm-RCmiaDTrKDehmVwM576cL15pJ5pX0s5QWf-RlIP8HVdO01BkVMQw9oua2RDQ_Sxw8B");
+                return headers;
+            }
+        };
+        //enqueue the volley request
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
     // xử lý ảnh

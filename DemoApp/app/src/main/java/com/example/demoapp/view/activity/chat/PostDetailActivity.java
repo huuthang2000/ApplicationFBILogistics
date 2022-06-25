@@ -50,6 +50,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -170,6 +171,38 @@ public class PostDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private  void addToHisNotifications(String hisUid, String pId, String notification){
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
+
+        String timestamp = ""+System.currentTimeMillis();
+        //data to put in notification in firebase
+        HashMap<Object, String> hashMap = new HashMap<>();
+        hashMap.put("pId", pId);
+        hashMap.put("date", date);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("pUid", hisUid);
+        hashMap.put("notification", notification);
+        hashMap.put("sUid", myUid);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(hisUid).child("Notifications").child(timestamp).setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        //add successfully
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //faild
+                    }
+                });
+
+
     }
 
     private void shareImageAndText(String pTitle, String pDescription, Bitmap bitmap) {
@@ -418,6 +451,8 @@ public class PostDetailActivity extends AppCompatActivity {
                         postRef.child(postId).child("pLikes").setValue("" + (Integer.parseInt(pLikes) + 1));
                         likesRef.child(postId).child(myUid).setValue("Liked");
                         mProcessLike = false;
+
+                        addToHisNotifications(""+hisUid, ""+postId,"Liked your post");
                     }
                 }
             }
@@ -466,6 +501,8 @@ public class PostDetailActivity extends AppCompatActivity {
                         Toast.makeText(PostDetailActivity.this, "Comment Added... ", Toast.LENGTH_SHORT).show();
                         commentEt.setText("");
                         updateCommentCount();
+
+                        addToHisNotifications(""+hisUid,""+postId,"Commented on your post");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

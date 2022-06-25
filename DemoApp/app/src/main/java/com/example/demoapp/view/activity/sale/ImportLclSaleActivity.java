@@ -150,7 +150,6 @@ public class ImportLclSaleActivity extends AppCompatActivity {
                         ImportLcl importLcl = ds.getValue(ImportLcl.class);
                         // get all users except currently signed is user
                         listPriceList.add(importLcl);
-                        Toast.makeText(ImportLclSaleActivity.this, importLcl.getCarrier(),Toast.LENGTH_SHORT).show();
                     }
 
                 }

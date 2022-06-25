@@ -50,10 +50,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         View view;
         if (viewType == MSG_TYPE_RIGHT) {
             view = LayoutInflater.from(context).inflate(R.layout.row_chat_right, parent, false);
+            return new ChatViewHolder(view);
         } else {
             view = LayoutInflater.from(context).inflate(R.layout.row_chat_left, parent, false);
+            return new ChatViewHolder(view);
         }
-        return new ChatViewHolder(view);
     }
 
     @SuppressLint("RecyclerView")
@@ -62,21 +63,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // get data
         String message = chatsList.get(position).getMessage();
         String type = chatsList.get(position).getType();
-
         String date = chatsList.get(position).getTimemessage();
+
 
         if(type.equals("text")){
             // text message
             holder.tvMessage.setVisibility(View.VISIBLE);
             holder.ivMessage.setVisibility(View.GONE);
-
             holder.tvMessage.setText(message);
         }else{
             //image message
-            holder.tvMessage.setVisibility(View.GONE);
             holder.ivMessage.setVisibility(View.VISIBLE);
-
-            Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(holder.ivMessage);
+            holder.tvMessage.setVisibility(View.GONE);
+            try {
+                Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(holder.ivMessage);
+            }catch (Exception e){
+                holder.ivMessage.setImageResource(R.drawable.ic_image_black);
+            }
         }
 
         // set data
@@ -184,8 +187,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (chatsList.get(position).getSender().equals(firebaseUser.getUid())) {
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (chatsList.get(position).getSender().equals(FirebaseAuth.getInstance().getUid())) {
             return MSG_TYPE_RIGHT;
         } else {
             return MSG_TYPE_LEFT;

@@ -174,7 +174,6 @@ public class ImportLclFragment extends Fragment implements View.OnClickListener 
                         ImportLcl importLcl = ds.getValue(ImportLcl.class);
                         // get all users except currently signed is user
                         listPriceList.add(importLcl);
-                        Toast.makeText(getContext(), importLcl.getCarrier(),Toast.LENGTH_SHORT).show();
                     }
                     sortImportLcl(listPriceList);
 

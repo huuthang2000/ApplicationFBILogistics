@@ -48,8 +48,10 @@
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_edit.xml" value="0.23489583333333333" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_info.xml" value="0.2" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_group_participant_add.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_notifications.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_detail.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_post_liked_by.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/activity_settings.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/fragment_group_chats.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_left.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_chat_right.xml" value="0.25052083333333336" />
@@ -57,6 +59,7 @@
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchat_right.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_groupchats_list.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_item_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_notification.xml" value="0.1" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_participant_add.xml" value="0.1" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/layout/row_posts.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/FBI LOGISTICS/Documents/GitHub/ApplicationFBILogistics/DemoApp/app/src/main/res/menu/activity_dom_drawer.xml" value="0.25025641025641027" />

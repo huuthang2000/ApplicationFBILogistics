@@ -153,7 +153,6 @@ public class AirImportSaleActivity extends AppCompatActivity {
                     AirImport airImport = ds.getValue(AirImport.class);
                     // get all users except currently signed is user
                     airImportList.add(airImport);
-                    Toast.makeText(AirImportSaleActivity.this, airImport.getValid(), Toast.LENGTH_SHORT).show();
                 }
                 sortAirImport(airImportList);
 

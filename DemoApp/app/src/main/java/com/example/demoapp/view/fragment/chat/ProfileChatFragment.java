@@ -38,6 +38,7 @@ import com.example.demoapp.databinding.FragmentProfileChatBinding;
 import com.example.demoapp.model.Post;
 import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
+import com.example.demoapp.view.activity.chat.NotificationsActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -666,6 +667,9 @@ public class ProfileChatFragment extends Fragment {
         }
         if (id == R.id.action_add_post) {
             startActivity(new Intent(getActivity(), AddPostActivity.class));
+        }else if(id==R.id.nav_notification){
+            // go to notificationActivity
+            startActivity(new Intent(getActivity(), NotificationsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -20,4 +20,5 @@
         android:id="@+id/nav_group_chat"
         android:icon="@drawable/ic_group_white"
         android:title="Group Chat" />
+
 </menu>

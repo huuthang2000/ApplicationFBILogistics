@@ -182,7 +182,6 @@ public class ContainerActivity extends AppCompatActivity implements View.OnClick
                     FCLModel fcl = ds.getValue(FCLModel.class);
                     // get all users except currently signed is user
                     listPriceList.add(fcl);
-                    Toast.makeText(ContainerActivity.this, fcl.getNote2(),Toast.LENGTH_SHORT).show();
                 }
 
             }

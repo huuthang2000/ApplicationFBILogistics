@@ -193,7 +193,6 @@ public class FCLFragment extends Fragment implements View.OnClickListener {
                     FCLModel fcl = ds.getValue(FCLModel.class);
                     // get all users except currently signed is user
                         listPriceList.add(fcl);
-                        Toast.makeText(getContext(), fcl.getNote2(),Toast.LENGTH_SHORT).show();
                 }
                 sortArray(listPriceList);
 

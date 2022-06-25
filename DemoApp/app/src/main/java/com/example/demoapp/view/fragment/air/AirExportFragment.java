@@ -88,7 +88,6 @@ public class AirExportFragment extends Fragment implements View.OnClickListener 
                     AirExport airExport = ds.getValue(AirExport.class);
                     // get all users except currently signed is user
                     airList.add(airExport);
-                    Toast.makeText(getContext(), airExport.getValid(), Toast.LENGTH_SHORT).show();
                 }
                 sortAirExport(airList);
 

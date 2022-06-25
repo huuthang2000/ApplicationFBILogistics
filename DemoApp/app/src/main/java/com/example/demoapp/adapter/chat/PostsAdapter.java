@@ -49,7 +49,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -165,6 +167,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                                 postRef.child(postIde).child("pLikes").setValue("" + (plikes + 1));
                                 likesRef.child(postIde).child(myUid).setValue("Liked");
                                 mProcessLike = false;
+
+                                addToHisNotifications(""+uid, ""+pId,"Liked your post");
                             }
                         }
                     }
@@ -271,7 +275,37 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         }
         return uri;
     }
+    private  void addToHisNotifications(String hisUid, String pId, String notification){
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
+        String date = df.format(Calendar.getInstance().getTime());
 
+        String timestamp = ""+System.currentTimeMillis();
+        //data to put in notification in firebase
+        HashMap<Object, String> hashMap = new HashMap<>();
+        hashMap.put("pId", pId);
+        hashMap.put("date", date);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("pUid", hisUid);
+        hashMap.put("notification", notification);
+        hashMap.put("sUid", myUid);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(hisUid).child("Notifications").child(timestamp).setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        //add successfully
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //faild
+                    }
+                });
+
+
+    }
     private void shareTextOnly(String title, String description) {
         // concatenate title and description to share
         String shareBody = title + "\n" + description;
