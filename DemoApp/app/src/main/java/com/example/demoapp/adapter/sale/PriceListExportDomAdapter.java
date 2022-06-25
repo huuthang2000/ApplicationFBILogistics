@@ -85,7 +85,7 @@ public class PriceListExportDomAdapter extends RecyclerView.Adapter<PriceListExp
 
         public void bind(DomExport export) {
             binding.tvDomExportProductStt.setText(export.getStt());
-            binding.tvDomExportProductName.setText(export.getProductName());
+            binding.tvDomExportProductName.setText(export.getName());
             binding.tvDomExportWeight.setText(export.getWeight());
             binding.tvDomExportQuantity.setText(export.getQuantity());
             binding.tvDomExportTemp.setText(export.getTemp());

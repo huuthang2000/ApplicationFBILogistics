@@ -45,6 +45,7 @@ public class PriceListAIRAdapter extends RecyclerView.Adapter<PriceListAIRAdapte
             AirExport priceAir = listAIRS.get(position);
         if ( listAIRS.size() > 0) {
 
+            holder.tvstt.setText(priceAir.getStt());
             holder.tvaol.setText(priceAir.getAol());
             holder.tvaod.setText(priceAir.getAod());
             holder.tvdim.setText(priceAir.getDim());

@@ -89,7 +89,7 @@ public class DoorSeaDomAdapter extends RecyclerView.Adapter<DoorSeaDomAdapter.Do
             binding.tvDomDoorSeaPortCome.setText(domDoorSea.getPortCome());
             binding.tvDomDoorSeaAddressReceive.setText(domDoorSea.getAddressReceive());
             binding.tvDomDoorSeaAddressDelivery.setText(domDoorSea.getAddressDelivery());
-            binding.tvDomDoorSeaName.setText(domDoorSea.getProductName());
+            binding.tvDomDoorSeaName.setText(domDoorSea.getName());
             binding.tvDomDoorSeaWeight.setText(domDoorSea.getWeight());
             binding.tvDomDoorSeaQuantity.setText(domDoorSea.getQuantity());
             binding.tvDomDoorSeaEtd.setText(domDoorSea.getEtd());

@@ -5,12 +5,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_homee"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/nav_home" />
         <item
             android:id="@+id/nav_dom_export"
-            android:icon="@drawable/ic_baseline_import_export_24"
+            android:icon="@drawable/baseline_travel_explore_black_24"
             android:title="@string/nav_dom_export" />
         <item
             android:id="@+id/nav_dom_import"
@@ -23,34 +23,38 @@
             android:title="@string/nav_dom_dry" />
         <item
             android:id="@+id/nav_dom_cold"
-            android:icon="@drawable/ic_baseline_emoji_transportation_24"
+            android:icon="@drawable/ic_baseline_directions_container_24"
             android:title="@string/nav_dom_cold" />
 
         <item
             android:id="@+id/nav_dom_cy"
-            android:icon="@drawable/ic_baseline_train_24"
+            android:icon="@drawable/ic_baseline_baohiem_24"
             android:title="@string/nav_dom_cy" />
         <item
             android:id="@+id/nav_dom_door"
-            android:icon="@drawable/ic_baseline_train_24"
+            android:icon="@drawable/ic_baseline_baohiem_24"
             android:title="@string/nav_dom_door" />
 
         <item
             android:id="@+id/nav_dom_cy_sea"
-            android:icon="@drawable/ic_baseline_directions_boat_24"
+            android:icon="@drawable/ic_baseline_baohiem_24"
             android:title="@string/nav_dom_cy_sea" />
         <item
             android:id="@+id/nav_dom_door_sea"
-            android:icon="@drawable/ic_baseline_directions_boat_24"
+            android:icon="@drawable/ic_baseline_baohiem_24"
             android:title="@string/nav_dom_door_sea" />
         <item
-            android:id="@+id/nav_dom_message"
+            android:id="@+id/nav_message"
             android:icon="@drawable/ic_message"
-            android:title="@string/Mesenger" />
+            android:title="Tin nhắn"/>
         <item
-            android:id="@+id/nav_dom_logout"
+            android:id="@+id/nav_Trucktracking"
+            android:icon="@drawable/ic_baseline_emoji_transportation_24"
+            android:title="GPS tracking"/>
+        <item
+            android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/logout" />
+            android:title="Đăng xuất"/>
 
     </group>
 </menu>

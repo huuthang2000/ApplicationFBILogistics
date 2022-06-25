@@ -90,7 +90,7 @@ public class DoorDomAdapter extends RecyclerView.Adapter<DoorDomAdapter.DoorView
             binding.tvDomDoorStationCome.setText(domDoor.getStationCome());
             binding.tvDomDoorAddressReceive.setText(domDoor.getAddressReceive());
             binding.tvDomDoorAddressDelivery.setText(domDoor.getAddressDelivery());
-            binding.tvDomDoorName.setText(domDoor.getProductName());
+            binding.tvDomDoorName.setText(domDoor.getName());
             binding.tvDomDoorWeight.setText(domDoor.getWeight());
             binding.tvDomDoorQuantity.setText(domDoor.getQuantity());
             binding.tvDomDoorEtd.setText(domDoor.getEtd());

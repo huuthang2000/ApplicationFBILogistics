@@ -3,6 +3,7 @@ package com.example.demoapp.model;
 import java.io.Serializable;
 
 public class Import implements Serializable {
+    private String stt;
     private String pol;
     private String pod;
     private String of20;
@@ -22,14 +23,14 @@ public class Import implements Serializable {
     private String month;
     private String continent;
     private String createdDate;
-    private String pTime;
 
     public Import(){}
 
-    public Import(String pol, String pod, String of20, String of40, String of45, String sur20,
-                  String sur40, String sur45, String totalFreight, String carrier, String schedule,
-                  String transitTime, String freeTime, String valid, String note, String type, String month,
-                  String continent, String createdDate, String pTime) {
+    public Import(String stt, String pol, String pod, String of20, String of40, String of45,
+                  String sur20, String sur40, String sur45, String totalFreight, String carrier,
+                  String schedule, String transitTime, String freeTime, String valid, String note,
+                  String type, String month, String continent, String createdDate) {
+        this.stt = stt;
         this.pol = pol;
         this.pod = pod;
         this.of20 = of20;
@@ -49,17 +50,40 @@ public class Import implements Serializable {
         this.month = month;
         this.continent = continent;
         this.createdDate = createdDate;
-        this.pTime = pTime;
     }
 
-    public String getpTime() {
-        return pTime;
+    public Import(String pol, String pod, String of20, String of40, String of45, String sur20,
+                  String sur40, String sur45, String totalFreight, String carrier, String schedule,
+                  String transitTime, String freeTime, String valid, String note, String type,
+                  String month, String continent, String createdDate) {
+        this.pol = pol;
+        this.pod = pod;
+        this.of20 = of20;
+        this.of40 = of40;
+        this.of45 = of45;
+        this.sur20 = sur20;
+        this.sur40 = sur40;
+        this.sur45 = sur45;
+        this.totalFreight = totalFreight;
+        this.carrier = carrier;
+        this.schedule = schedule;
+        this.transitTime = transitTime;
+        this.freeTime = freeTime;
+        this.valid = valid;
+        this.note = note;
+        this.type = type;
+        this.month = month;
+        this.continent = continent;
+        this.createdDate = createdDate;
     }
 
-    public void setpTime(String pTime) {
-        this.pTime = pTime;
+    public String getStt() {
+        return stt;
     }
 
+    public void setStt(String stt) {
+        this.stt = stt;
+    }
 
     public String getPol() {
         return pol;

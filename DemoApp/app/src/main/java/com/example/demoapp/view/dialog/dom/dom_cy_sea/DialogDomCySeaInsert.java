@@ -1,8 +1,6 @@
 package com.example.demoapp.view.dialog.dom.dom_cy_sea;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,29 +14,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.DialogDomCySeaInsertBinding;
 import com.example.demoapp.model.DomCySea;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.viewmodel.DomCySeaViewModel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogDomCySeaInsert extends DialogFragment implements View.OnClickListener {
 
@@ -47,16 +38,10 @@ public class DialogDomCySeaInsert extends DialogFragment implements View.OnClick
 
     private final String[] listStr = new String[3];
 
-    private String portGo, portCome, productName, weight, quantity, etd;
+    private String portGo, portCome, name, weight, quantity, etd;
 
-    private List<DomCySea> domDoorSeaList;
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference userDBRef;
-
-    private ProgressDialog progressDialog;
-    // user info
-    String name, email, uid, dp;
+    private DomCySeaViewModel mDomCySeaViewModel;
+    private CommunicateViewModel communicateViewModel;
 
     @Nullable
     @Override
@@ -66,47 +51,14 @@ public class DialogDomCySeaInsert extends DialogFragment implements View.OnClick
 
         View view = binding.getRoot();
 
-        mAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
-
-        domDoorSeaList = new ArrayList<>();
-        progressDialog = new ProgressDialog(getContext());
-
-        // get some info of current user to include in post
-        userDBRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDBRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    name = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        communicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
+        mDomCySeaViewModel = new ViewModelProvider(this).get(DomCySeaViewModel.class);
 
         setUpViews();
         textWatcher();
         setData();
 
         return view;
-    }
-
-    private void checkUserStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
-        }
     }
 
     public void setData() {
@@ -124,7 +76,7 @@ public class DialogDomCySeaInsert extends DialogFragment implements View.OnClick
 
                 Objects.requireNonNull(binding.insertDomCySeaPortGo.getEditText()).setText(mDomCySea.getPortGo());
                 Objects.requireNonNull(binding.insertDomCySeaPortCome.getEditText()).setText(mDomCySea.getPortCome());
-                Objects.requireNonNull(binding.insertDomCySeaName.getEditText()).setText(mDomCySea.getProductName());
+                Objects.requireNonNull(binding.insertDomCySeaName.getEditText()).setText(mDomCySea.getName());
                 Objects.requireNonNull(binding.insertDomCySeaWeight.getEditText()).setText(mDomCySea.getWeight());
                 Objects.requireNonNull(binding.insertDomCySeaQuantity.getEditText()).setText(mDomCySea.getQuantity());
                 Objects.requireNonNull(binding.insertDomCySeaEtd.getEditText()).setText(mDomCySea.getEtd());
@@ -194,7 +146,7 @@ public class DialogDomCySeaInsert extends DialogFragment implements View.OnClick
     public void getDataFromForm() {
         portGo = Objects.requireNonNull(binding.insertDomCySeaPortGo.getEditText()).getText().toString();
         portCome = Objects.requireNonNull(binding.insertDomCySeaPortCome.getEditText()).getText().toString();
-        productName = Objects.requireNonNull(binding.insertDomCySeaName.getEditText()).getText().toString();
+        name = Objects.requireNonNull(binding.insertDomCySeaName.getEditText()).getText().toString();
         weight = Objects.requireNonNull(binding.insertDomCySeaWeight.getEditText()).getText().toString();
         quantity = Objects.requireNonNull(binding.insertDomCySeaQuantity.getEditText()).getText().toString();
         etd = Objects.requireNonNull(binding.insertDomCySeaEtd.getEditText()).getText().toString();
@@ -203,39 +155,22 @@ public class DialogDomCySeaInsert extends DialogFragment implements View.OnClick
     public void insertData() {
         getDataFromForm();
 
-        //String stt, String portGo, String portCome, String productName, String weight,
-        //                    String quantity, String etd, String type, String month, String continent,
-        //                    String createdDate, String pTime
+        communicateViewModel.makeChanges();
 
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("portGo", portGo);
-        hashMap.put("portCome", portCome);
-        hashMap.put("productName", productName);
-        hashMap.put("weight", weight);
-        hashMap.put("quantity", quantity);
-        hashMap.put("etd", etd);
-        hashMap.put("type", listStr[0]);
-        hashMap.put("month", listStr[1]);
-        hashMap.put("continent", listStr[2]);
-        hashMap.put("createdDate", getCreatedDate());
-        hashMap.put("pTime", timeStamp);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Dom_Cy_Sea");
-        // put data in this ref
-        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDomCySeaViewModel.insertData(portGo, portCome, name, weight, quantity, etd,
+                listStr[0], listStr[1], listStr[2], getCreatedDate()).enqueue(new Callback<DomCySea>() {
             @Override
-            public void onSuccess(Void unused) {
-                progressDialog.dismiss();
-
+            public void onResponse(@NonNull Call<DomCySea> call, @NonNull Response<DomCySea> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Insert Successful!!", Toast.LENGTH_LONG).show();
+                }
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<DomCySea> call, @NonNull Throwable t) {
+
             }
         });
-
     }
 
     public boolean isFilled() {

@@ -87,7 +87,7 @@ public class PriceListCySeaDomAdapter extends RecyclerView.Adapter<PriceListCySe
             binding.tvDomCySeaPortStt.setText(domCySea.getStt());
             binding.tvDomCySeaPortGo.setText(domCySea.getPortGo());
             binding.tvDomCySeaPortCome.setText(domCySea.getPortCome());
-            binding.tvDomCySeaName.setText(domCySea.getProductName());
+            binding.tvDomCySeaName.setText(domCySea.getName());
             binding.tvDomCySeaWeight.setText(domCySea.getWeight());
             binding.tvDomCySeaQuantity.setText(domCySea.getQuantity());
             binding.tvDomCySeaEtd.setText(domCySea.getEtd());

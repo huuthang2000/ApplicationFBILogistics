@@ -67,7 +67,7 @@ public class DialogDomDoorSeaDetail extends DialogFragment {
             binding.tvDomDoorSeaPortCome.setText(mDomDoorSea.getPortCome());
             binding.tvDomDoorSeaAddressReceive.setText(mDomDoorSea.getAddressReceive());
             binding.tvDomDoorSeaAddressDelivery.setText(mDomDoorSea.getAddressDelivery());
-            binding.tvDomDoorSeaName.setText(mDomDoorSea.getProductName());
+            binding.tvDomDoorSeaName.setText(mDomDoorSea.getName());
             binding.tvDomDoorSeaWeight.setText(mDomDoorSea.getWeight());
             binding.tvDomDoorSeaQuantity.setText(mDomDoorSea.getQuantity());
             binding.tvDomDoorSeaEtd.setText(mDomDoorSea.getEtd());

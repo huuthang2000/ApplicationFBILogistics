@@ -62,10 +62,10 @@ public class DialogDomCySeaDetail extends DialogFragment {
             bundle.putSerializable(Constants.DOM_CY_SEA_UPDATE, domCySea);
             bundle.putString(Constants.DOM_CY_SEA_ADD_NEW, "YES");
 
-//            binding.tvDomCySeaStationStt.setText(domCySea.getStt());
+            binding.tvDomCySeaStationStt.setText(domCySea.getStt());
             binding.tvDomCySeaStationGo.setText(domCySea.getPortGo());
             binding.tvDomCySeaStationCome.setText(domCySea.getPortCome());
-            binding.tvDomCySeaName.setText(domCySea.getProductName());
+            binding.tvDomCySeaName.setText(domCySea.getName());
             binding.tvDomCySeaWeight.setText(domCySea.getWeight());
             binding.tvDomCySeaQuantity.setText(domCySea.getQuantity());
             binding.tvDomCySeaEtd.setText(domCySea.getEtd());

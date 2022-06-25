@@ -43,8 +43,6 @@ public class HomeChatFragment extends Fragment {
     private List<Post> postList;
     private PostsAdapter postsAdapter;
 
-    public HomeChatFragment(){}
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -145,12 +143,6 @@ public class HomeChatFragment extends Fragment {
 
         // search  to search post by post by post title/ description
         MenuItem item = menu.findItem(R.id.action_search);
-
-        //hide some option
-        menu.findItem(R.id.action_create_group).setVisible(false);
-        menu.findItem(R.id.action_add_participant).setVisible(false);
-        menu.findItem(R.id.action_groupinfo).setVisible(false);
-
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
         // searchView listenner
