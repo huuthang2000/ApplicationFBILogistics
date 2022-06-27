@@ -17,6 +17,9 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.air.AirActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.chat.NotificationsActivity"
             android:exported="false" />
         <activity
@@ -51,7 +54,7 @@
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DetailProfileActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.ChatActivity"
@@ -62,43 +65,39 @@
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.chat.DashboardActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.loginAndRegister.RegisterActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.air.AirPageActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.waterway.WaterWayActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.road.RoadSaleActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.ImportLclSaleActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.DomImportSaleActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.imp.ProImportActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/label_import_imp"
             android:theme="@style/Theme.DemoApp.NoActionBar" />
         <activity
             android:name=".view.activity.dom.DomActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_dom" />
         <activity
-            android:name=".view.activity.pro.ProActivity"
-            android:exported="true"
-            android:label="@string/title_activity_pro_import" />
-        <activity
             android:name=".view.activity.sale.rail.RailSaleActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.air.AirImportSaleActivity"
             android:exported="false" />
@@ -107,10 +106,7 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.log.LogProActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.activity.air.AirActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.sale.ImportActivity"
             android:exported="false" />
@@ -126,7 +122,7 @@
             android:theme="@style/Theme.DemoApp.NoActionBar" />
         <activity
             android:name=".view.activity.sale.SaleActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.MainActivity"
             android:exported="true">
@@ -138,10 +134,10 @@
         </activity>
         <activity
             android:name=".view.activity.sale.TablePriceAirActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.GroupChatFinal" />
 
         <service
