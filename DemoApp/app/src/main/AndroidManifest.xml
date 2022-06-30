@@ -17,6 +17,10 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.loginAndRegister.SignInActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GroupChatFinal"/>
+        <activity
             android:name=".view.activity.air.AirActivity"
             android:exported="false" />
         <activity
@@ -135,10 +139,6 @@
         <activity
             android:name=".view.activity.sale.TablePriceAirActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.activity.LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal" />
 
         <service
             android:name=".notifications.FirebaseMessaging"

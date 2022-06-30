@@ -22,7 +22,7 @@ import com.example.demoapp.databinding.DialogDomDryInsertBinding;
 import com.example.demoapp.model.DomDry;
 import com.example.demoapp.model.DomExport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,7 +106,7 @@ public class DialogDomDryInsert extends DialogFragment implements View.OnClickLi
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }

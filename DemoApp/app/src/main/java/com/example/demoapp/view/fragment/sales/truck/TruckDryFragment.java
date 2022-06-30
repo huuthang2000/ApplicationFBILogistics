@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -21,8 +20,6 @@ import com.example.demoapp.adapter.sale.PriceListDryDomAdapter;
 import com.example.demoapp.databinding.FragmentTruckDryBinding;
 import com.example.demoapp.model.DomDry;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomDryViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +34,6 @@ import java.util.List;
 
 public class TruckDryFragment extends Fragment {
 
-    private DomDryViewModel mDomDryViewModel;
     private PriceListDryDomAdapter mDryDomAdapter;
     private SearchView searchView;
 
@@ -55,15 +51,6 @@ public class TruckDryFragment extends Fragment {
         View view = binding.getRoot();
 
         mDryDomAdapter = new PriceListDryDomAdapter(getContext());
-        mDomDryViewModel = new ViewModelProvider(this).get(DomDryViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         setHasOptionsMenu(true);
         getAllData();
@@ -158,8 +145,6 @@ public class TruckDryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        mDomDryViewModel.getAllData().observe(getViewLifecycleOwner(), domDries -> mDryDomAdapter.setDomDry(filterDataResume(month, continent, domDries)));
 
         binding.rcvDomDry.setAdapter(mDryDomAdapter);
     }

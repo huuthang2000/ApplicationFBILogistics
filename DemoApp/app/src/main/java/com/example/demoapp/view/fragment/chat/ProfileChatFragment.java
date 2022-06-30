@@ -36,9 +36,9 @@ import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.PostsAdapter;
 import com.example.demoapp.databinding.FragmentProfileChatBinding;
 import com.example.demoapp.model.Post;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.AddPostActivity;
 import com.example.demoapp.view.activity.chat.NotificationsActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -679,7 +679,7 @@ public class ProfileChatFragment extends Fragment {
         if (user != null) {
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(getActivity(), SignInActivity.class));
             getActivity().finish();
         }
     }

@@ -2,7 +2,10 @@ package com.example.demoapp.view.activity.sale;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,8 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.demoapp.R;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.DashboardActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.example.demoapp.view.fragment.sales.AirlinesSaleFragment;
 import com.example.demoapp.view.fragment.sales.HomeSaleFragment;
 import com.example.demoapp.view.fragment.sales.InlandFragment;
@@ -24,6 +27,11 @@ import com.example.demoapp.view.fragment.sales.SeawayFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class SaleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int FRAGMENT_HOME = 0;
@@ -43,18 +51,46 @@ public class SaleActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mDrawerLayout;
     Toolbar toolbar;
     private FirebaseAuth mAuth;
+    private String uid;
+    TextView tvName, tvEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale);
-
+        mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
         anhxa();
         Actionbar();
 
-        mAuth = FirebaseAuth.getInstance();
 
 
+
+    }
+    private void setUserName() {
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // check until required data get
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    // get data
+                    String name = "" + ds.child("name").getValue();
+                    String email = "" + ds.child("email").getValue();
+
+
+                    // set data in profile
+                    tvName.setText(name);
+                    tvEmail.setText(email);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
@@ -71,7 +107,12 @@ public class SaleActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        setUserName();
         NavigationView navigationView = findViewById(R.id.navigation_view);
+        View nav_header = LayoutInflater.from(SaleActivity.this).inflate(R.layout.layout_header_nav, null);
+        tvName = nav_header.findViewById(R.id.tv_name_header);
+        tvEmail = nav_header.findViewById(R.id.tv_email_header);
+        navigationView.addHeaderView(nav_header);
         navigationView.setNavigationItemSelectedListener(this);
         // xử lí mặc định vào trang home
         replaceFragment(new HomeSaleFragment());
@@ -124,9 +165,9 @@ public class SaleActivity extends AppCompatActivity implements NavigationView.On
     private void checkUserStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-
+            uid = user.getUid();
         } else {
-            startActivity(new Intent(SaleActivity.this, LoginActivity.class));
+            startActivity(new Intent(SaleActivity.this, SignInActivity.class));
             finish();
         }
     }

@@ -1,7 +1,6 @@
 package com.example.demoapp.view.fragment.air;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -25,8 +23,6 @@ import com.example.demoapp.databinding.FragmentRetailGoodsExportBinding;
 import com.example.demoapp.model.RetailGoods;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.air.retailgoods.InsertRetailGoodsDialog;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.RetailGoodsViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +39,6 @@ public class RetailGoodsExportFragment extends Fragment implements View.OnClickL
     private String month = "";
     private String continent = "";
     private PriceListRetailGoddsAdapter mPriceListRetailGoddsAdapter;
-    private RetailGoodsViewModel mRetailGoodsViewModel;
     private List<RetailGoods> retailGoodsList = new ArrayList<>();
     private SearchView searchView;
 
@@ -54,14 +49,7 @@ public class RetailGoodsExportFragment extends Fragment implements View.OnClickL
         View view = mRetailGoodsDetailBinding.getRoot();
 
         mPriceListRetailGoddsAdapter = new PriceListRetailGoddsAdapter(getContext());
-        mRetailGoodsViewModel = new ViewModelProvider(this).get(RetailGoodsViewModel.class);
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(getActivity()).get(CommunicateViewModel.class);
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading ->{
-            if(needLoading){
-                Log.d("onresume", String.valueOf(needLoading.toString()));
-                onResume();
-            }
-        });
+
 
         setHasOptionsMenu(true);
         getDataRetailGoods();
@@ -176,9 +164,7 @@ public class RetailGoodsExportFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        mRetailGoodsViewModel.getRetailGoodsList().observe(getViewLifecycleOwner(), retailGoods ->{
-            mPriceListRetailGoddsAdapter.setDataRetailGoods(preparedataForResume(month,continent, retailGoods));
-        });
+
         mRetailGoodsDetailBinding.priceListRcvRetail.setAdapter(mPriceListRetailGoddsAdapter);
     }
 

@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -25,8 +24,6 @@ import com.example.demoapp.databinding.FragmentLogBinding;
 import com.example.demoapp.model.Log;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.log.InsertLogFragment;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.LogViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +44,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private String importAndExport = "";
     private SearchView searchView;
     private PriceListLogAdapter mListLogAdapter;
-    private LogViewModel mLogViewModel;
 
     private List<Log> mlistLog = new ArrayList<>();
 
@@ -58,15 +54,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         View view = logBinding.getRoot();
 
         mListLogAdapter = new PriceListLogAdapter(getContext());
-        mLogViewModel = new ViewModelProvider(this).get(LogViewModel.class);
-        // Xử lý cập nhập insert
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(getActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading ->{
-            if(needLoading){
-                onResume();
-            }
-        });
 
         setHasOptionsMenu(true);
         getDataLog();

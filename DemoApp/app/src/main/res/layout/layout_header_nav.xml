@@ -8,9 +8,10 @@
     android:background="@color/lienHe">
 
     <androidx.constraintlayout.utils.widget.ImageFilterButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/logofbi"/>
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/white"/>
     <TextView
+        android:id="@+id/tv_name_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
@@ -27,6 +29,7 @@
         android:layout_marginTop="3dp"
         android:textColor="@color/white"/>
     <TextView
+        android:id="@+id/tv_email_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gmail"

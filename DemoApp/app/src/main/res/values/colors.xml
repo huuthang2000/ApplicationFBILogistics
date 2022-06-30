@@ -17,4 +17,8 @@
     <color name="primary">#09014B</color>
     <color name="online">#05F61D</color>
 
+    <color name="mycolor1">#8f94fb</color>
+    <color name="mycolor2">#4e54c8</color>
+    <color name="mycolor3">#bbbefd</color>
+
 </resources>

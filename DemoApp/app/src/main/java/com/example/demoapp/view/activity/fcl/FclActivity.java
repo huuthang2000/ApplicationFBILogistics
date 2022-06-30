@@ -3,24 +3,33 @@ package com.example.demoapp.view.activity.fcl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityFclBinding;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.DashboardActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.example.demoapp.view.fragment.fcl.FCLFragment;
 import com.example.demoapp.view.fragment.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class FclActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +44,12 @@ public class FclActivity extends AppCompatActivity implements NavigationView.OnN
 
     private int mCurrentFragment = FRAGMENT_HOME;
 
+    TextView tvName, tvEmail;
+    DrawerLayout drawerLayout;
+
+    String uid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +60,45 @@ public class FclActivity extends AppCompatActivity implements NavigationView.OnN
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        binding.navigationView.setNavigationItemSelectedListener(this);
+        binding.navigationViewFcl.setNavigationItemSelectedListener(this);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         mAuth = FirebaseAuth.getInstance();
-
+        checkUserStatus();
+        setUserName();
+        NavigationView navigationView = findViewById(R.id.navigation_view_fcl);
+        View nav_header = LayoutInflater.from(FclActivity.this).inflate(R.layout.layout_header_nav, null);
+        tvName = nav_header.findViewById(R.id.tv_name_header);
+        tvEmail = nav_header.findViewById(R.id.tv_email_header);
+        navigationView.addHeaderView(nav_header);
         replaceFragment(new HomeFragment());
-        binding.navigationView.getMenu().findItem(R.id.tab_home_fcl).setChecked(true);
+        binding.navigationViewFcl.getMenu().findItem(R.id.tab_home_fcl).setChecked(true);
+    }
+
+    private void setUserName() {
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // check until required data get
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    // get data
+                    String name = "" + ds.child("name").getValue();
+                    String email = "" + ds.child("email").getValue();
+
+
+                    // set data in profile
+                    tvName.setText(name);
+                    tvEmail.setText(email);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -90,9 +138,9 @@ public class FclActivity extends AppCompatActivity implements NavigationView.OnN
     private void checkUserStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-
+            uid = user.getUid();
         } else {
-            startActivity(new Intent(FclActivity.this, LoginActivity.class));
+            startActivity(new Intent(FclActivity.this, SignInActivity.class));
             finish();
         }
     }

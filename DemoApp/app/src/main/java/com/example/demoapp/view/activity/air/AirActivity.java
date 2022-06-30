@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityAirBinding;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.DashboardActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.example.demoapp.view.fragment.air.AirExportFragment;
 import com.example.demoapp.view.fragment.air.AirImportFragment;
 import com.example.demoapp.view.fragment.air.RetailGoodsExportFragment;
@@ -108,7 +108,7 @@ public class AirActivity extends AppCompatActivity implements NavigationView.OnN
         if (user != null) {
 
         } else {
-            startActivity(new Intent(AirActivity.this, LoginActivity.class));
+            startActivity(new Intent(AirActivity.this, SignInActivity.class));
             finish();
         }
     }
