@@ -22,7 +22,6 @@ import com.example.demoapp.adapter.chat.UserAdapter;
 import com.example.demoapp.databinding.FragmentUsersChatBinding;
 import com.example.demoapp.model.Users;
 import com.example.demoapp.view.activity.chat.GroupCreateActivity;
-import com.example.demoapp.view.activity.chat.NotificationsActivity;
 import com.example.demoapp.view.activity.chat.SettingsActivity;
 import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -195,9 +194,9 @@ public class UsersChatFragment extends Fragment {
         }else if(id==R.id.action_create_group){
             // go to group chat
             startActivity(new Intent(getActivity(), GroupCreateActivity.class));
-        }else if(id==R.id.nav_notification){
-            // go to notificationActivity
-            startActivity(new Intent(getActivity(), NotificationsActivity.class));
+//        }else if(id==R.id.nav_notification){
+//            // go to notificationActivity
+//            startActivity(new Intent(getActivity(), NotificationsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

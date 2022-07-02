@@ -99,7 +99,6 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("phone", "");
                             hashMap.put("image", "");
                             hashMap.put("cover", "");
-                            hashMap.put("tokensNotification", "");
                             hashMap.put("position","");
                             // Firebase database isntance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();

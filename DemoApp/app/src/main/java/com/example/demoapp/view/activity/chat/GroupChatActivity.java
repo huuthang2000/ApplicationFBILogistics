@@ -87,6 +87,7 @@ public class GroupChatActivity extends AppCompatActivity {
     // uri of picked image
     private Uri image_uri = null;
     private String myUid;
+    private String hisUid;
 
     // volley request queue for notification
     RequestQueue requestQueue;
@@ -104,6 +105,9 @@ public class GroupChatActivity extends AppCompatActivity {
         // get id of the group
         Intent intent = getIntent();
         groupId = intent.getStringExtra("groupId");
+
+        Intent intent1 = getIntent();
+        hisUid = intent1.getStringExtra("groupChat");
 
         //init required permissions
         cameraPermission = new String[]{
@@ -455,11 +459,13 @@ public class GroupChatActivity extends AppCompatActivity {
                                                                     Users users = ds.getValue(Users.class);
                                                                     if (!users.getUid().equals(firebaseAuth.getUid())) {
                                                                         listUsers.add(users);
+                                                                        for(Users users1: listUsers){
+                                                                            hisUid = users1.getUid();
+                                                                            sendNotification(hisUid,users1.getName(),""+message);
+                                                                        }
                                                                     }
                                                                 }
-                                                                for(Users users: listUsers){
-                                                                    sendNotification(users.getUid(),users.getName(),""+message);
-                                                                }
+
                                                             }
 
                                                             @Override
@@ -534,9 +540,9 @@ public class GroupChatActivity extends AppCompatActivity {
                     Token token = ds.getValue(Token.class);
                     Data data = new Data("" + myUid,
                             "" + name + ": " + message,
-                            "New Message",
+                            "Group Chat Messeage",
                             "" + hisUid,
-                            "ChatNotification",
+                            "GroupChatNotification",
                             R.drawable.ic_notifications_black);
 
                     Sender sender = new Sender(data, token.getToken());
