@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.demoapp.R;
 import com.example.demoapp.view.activity.chat.ChatActivity;
+import com.example.demoapp.view.activity.chat.GroupChatActivity;
 import com.example.demoapp.view.activity.chat.PostDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,34 +43,48 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String savedCurrentUser = sp.getString("Current_USERID", "None");
 
         String notificationType = message.getData().get("notificationType");
-        if(notificationType.equals("PostNotification")){
+        if (notificationType.equals("PostNotification")) {
             //post notification
             String sender = message.getData().get("sender");
             String pId = message.getData().get("pId");
             String pTitle = message.getData().get("pTitle");
             String pDescription = message.getData().get("pDescription");
 
-            if(!sender.equals(savedCurrentUser)){
-                showPostNotification(""+pId, ""+pTitle, ""+pDescription);
+            if (!sender.equals(savedCurrentUser)) {
+                showPostNotification("" + pId, "" + pTitle, "" + pDescription);
             }
-        }else if(notificationType.equals("ChatNotification")){
+        } else if (notificationType.equals("ChatNotification")) {
             //chat notification
             String sent = message.getData().get("sent");
             String user = message.getData().get("user");
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if(firebaseUser != null && sent.equals(firebaseUser.getUid())){
-                if(!savedCurrentUser.equals(user)){
-                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
+                if (!savedCurrentUser.equals(user)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         sendOAndAboveNotification(message);
-                    }else{
+                    } else {
                         sendNormalNotification(message);
                     }
                 }
             }
+        } else if (notificationType.equals("GroupChatNotification")) {
+            //chat notification
+            String sent = message.getData().get("sent");
+            String user = message.getData().get("user");
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
+                if (!savedCurrentUser.equals(user)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        sendOAndAboveNotificationGroupChat(message);
+                    } else {
+                        sendNormalNotificationGroupChat(message);
+                    }
+                }
+            }
         }
-
-
     }
+
+
 
     private void showPostNotification(String pId, String pTitle, String pDescription) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -163,6 +178,64 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         Intent intent = new Intent(this, ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("hisUid", user);
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        OreoNotification notification1 = new OreoNotification(this);
+        Notification.Builder builder = notification1.getNotification(title, body, pendingIntent, defSoundUri, icon);
+
+        int j = 0;
+        if (i > 0) {
+            j = i;
+        }
+        notification1.getManager().notify(j, builder.build());
+    }
+
+    private void sendNormalNotificationGroupChat(RemoteMessage message) {
+        String user = message.getData().get("user");
+        String icon = message.getData().get("icon");
+        String title = message.getData().get("title");
+        String body = message.getData().get("body");
+
+        RemoteMessage.Notification notification = message.getNotification();
+        int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
+        Intent intent = new Intent(this, GroupChatActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("groupChat", user);
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(Integer.parseInt(icon))
+                .setContentText(body)
+                .setContentTitle(title)
+                .setAutoCancel(true)
+                .setSound(defSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        int j = 0;
+        if (i > 0) {
+            j = i;
+        }
+        notificationManager.notify(j, builder.build());
+    }
+
+    private void sendOAndAboveNotificationGroupChat(RemoteMessage message) {
+        String user = message.getData().get("user");
+        String icon = message.getData().get("icon");
+        String title = message.getData().get("title");
+        String body = message.getData().get("body");
+
+        RemoteMessage.Notification notification = message.getNotification();
+        int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
+        Intent intent = new Intent(this, GroupChatActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("groupChat", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, i, intent, PendingIntent.FLAG_ONE_SHOT);

@@ -1,7 +1,6 @@
 package com.example.demoapp.view.fragment.air;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -26,8 +24,6 @@ import com.example.demoapp.databinding.FragmentAirExportBinding;
 import com.example.demoapp.model.AirExport;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.air.air_export.InsertAirExportDialog;
-import com.example.demoapp.viewmodel.AirExportViewModel;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +40,6 @@ public class AirExportFragment extends Fragment implements View.OnClickListener 
     private String continent = "";
     PriceListAIRAdapter priceListAdapter;
 
-    private AirExportViewModel mAirViewModel;
     private SearchView searchView;
 
     private List<AirExport> airList = new ArrayList<>();
@@ -56,16 +51,6 @@ public class AirExportFragment extends Fragment implements View.OnClickListener 
         View view = mAirBinding.getRoot();
 
         priceListAdapter = new PriceListAIRAdapter(getContext());
-        mAirViewModel = new ViewModelProvider(this).get(AirExportViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(getActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
-            if (needLoading) {
-                Log.d("onresume", String.valueOf(needLoading.toString()));
-                onResume();
-            }
-        });
 
         getDataAIR();
         setAdapterItems();
@@ -191,10 +176,6 @@ public class AirExportFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-
-        mAirViewModel.getLclList().observe(getViewLifecycleOwner(), airs -> {
-            priceListAdapter.setDataAir(prepareDataForResume(month, continent, airs));
-        });
         mAirBinding.priceListRcv.setAdapter(priceListAdapter);
     }
 

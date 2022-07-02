@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -24,8 +23,6 @@ import com.example.demoapp.databinding.FragmentDomExportBinding;
 import com.example.demoapp.model.DomExport;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.dom.dom_export.DialogDomExportInsert;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomExportViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +38,6 @@ import java.util.List;
 public class DomExportFragment extends Fragment implements View.OnClickListener {
 
     private FragmentDomExportBinding binding;
-    private DomExportViewModel mDomExportViewModel;
     private ExportDomAdapter mExportDomAdapter;
     private SearchView searchView;
 
@@ -59,15 +55,6 @@ public class DomExportFragment extends Fragment implements View.OnClickListener 
         View view = binding.getRoot();
 
         mExportDomAdapter = new ExportDomAdapter(getContext());
-        mDomExportViewModel = new ViewModelProvider(this).get(DomExportViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         setHasOptionsMenu(true);
         getAllData();
@@ -187,8 +174,6 @@ public class DomExportFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-
-        mDomExportViewModel.getAllData().observe(getViewLifecycleOwner(), domExports -> mExportDomAdapter.setDomExport(filterDataResume(month, continent, radioItem, domExports)));
 
         binding.rcvDomExport.setAdapter(mExportDomAdapter);
     }

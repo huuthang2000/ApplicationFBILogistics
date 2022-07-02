@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -15,8 +14,6 @@ import com.example.demoapp.adapter.ImportDomAdapter;
 import com.example.demoapp.databinding.ActivityDomImportSaleBinding;
 import com.example.demoapp.model.DomImport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomImportViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,6 @@ import java.util.List;
 public class DomImportSaleActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityDomImportSaleBinding binding;
-    private DomImportViewModel mDomImportViewModel;
     private ImportDomAdapter mImportDomAdapter;
 
     private List<DomImport> mDomImportList = new ArrayList<>();
@@ -40,15 +36,6 @@ public class DomImportSaleActivity extends AppCompatActivity implements View.OnC
 
 
         mImportDomAdapter = new ImportDomAdapter(this);
-        mDomImportViewModel = new ViewModelProvider(this).get(DomImportViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(this, needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         getAllData();
         setAutoComplete();
@@ -128,15 +115,11 @@ public class DomImportSaleActivity extends AppCompatActivity implements View.OnC
     public void getAllData() {
         this.mDomImportList = new ArrayList<>();
 
-        mDomImportViewModel.getAllData().observe(this, domImports -> this.mDomImportList = domImports);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        mDomImportViewModel.getAllData().observe(this, domImports -> mImportDomAdapter.setDomImport(filterDataResume(month, continent, radioItem, domImports)));
-
         binding.rcvDomImport.setAdapter(mImportDomAdapter);
     }
 

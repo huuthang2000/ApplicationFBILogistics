@@ -2,7 +2,10 @@ package com.example.demoapp.view.activity.log;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,13 +16,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityLogProBinding;
-import com.example.demoapp.view.activity.LoginActivity;
 import com.example.demoapp.view.activity.chat.DashboardActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.example.demoapp.view.fragment.home.HomeFragment;
 import com.example.demoapp.view.fragment.log.LogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class LogProActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +39,8 @@ public class LogProActivity extends AppCompatActivity implements NavigationView.
     private static final int LOG_OUT = 3;
 
     private FirebaseAuth mAuth;
+    private String uid;
+    TextView tvName, tvEmail;
 
     private int mCurrentFragment = FRAGMENT_HOME;
 
@@ -48,10 +58,44 @@ public class LogProActivity extends AppCompatActivity implements NavigationView.
         binding.navigationView.setNavigationItemSelectedListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+        checkUserStatus();
+
+        setUserName();
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        View nav_header = LayoutInflater.from(LogProActivity.this).inflate(R.layout.layout_header_nav, null);
+        tvName = nav_header.findViewById(R.id.tv_name_header);
+        tvEmail = nav_header.findViewById(R.id.tv_email_header);
+        navigationView.addHeaderView(nav_header);
 
         replaceFragment(new HomeFragment());
         binding.navigationView.getMenu().findItem(R.id.navigation_home_log).setChecked(true);
 
+    }
+
+    private void setUserName() {
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // check until required data get
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    // get data
+                    String name = "" + ds.child("name").getValue();
+                    String email = "" + ds.child("email").getValue();
+
+
+                    // set data in profile
+                    tvName.setText(name);
+                    tvEmail.setText(email);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -91,9 +135,9 @@ public class LogProActivity extends AppCompatActivity implements NavigationView.
     private void checkUserStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-
+            uid= user.getUid();
         } else {
-            startActivity(new Intent(LogProActivity.this, LoginActivity.class));
+            startActivity(new Intent(LogProActivity.this, SignInActivity.class));
             finish();
         }
     }

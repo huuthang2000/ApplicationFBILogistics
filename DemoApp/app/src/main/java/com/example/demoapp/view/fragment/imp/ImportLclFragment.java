@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -25,8 +24,6 @@ import com.example.demoapp.databinding.FragmentImportLclBinding;
 import com.example.demoapp.model.ImportLcl;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.imp.InsertImportLclDialog;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.ImportLclViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +45,6 @@ public class ImportLclFragment extends Fragment implements View.OnClickListener 
 
     List<ImportLcl> listPriceList = new ArrayList<>();
     private PriceListImportLclAdapter priceListAdapter;
-    private ImportLclViewModel mImportViewModel;
 
     /**
      * this method will create a view (fragment)
@@ -66,15 +62,6 @@ public class ImportLclFragment extends Fragment implements View.OnClickListener 
         View root = binding.getRoot();
 
         priceListAdapter = new PriceListImportLclAdapter(getContext());
-        mImportViewModel = new ViewModelProvider(this).get(ImportLclViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         setHasOptionsMenu(true);
         setAdapterItems();
@@ -202,8 +189,6 @@ public class ImportLclFragment extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         priceListAdapter = new PriceListImportLclAdapter(getContext());
-        mImportViewModel.getImportList().observe(getViewLifecycleOwner(), imp ->
-                priceListAdapter.setImports(prepareDataForResume(month, continent, imp)));
 
         binding.priceListRcv.setAdapter(priceListAdapter);
     }

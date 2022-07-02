@@ -3,7 +3,6 @@ package com.example.demoapp.view.activity.sale.air;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -21,8 +19,6 @@ import com.example.demoapp.adapter.sale.PriceListAIRSaleImportAdapter;
 import com.example.demoapp.databinding.ActivityAirImportSaleBinding;
 import com.example.demoapp.model.AirImport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.AirImportViewModel;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +36,6 @@ public class AirImportSaleActivity extends AppCompatActivity {
     private String month = "";
     private String continent = "";
     private PriceListAIRSaleImportAdapter priceListAirImportAdapter;
-    private AirImportViewModel mAirImportViewModel;
     private List<AirImport> airImportList = new ArrayList<>();
     private SearchView searchView;
 
@@ -52,15 +47,6 @@ public class AirImportSaleActivity extends AppCompatActivity {
 
         setSupportActionBar(mAirImportSaleBinding.toolbar);
         priceListAirImportAdapter = new PriceListAIRSaleImportAdapter(this);
-        mAirImportViewModel = new ViewModelProvider(this).get(AirImportViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
-        mCommunicateViewModel.needReloading.observe(this, needLoading ->{
-            if (needLoading) {
-                Log.d("onresume", String.valueOf(needLoading.toString()));
-                onResume();
-            }
-        });
         getDataAirImport();
         setAdapterItems();
         setContentView(view);
@@ -131,9 +117,6 @@ public class AirImportSaleActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        mAirImportViewModel.getAirImportList().observe(this, airs -> {
-            priceListAirImportAdapter.setDataAir(prepareDataForResume(month, continent, airs));
-        });
         mAirImportSaleBinding.priceListRcv.setAdapter(priceListAirImportAdapter);
     }
 

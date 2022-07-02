@@ -643,7 +643,7 @@ public class ChatActivity extends AppCompatActivity {
                     Token token = ds.getValue(Token.class);
                     Data data = new Data(""+myUid,
                             ""+ name + ": " + message,
-                            "New Message",
+                            "Chat Message",
                             ""+hisUid,
                             "ChatNotification",
                             R.drawable.ic_notifications_black);

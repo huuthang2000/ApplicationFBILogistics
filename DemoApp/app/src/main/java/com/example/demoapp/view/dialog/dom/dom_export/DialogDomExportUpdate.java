@@ -16,7 +16,7 @@ import com.example.demoapp.R;
 import com.example.demoapp.databinding.FragmentDialogDomExportUpdateBinding;
 import com.example.demoapp.model.DomExport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +74,7 @@ public class DialogDomExportUpdate extends DialogFragment {
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }

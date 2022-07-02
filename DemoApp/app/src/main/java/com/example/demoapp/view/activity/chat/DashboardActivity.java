@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.demoapp.R;
 import com.example.demoapp.adapter.viewPager.MyViewPagerAdapter;
 import com.example.demoapp.databinding.ActivityDashboardBinding;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -142,7 +142,7 @@ public class DashboardActivity extends AppCompatActivity {
             editor.putString("Current_USERID", mUID);
             editor.apply();
         }else{
-            startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+            startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
             finish();
         }
     }

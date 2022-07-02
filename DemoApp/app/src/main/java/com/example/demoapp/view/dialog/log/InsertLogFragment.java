@@ -15,14 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.FragmentInsertLogBinding;
 import com.example.demoapp.model.Log;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,7 +69,6 @@ public class InsertLogFragment extends DialogFragment implements View.OnClickLis
 
     private Bitmap bitmap;
 
-    private CommunicateViewModel mCommunicateViewModel;
 
     public static final String TAG = InsertLogFragment.class.getName();
 
@@ -82,7 +79,6 @@ public class InsertLogFragment extends DialogFragment implements View.OnClickLis
         logBinding = FragmentInsertLogBinding.inflate(inflater,container, false);
         View view = logBinding.getRoot();
 
-        mCommunicateViewModel = new ViewModelProvider(getActivity()).get(CommunicateViewModel.class);
 
         mAuth = FirebaseAuth.getInstance();
         checkUserStatus();
@@ -119,7 +115,7 @@ public class InsertLogFragment extends DialogFragment implements View.OnClickLis
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }

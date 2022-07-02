@@ -34,7 +34,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.ActivityAddPostBinding;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -767,7 +767,7 @@ public class AddPostActivity extends AppCompatActivity {
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
         }
     }

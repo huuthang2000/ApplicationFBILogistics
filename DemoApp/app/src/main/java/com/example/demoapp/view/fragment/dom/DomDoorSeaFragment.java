@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -23,8 +22,6 @@ import com.example.demoapp.databinding.FragmentDomDoorSeaBinding;
 import com.example.demoapp.model.DomDoorSea;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.dom.dom_door_sea.DialogDomDoorSeaInsert;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.DomDoorSeaViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +37,6 @@ import java.util.List;
 public class DomDoorSeaFragment extends Fragment {
 
     private FragmentDomDoorSeaBinding binding;
-    private DomDoorSeaViewModel mDomDoorSeaViewModel;
     private DoorSeaDomAdapter mDoorSeaDomAdapter;
     private SearchView searchView;
 
@@ -57,15 +53,6 @@ public class DomDoorSeaFragment extends Fragment {
         View view = binding.getRoot();
 
         mDoorSeaDomAdapter = new DoorSeaDomAdapter(getContext());
-        mDomDoorSeaViewModel = new ViewModelProvider(this).get(DomDoorSeaViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         setHasOptionsMenu(true);
         getAllData();
@@ -173,8 +160,6 @@ public class DomDoorSeaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        mDomDoorSeaViewModel.getAllData().observe(getViewLifecycleOwner(), domDoorSeas -> mDoorSeaDomAdapter.setDomDoorSea(filterDataResume(month, continent, domDoorSeas)));
 
         binding.rcvDomDoorSea.setAdapter(mDoorSeaDomAdapter);
     }

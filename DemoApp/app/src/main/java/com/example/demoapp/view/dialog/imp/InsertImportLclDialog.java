@@ -16,15 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demoapp.R;
 import com.example.demoapp.databinding.FragmentDialogInsertImportLclBinding;
 import com.example.demoapp.model.ImportLcl;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.ImportLclViewModel;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -53,9 +50,6 @@ public class InsertImportLclDialog extends DialogFragment implements View.OnClic
     private final String[] listStr = new String[3];
 
     private FragmentDialogInsertImportLclBinding binding;
-    private CommunicateViewModel mCommunicateViewModel;
-    private ImportLclViewModel mImportViewModel;
-
 
     private List<ImportLcl> importLCLList;
 
@@ -85,8 +79,6 @@ public class InsertImportLclDialog extends DialogFragment implements View.OnClic
 
         View root = binding.getRoot();
 
-        mImportViewModel = new ViewModelProvider(this).get(ImportLclViewModel.class);
-        mCommunicateViewModel = new ViewModelProvider(requireActivity()).get(CommunicateViewModel.class);
 
         mAuth = FirebaseAuth.getInstance();
         checkUserStatus();
@@ -128,7 +120,7 @@ public class InsertImportLclDialog extends DialogFragment implements View.OnClic
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }

@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -19,8 +18,6 @@ import com.example.demoapp.adapter.sale.PriceListImportLclSaleAdapter;
 import com.example.demoapp.databinding.ActivityImportLclSaleBinding;
 import com.example.demoapp.model.ImportLcl;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
-import com.example.demoapp.viewmodel.ImportLclViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +36,6 @@ public class ImportLclSaleActivity extends AppCompatActivity {
     private SearchView searchView;
     List<ImportLcl> listPriceList = new ArrayList<>();
     private PriceListImportLclSaleAdapter priceListAdapter;
-    private ImportLclViewModel mImportViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +43,6 @@ public class ImportLclSaleActivity extends AppCompatActivity {
         binding = ActivityImportLclSaleBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         priceListAdapter = new PriceListImportLclSaleAdapter(this);
-        mImportViewModel = new ViewModelProvider(this).get(ImportLclViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(this).get(CommunicateViewModel.class);
-
-        mCommunicateViewModel.needReloading.observe(this, needLoading -> {
-            if (needLoading) {
-                onResume();
-            }
-        });
 
         setSupportActionBar(binding.toolbar);
         setAdapterItems();
@@ -169,8 +156,6 @@ public class ImportLclSaleActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         priceListAdapter = new PriceListImportLclSaleAdapter(this);
-        mImportViewModel.getImportList().observe(this, imp ->
-                priceListAdapter.setImports(prepareDataForResume(month, continent, imp)));
 
         binding.priceListRcv.setAdapter(priceListAdapter);
     }

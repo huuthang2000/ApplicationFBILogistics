@@ -18,7 +18,7 @@ import com.example.demoapp.R;
 import com.example.demoapp.databinding.FragmentInsertRetailGoodsDialogBinding;
 import com.example.demoapp.model.RetailGoods;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -103,7 +103,7 @@ public class InsertRetailGoodsDialog extends DialogFragment implements View.OnCl
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }

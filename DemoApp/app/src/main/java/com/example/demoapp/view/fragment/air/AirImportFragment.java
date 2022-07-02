@@ -1,7 +1,6 @@
 package com.example.demoapp.view.fragment.air;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.demoapp.R;
@@ -25,8 +23,6 @@ import com.example.demoapp.databinding.FragmentAirImportBinding;
 import com.example.demoapp.model.AirImport;
 import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.dialog.air.air_import.InsertAirImportDialog;
-import com.example.demoapp.viewmodel.AirImportViewModel;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +43,6 @@ public class AirImportFragment extends Fragment implements View.OnClickListener 
     private String continent = "";
     private SearchView searchView;
     private PriceListAirImportAdapter priceListAirImportAdapter;
-    private AirImportViewModel mAirImportViewModel;
     private List<AirImport> airImportList = new ArrayList<>();
 
     @Override
@@ -57,15 +52,6 @@ public class AirImportFragment extends Fragment implements View.OnClickListener 
         View view = mAirImportBinding.getRoot();
 
         priceListAirImportAdapter = new PriceListAirImportAdapter(getContext());
-        mAirImportViewModel = new ViewModelProvider(this).get(AirImportViewModel.class);
-
-        CommunicateViewModel mCommunicateViewModel = new ViewModelProvider(getActivity()).get(CommunicateViewModel.class);
-        mCommunicateViewModel.needReloading.observe(getViewLifecycleOwner(), needLoading ->{
-            if (needLoading) {
-                Log.d("onresume", String.valueOf(needLoading.toString()));
-                onResume();
-            }
-        });
         setHasOptionsMenu(true);
 
         getDataAirImport();
@@ -140,9 +126,7 @@ public class AirImportFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        mAirImportViewModel.getAirImportList().observe(getViewLifecycleOwner(), airs -> {
-            priceListAirImportAdapter.setDataAir(prepareDataForResume(month, continent, airs));
-        });
+
         mAirImportBinding.priceListRcv.setAdapter(priceListAirImportAdapter);
     }
 

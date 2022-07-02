@@ -18,9 +18,7 @@ import com.example.demoapp.R;
 import com.example.demoapp.databinding.FragmentInsertAirImportDialogBinding;
 import com.example.demoapp.model.AirImport;
 import com.example.demoapp.utilities.Constants;
-import com.example.demoapp.view.activity.LoginActivity;
-import com.example.demoapp.viewmodel.AirImportViewModel;
-import com.example.demoapp.viewmodel.CommunicateViewModel;
+import com.example.demoapp.view.activity.loginAndRegister.SignInActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -51,9 +49,7 @@ public class InsertAirImportDialog extends DialogFragment implements View.OnClic
     private FragmentInsertAirImportDialogBinding mInsertAirImportDialogBinding;
     private ArrayAdapter<String> adapterItemsMonth, adapterItemsContinent;
 
-    private AirImportViewModel mAirViewModel;
     private List<AirImport> airList ;
-    private CommunicateViewModel mCommunicateViewModel;
     private Bundle bundle;
     private AirImport mAirImport;
 
@@ -112,7 +108,7 @@ public class InsertAirImportDialog extends DialogFragment implements View.OnClic
             email = user.getEmail();
             uid = user.getUid();
         } else {
-            startActivity(new Intent(getContext(), LoginActivity.class));
+            startActivity(new Intent(getContext(), SignInActivity.class));
             getActivity().finish();
         }
     }
