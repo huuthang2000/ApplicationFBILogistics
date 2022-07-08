@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class FirebaseMessaging extends FirebaseMessagingService {
@@ -305,7 +306,10 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         Token token = new Token(tokenRefresh);
         ref.child(user.getUid()).setValue(token);
 
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Fcm", token);
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child("Fcm").setValue(token);
+        databaseReference.updateChildren(map);
     }
 }

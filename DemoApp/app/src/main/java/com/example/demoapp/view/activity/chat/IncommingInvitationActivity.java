@@ -63,22 +63,28 @@ public class IncommingInvitationActivity extends AppCompatActivity {
         binding.acceptInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stop();
                 sendInvitationResponse(Constants.REMOTE_MSG_INVITATION_ACCEPTED,
                         getIntent().getStringExtra(Constants.REMOTE_MSG_INVITER_TOKEN));
+
             }
         });
         //when rejected
         binding.rejectInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stop();
                 sendInvitationResponse(Constants.REMOTE_MSG_INVITATION_REJECTED, getIntent().getStringExtra(Constants.REMOTE_MSG_INVITER_TOKEN));
 
+                finish();
             }
         });
         new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+
                 play();
+
             }
 
             public void onFinish() {
@@ -127,6 +133,7 @@ public class IncommingInvitationActivity extends AppCompatActivity {
                     if (type.equals(Constants.REMOTE_MSG_INVITATION_ACCEPTED)) {
                         //jitsi Setup
                         try {
+
                             URL serverURL = new URL("https://meet.jit.si");
                             //for audio calling
                             JitsiMeetConferenceOptions.Builder builder = new JitsiMeetConferenceOptions.Builder();
@@ -172,8 +179,7 @@ public class IncommingInvitationActivity extends AppCompatActivity {
     }
     public  void stop(){
         if(player!= null){
-            player.release();
-            player = null;
+           player.stop();
             Toast.makeText(IncommingInvitationActivity.this,"Tắt âm thanh", Toast.LENGTH_SHORT).show();
         }
     }
@@ -183,9 +189,11 @@ public class IncommingInvitationActivity extends AppCompatActivity {
             String type = intent.getStringExtra(Constants.REMOTE_MSG_INVITATION_RESPONSE);
             if (type != null) {
                 if (type.equals(Constants.REMOTE_MSG_INVITATION_CANCELLED)) {
-                    Toast.makeText(context, "Bạn đã hủy cuộc gọi", Toast.LENGTH_SHORT).show();
-                    stop();
+                    Toast.makeText(context, "DP đã hủy cuộc gọi", Toast.LENGTH_SHORT).show();
+                    player.release();
+                    player.stop();
                     finish();
+
                 }
             }
         }

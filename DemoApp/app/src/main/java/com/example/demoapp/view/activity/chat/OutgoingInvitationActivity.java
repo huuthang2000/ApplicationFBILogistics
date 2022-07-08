@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Toast;
 
@@ -73,7 +72,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
             binding.textUserName.setText(username);
             //binding.IncommingphoneNumber.setText(phoneNo);
         }
-
+        play();
         binding.rejectInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,19 +97,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
                     }
                 });
 
-        new CountDownTimer(30000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-                play();
-            }
-
-            public void onFinish() {
-                stop();
-                finish();
-                Toast.makeText(OutgoingInvitationActivity.this,"Kết thúc", Toast.LENGTH_SHORT).show();
-            }
-
-        }.start();
     }
     public  void play(){
         if(player == null){
@@ -121,8 +108,7 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
     }
     public  void stop(){
         if(player!= null){
-            player.release();
-            player = null;
+            player.stop();
             Toast.makeText(OutgoingInvitationActivity.this,"Tắt âm thanh", Toast.LENGTH_SHORT).show();
         }
     }
@@ -177,7 +163,6 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call<String> call, Throwable t) {
                 Toast.makeText(OutgoingInvitationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                stop();
                 finish();
             }
         });
@@ -185,7 +170,6 @@ public class OutgoingInvitationActivity extends AppCompatActivity {
 
     private void cancelInvitaion(String receiverToken) {
         try {
-            stop();
             JSONArray tokens = new JSONArray();
             tokens.put(receiverToken);
 
