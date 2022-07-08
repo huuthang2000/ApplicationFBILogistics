@@ -345,6 +345,7 @@ public class SignInActivity extends AppCompatActivity {
                                 hashMap.put("image", "");
                                 hashMap.put("conver", "");
                                 hashMap.put("position","");
+                                hashMap.put("FCM","");
                                 // Firebase database isntance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 // path to store user data name "Users"

@@ -33,6 +33,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.demoapp.Network.UsersListener;
 import com.example.demoapp.R;
 import com.example.demoapp.adapter.chat.ChatAdapter;
 import com.example.demoapp.databinding.ActivityChatBinding;
@@ -42,6 +43,7 @@ import com.example.demoapp.notifications.Data;
 import com.example.demoapp.notifications.Sender;
 import com.example.demoapp.notifications.Token;
 import com.example.demoapp.view.activity.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +55,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -72,7 +75,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements UsersListener {
 
     private ActivityChatBinding binding;
     private FirebaseAuth mAuth;
@@ -80,8 +83,11 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference usersDBRef;
     private String hisUid;
     private String myUid;
-    private String hisImage;
-
+    private String hisImage, hisname;
+    Users currentUser;
+    String name;
+    String FCM;
+    String typingStatus;
     // volley request queue for notification
     RequestQueue requestQueue;
     boolean notify = false;
@@ -152,11 +158,14 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // check until required info is received
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    Users user = ds.getValue(Users.class);
+                    currentUser = user;
                     // get data
-                    String name = "" + ds.child("name").getValue();
+//                    hisname = "" + ds.child("name").getValue();
+                    name = "" + ds.child("name").getValue();
                     hisImage = "" + ds.child("image").getValue();
-                    String typingStatus = "" + ds.child("typingTo").getValue();
-
+                    typingStatus = "" + ds.child("typingTo").getValue();
+                    FCM =""+ds.child("FCM").getValue();
                     // check typing  status
                     if (typingStatus.equals(myUid)) {
                         binding.tvUserStatus.setText("typing....");
@@ -189,6 +198,20 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(ChatActivity.this, "Token generation Failed", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("FCM").setValue(token);
+                    }
+                });
 
         // click button to send message
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
@@ -404,8 +427,7 @@ public class ChatActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
                 // image is picked from camera, get uri of image
                 try {
                     sendImageMessage(image_uri);
@@ -467,6 +489,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users users = snapshot.getValue(Users.class);
+
                 if (notify) {
                     sendNotification(hisUid, users.getName(), message);
                 }
@@ -525,9 +548,9 @@ public class ChatActivity extends AppCompatActivity {
         progressDialog.setMessage("Sending image...");
         progressDialog.show();
 
-        String timeStamp = ""+ System.currentTimeMillis();
+        String timeStamp = "" + System.currentTimeMillis();
 
-        String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
+        String fileNameAndPath = "ChatImages/" + "post_" + timeStamp;
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm aa");
         String date = df.format(Calendar.getInstance().getTime());
@@ -548,10 +571,10 @@ public class ChatActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         //get url of uploaded image
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
+                        while (!uriTask.isSuccessful()) ;
                         String downloadUri = uriTask.getResult().toString();
 
-                        if(uriTask.isSuccessful()){
+                        if (uriTask.isSuccessful()) {
                             //add image uri and other info to database
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -574,8 +597,8 @@ public class ChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Users users = snapshot.getValue(Users.class);
-                                    if(notify){
-                                        sendNotification(hisUid, users.getName(),"Sent you a photo...");
+                                    if (notify) {
+                                        sendNotification(hisUid, users.getName(), "Sent you a photo...");
                                     }
                                     notify = false;
                                 }
@@ -641,10 +664,10 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(""+myUid,
-                            ""+ name + ": " + message,
+                    Data data = new Data("" + myUid,
+                            "" + name + ": " + message,
                             "Chat Message",
-                            ""+hisUid,
+                            "" + hisUid,
                             "ChatNotification",
                             R.drawable.ic_notifications_black);
 
@@ -724,7 +747,11 @@ public class ChatActivity extends AppCompatActivity {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_add_post).setVisible(false);
         menu.findItem(R.id.action_create_group).setVisible(false);
-
+        menu.findItem(R.id.action_add_participant).setVisible(false);
+        menu.findItem(R.id.action_groupinfo).setVisible(false);
+        menu.findItem(R.id.action_callvoice).setVisible(true);
+        menu.findItem(R.id.action_callvideo).setVisible(true);
+        menu.findItem(R.id.action_logout).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -734,6 +761,12 @@ public class ChatActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             mAuth.signOut();
             checkUserStatus();
+        } else if (R.id.action_callvoice == id) {
+
+            initiateAudioMeeting(currentUser);
+
+        } else if (R.id.action_callvideo == id) {
+            initiateVideoMeeting(currentUser);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -752,6 +785,44 @@ public class ChatActivity extends AppCompatActivity {
         checkOnlineStatus("online");
         super.onResume();
     }
+
+    //jitsi video call
+    @Override
+    public void initiateVideoMeeting(Users user) {
+
+        if (user.getFCM() == null && user.getFCM().trim().isEmpty()) {
+            Toast.makeText(getApplicationContext(), user.getName() + " Nguoi nhan khong online", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Intent intent = new Intent(getApplicationContext(), OutgoingInvitationActivity.class);
+            intent.putExtra("name", name);
+            ///intent.putExtra("phoneNo", user.getPhoneNumber());
+            intent.putExtra("type", "video");
+            intent.putExtra("receiverToken", FCM);
+            Toast.makeText(getApplicationContext(), FCM, Toast.LENGTH_LONG).show();
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void initiateAudioMeeting(Users user) {
+
+        if (user.getFCM() == null || user.getFCM().trim().isEmpty()) {
+            Toast.makeText(getApplicationContext(), user.getName() + " is Not Available For meeting", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Intent intent = new Intent(getApplicationContext(), OutgoingInvitationActivity.class);
+            intent.putExtra("name", name);
+            ///intent.putExtra("phoneNo", user.getPhoneNumber());
+            intent.putExtra("type", "audio");
+            intent.putExtra("receiverToken", FCM);
+            //   intent.putExtra("currentUserinfo",  currentUser);
+            startActivity(intent);
+
+        }
+
+    }
+
 
     @Override
     protected void onPause() {

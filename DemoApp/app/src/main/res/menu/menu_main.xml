@@ -30,6 +30,16 @@
         android:icon="@drawable/ic_info_white"
         android:title="Group Info"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_callvoice"
+        android:icon="@drawable/ic_baseline_call_24"
+        android:title="Call Voice"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_callvideo"
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="Call Video"
+        app:showAsAction="always" />
 
 <!--    <item-->
 <!--        android:id="@+id/nav_notification"-->

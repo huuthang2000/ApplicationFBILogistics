@@ -1,5 +1,7 @@
 package com.example.demoapp.utilities;
 
+import java.util.HashMap;
+
 public class Constants {
 
 
@@ -107,5 +109,34 @@ public class Constants {
 
     public static final String INSERT_FAILED = "Insert Failed!!!";
     public static final String UPDATE_FAILED = "Update Failed!!!";
+
+    public static final String REMOTE_MSG_AUTHORIZATION = "Authorization";
+    public static final String REMOTE_MSG_CONTENT_TYPE = "Content-Type";
+
+    public static final String REMOTE_MSG_TYPE = "type";
+    public static final String REMOTE_MSG_INVITATION = "invitation";
+
+    public static final String REMOTE_MSG_MEETING_TYPE = "meetingType";
+    public static final String REMOTE_MSG_INVITER_TOKEN = "inviterToken";
+
+    public static final String REMOTE_MSG_DATA = "data";
+    public static final String REMOTE_MSG_REGISTRATION_IDS = "registration_ids";
+
+    public static final String REMOTE_MSG_INVITATION_RESPONSE = "invitationResponse";
+
+    public static final  String REMOTE_MSG_INVITATION_ACCEPTED = "accepted";
+    public static final  String REMOTE_MSG_INVITATION_REJECTED = "rejected";
+    public static final  String REMOTE_MSG_INVITATION_CANCELLED = "cancelled";
+
+    public static final String REMOTE_MSG_MEETING_ROOM = "meetingRoom";
+
+    public static HashMap<String,String> getRemoteMessageHeaders()
+    {
+        HashMap<String ,String> headers = new HashMap<>();
+        headers.put(Constants.REMOTE_MSG_AUTHORIZATION,"key=AAAAnDxU0iU:APA91bGl1M-g_K_E43PrHhOo7Am4lu6gvqNN_NcmiAbR55gryt67ABv2KwCzNK9oKOxkpsgSm-RCmiaDTrKDehmVwM576cL15pJ5pX0s5QWf-RlIP8HVdO01BkVMQw9oua2RDQ_Sxw8B");
+        headers.put(Constants.REMOTE_MSG_CONTENT_TYPE,"application/json");
+        return headers;
+    }
+
 
 }
