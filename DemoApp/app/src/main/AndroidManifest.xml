@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".view.activity.chat.MyApplication"
@@ -17,9 +21,15 @@
         android:theme="@style/Theme.DemoApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.chat.IncommingInvitationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.chat.OutgoingInvitationActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.loginAndRegister.SignInActivity"
             android:exported="false"
-            android:theme="@style/Theme.GroupChatFinal"/>
+            android:theme="@style/Theme.GroupChatFinal" />
         <activity
             android:name=".view.activity.air.AirActivity"
             android:exported="false" />

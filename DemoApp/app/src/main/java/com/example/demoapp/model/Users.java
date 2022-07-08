@@ -1,13 +1,14 @@
 package com.example.demoapp.model;
 
-public class Users {
-    private String name, email, search, phone, image, cover, uid, onlineStatus, typingTo;
+import java.io.Serializable;
+
+public class Users implements Serializable {
+    private String name, email, search, phone, image, cover, uid, onlineStatus, typingTo,FCM;
 
     public Users() {
     }
 
-    public Users(String name, String email, String search, String phone, String image, String cover,
-                 String uid, String onlineStatus, String typingTo) {
+    public Users(String name, String email, String search, String phone, String image, String cover, String uid, String onlineStatus, String typingTo, String FCM) {
         this.name = name;
         this.email = email;
         this.search = search;
@@ -17,6 +18,9 @@ public class Users {
         this.uid = uid;
         this.onlineStatus = onlineStatus;
         this.typingTo = typingTo;
+        this.FCM = FCM;
+
+
     }
 
     public String getOnlineStatus() {
@@ -89,5 +93,13 @@ public class Users {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public String getFCM() {
+        return FCM;
+    }
+
+    public void setFCM(String FCM) {
+        this.FCM = FCM;
     }
 }

@@ -17,10 +17,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.demoapp.R;
+import com.example.demoapp.utilities.Constants;
 import com.example.demoapp.view.activity.chat.ChatActivity;
 import com.example.demoapp.view.activity.chat.GroupChatActivity;
+import com.example.demoapp.view.activity.chat.IncommingInvitationActivity;
 import com.example.demoapp.view.activity.chat.PostDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class FirebaseMessaging extends FirebaseMessagingService {
@@ -39,48 +43,82 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
         // get current user from shared preferences
+        //video call
+        String type = message.getData().get(Constants.REMOTE_MSG_TYPE);
+        // get current user from shared preferences
         SharedPreferences sp = getSharedPreferences("SP_USER", MODE_PRIVATE);
         String savedCurrentUser = sp.getString("Current_USERID", "None");
 
         String notificationType = message.getData().get("notificationType");
-        if (notificationType.equals("PostNotification")) {
-            //post notification
-            String sender = message.getData().get("sender");
-            String pId = message.getData().get("pId");
-            String pTitle = message.getData().get("pTitle");
-            String pDescription = message.getData().get("pDescription");
+        if(type != null)
+        {
+            if(type.equals(Constants.REMOTE_MSG_INVITATION))
+            {
+                Intent intent = new Intent(getApplicationContext(), IncommingInvitationActivity.class);
+                intent.putExtra(Constants.REMOTE_MSG_MEETING_TYPE,message.getData().get(Constants.REMOTE_MSG_MEETING_TYPE));
+                intent.putExtra("username",message.getData().get("username"));
 
-            if (!sender.equals(savedCurrentUser)) {
-                showPostNotification("" + pId, "" + pTitle, "" + pDescription);
+                //used when call accpeted
+                intent.putExtra(Constants.REMOTE_MSG_INVITER_TOKEN,message.getData()
+                        .get(Constants.REMOTE_MSG_INVITER_TOKEN));
+
+                //for meeting Room of JITSI
+                intent.putExtra(Constants.REMOTE_MSG_MEETING_ROOM, message.getData().get(Constants.REMOTE_MSG_MEETING_ROOM));
+
+
+                //since we are starting Activity from non activity WE nee to Set A flag
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
-        } else if (notificationType.equals("ChatNotification")) {
-            //chat notification
-            String sent = message.getData().get("sent");
-            String user = message.getData().get("user");
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
-                if (!savedCurrentUser.equals(user)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        sendOAndAboveNotification(message);
-                    } else {
-                        sendNormalNotification(message);
+            else if(type.equals(Constants.REMOTE_MSG_INVITATION_RESPONSE))
+            {
+                Intent intent = new Intent(Constants.REMOTE_MSG_INVITATION_RESPONSE);
+                intent.putExtra(
+                        Constants.REMOTE_MSG_INVITATION_RESPONSE,message.getData().get(Constants.REMOTE_MSG_INVITATION_RESPONSE)
+                );
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+            }else{
+                if (notificationType.equals("PostNotification")) {
+                    //post notification
+                    String sender = message.getData().get("sender");
+                    String pId = message.getData().get("pId");
+                    String pTitle = message.getData().get("pTitle");
+                    String pDescription = message.getData().get("pDescription");
+
+                    if (!sender.equals(savedCurrentUser)) {
+                        showPostNotification("" + pId, "" + pTitle, "" + pDescription);
+                    }
+                } else if (notificationType.equals("ChatNotification")) {
+                    //chat notification
+                    String sent = message.getData().get("sent");
+                    String user = message.getData().get("user");
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
+                        if (!savedCurrentUser.equals(user)) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                sendOAndAboveNotification(message);
+                            } else {
+                                sendNormalNotification(message);
+                            }
+                        }
+                    }
+                } else if (notificationType.equals("GroupChatNotification")) {
+                    //chat notification
+                    String sent = message.getData().get("sent");
+                    String user = message.getData().get("user");
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
+                        if (!savedCurrentUser.equals(user)) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                sendOAndAboveNotificationGroupChat(message);
+                            } else {
+                                sendNormalNotificationGroupChat(message);
+                            }
+                        }
                     }
                 }
             }
-        } else if (notificationType.equals("GroupChatNotification")) {
-            //chat notification
-            String sent = message.getData().get("sent");
-            String user = message.getData().get("user");
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (firebaseUser != null && sent.equals(firebaseUser.getUid())) {
-                if (!savedCurrentUser.equals(user)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        sendOAndAboveNotificationGroupChat(message);
-                    } else {
-                        sendNormalNotificationGroupChat(message);
-                    }
-                }
-            }
+
         }
     }
 
@@ -268,5 +306,10 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         Token token = new Token(tokenRefresh);
         ref.child(user.getUid()).setValue(token);
 
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Fcm", token);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.updateChildren(map);
     }
 }
